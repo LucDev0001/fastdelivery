@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FastDelivery - O Sistema Completo para o seu Restaurante</title>
+    <meta
+      name="description"
+      content="Gerencie pedidos, cardápio, entregadores e finanças com um sistema de delivery completo, moderno e sem comissões."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap");
+
+      body {
+        font-family: "Inter", sans-serif;
+      }
+
+      .fade-in-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+
+      .fade-in-up.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .hero-bg {
+        background-image: linear-gradient(
+            to right,
+            rgba(0, 0, 0, 0.7),
+            rgba(0, 0, 0, 0.5)
+          ),
+          url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1974&auto=format&fit=crop");
+        background-size: cover;
+        background-position: center;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+      <nav
+        class="container mx-auto px-6 py-4 flex justify-between items-center"
+      >
+        <a
+          href="#"
+          class="text-2xl font-bold text-[#EA1D2C] flex items-center gap-2"
+        >
+          <i class="fas fa-shipping-fast"></i> FastDelivery
+        </a>
+        <div class="hidden md:flex items-center space-x-6">
+          <a href="#funcionalidades" class="text-gray-600 hover:text-[#EA1D2C]"
+            >Funcionalidades</a
+          >
+          <a href="#preco" class="text-gray-600 hover:text-[#EA1D2C]">Preço</a>
+          <a href="#faq" class="text-gray-600 hover:text-[#EA1D2C]">Dúvidas</a>
+          <a
+            href="#contato"
+            class="bg-[#EA1D2C] text-white px-4 py-2 rounded-full hover:bg-[#c91b29] transition"
+            >Quero o Sistema</a
+          >
+        </div>
+        <div class="md:hidden">
+          <a
+            href="#contato"
+            class="bg-[#EA1D2C] text-white px-4 py-2 rounded-full hover:bg-[#c91b29] transition text-sm"
+            >Contato</a
+          >
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-bg text-white py-20 md:py-32">
+      <div class="container mx-auto px-6 text-center">
+        <h1
+          class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 fade-in-up"
+        >
+          Transforme seu Delivery com um Sistema Completo
+        </h1>
+        <p
+          class="text-lg md:text-xl text-gray-200 mb-8 max-w-3xl mx-auto fade-in-up"
+          style="transition-delay: 150ms"
+        >
+          Gerencie pedidos, cardápio, entregadores e finanças em um só lugar.
+          Inclui um <strong>aplicativo exclusivo para seus clientes</strong>,
+          sem comissões e sem taxas escondidas.
+        </p>
+        <a
+          href="#contato"
+          class="bg-white text-[#EA1D2C] px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-200 transition transform hover:scale-105 fade-in-up"
+          style="transition-delay: 300ms"
+        >
+          Peça uma Demonstração
+        </a>
+      </div>
+    </section>
+
+    <!-- Funcionalidades -->
+    <section id="funcionalidades" class="py-20">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
+            Tudo que você precisa para decolar 🚀
+          </h2>
+          <p class="text-gray-600 mt-2">
+            Um painel de controle intuitivo e poderoso.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Card de Funcionalidade -->
+          <div
+            class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 fade-in-up"
+          >
+            <div class="text-3xl text-[#EA1D2C] mb-4">
+              <i class="fas fa-receipt"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Painel Kanban de Pedidos</h3>
+            <p class="text-gray-600">
+              Visualize todos os pedidos em colunas (Recebidos, Preparo, Em
+              Rota) e gerencie seu fluxo de forma simples e rápida.
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 fade-in-up"
+            style="transition-delay: 100ms"
+          >
+            <div class="text-3xl text-[#EA1D2C] mb-4">
+              <i class="fas fa-print"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Impressão Automática</h3>
+            <p class="text-gray-600">
+              Configure a impressão automática de comandas na cozinha assim que
+              um novo pedido chega, sem cliques extras.
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 fade-in-up"
+            style="transition-delay: 200ms"
+          >
+            <div class="text-3xl text-[#EA1D2C] mb-4">
+              <i class="fas fa-hamburger"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Gestão de Cardápio e Estoque</h3>
+            <p class="text-gray-600">
+              Adicione produtos, crie complementos (obrigatórios ou não) e
+              controle o estoque em tempo real para evitar vendas de itens
+              esgotados.
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 fade-in-up"
+          >
+            <div class="text-3xl text-[#EA1D2C] mb-4">
+              <i class="fas fa-motorcycle"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Módulo de Entregadores</h3>
+            <p class="text-gray-600">
+              Cadastre seus entregadores, defina turnos, taxas e acompanhe a
+              localização de cada um em um mapa em tempo real.
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 fade-in-up"
+            style="transition-delay: 100ms"
+          >
+            <div class="text-3xl text-[#EA1D2C] mb-4">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Financeiro Completo</h3>
+            <p class="text-gray-600">
+              Controle receitas, lance despesas, visualize o lucro e acompanhe
+              contas a pagar e vencidas em um dashboard financeiro completo.
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 fade-in-up"
+            style="transition-delay: 200ms"
+          >
+            <div class="text-3xl text-[#EA1D2C] mb-4">
+              <i class="fas fa-users-cog"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Níveis de Acesso</h3>
+            <p class="text-gray-600">
+              Crie usuários com diferentes permissões (Admin, Gerente, Caixa,
+              Cozinha), garantindo que cada funcionário acesse apenas o
+              necessário.
+            </p>
+          </div>
+
+          <div
+            class="bg-white p-8 rounded-xl shadow-lg border border-gray-100 fade-in-up"
+            style="transition-delay: 300ms"
+          >
+            <div class="text-3xl text-[#EA1D2C] mb-4">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">App do Cliente Incluso</h3>
+            <p class="text-gray-600">
+              Seu cliente ganha um App exclusivo (PWA) completo: cardápio
+              digital, pedidos online, acompanhamento em tempo real, histórico e
+              muito mais.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção App do Cliente -->
+    <section id="app-cliente" class="bg-gray-100 py-20 overflow-hidden">
+      <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <div class="fade-in-up">
+            <span class="text-sm font-bold uppercase text-[#EA1D2C]"
+              >Exclusivo para seus clientes</span
+            >
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mt-2 mb-4">
+              Um App com a cara da sua Loja
+            </h2>
+            <p class="text-gray-600 mb-6">
+              Ofereça uma experiência de compra profissional e fidelize seus
+              clientes com um aplicativo web (PWA) que eles podem adicionar à
+              tela inicial do celular, sem precisar de loja de aplicativos.
+            </p>
+            <ul class="space-y-3 text-gray-700">
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check-circle text-green-500"></i>
+                <strong>Cardápio Digital Interativo:</strong> Navegação fácil
+                por categorias e produtos.
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check-circle text-green-500"></i>
+                <strong>Pedidos Online Diretos:</strong> Sem intermediários, sem
+                comissões.
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check-circle text-green-500"></i>
+                <strong>Acompanhamento em Tempo Real:</strong> O cliente vê o
+                status do pedido (aceito, em rota).
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check-circle text-green-500"></i>
+                <strong>Histórico de Pedidos:</strong> Facilita a recompra dos
+                itens favoritos.
+              </li>
+            </ul>
+          </div>
+          <div class="fade-in-up" style="transition-delay: 150ms">
+            <div class="flex justify-center items-center relative py-8">
+              <!-- Efeito de fundo -->
+              <div
+                class="absolute bg-[#EA1D2C] opacity-10 w-64 h-64 md:w-80 md:h-80 rounded-full blur-3xl -z-10"
+              ></div>
+
+              <!-- Screenshot 1 (Fundo) -->
+              <img
+                src="images/screenshot1.png"
+                alt="Tela do App"
+                class="w-32 md:w-48 rounded-[1.5rem] md:rounded-[2rem] border-4 border-gray-800 shadow-2xl transform -rotate-6 z-10 -mr-16 mt-8 hover:scale-105 transition duration-500"
+              />
+
+              <!-- Screenshot 3 (Frente) -->
+              <img
+                src="images/screenshot3.png"
+                alt="Tela do App"
+                class="w-36 md:w-52 rounded-[2rem] md:rounded-[2.5rem] border-8 border-gray-800 shadow-2xl transform rotate-3 z-20 hover:scale-105 transition duration-500"
+              />
+              <!-- Screenshot 4 (Frente) -->
+              <img
+                src="images/screenshot4.png"
+                alt="Tela do App"
+                class="w-36 md:w-52 rounded-[2rem] md:rounded-[2.5rem] border-8 border-gray-800 shadow-2xl transform rotate-3 z-20 hover:scale-105 transition duration-500"
+              />
+              <!-- Screenshot 2 (Frente) -->
+              <img
+                src="images/screenshot2.png"
+                alt="Tela do App"
+                class="w-32 md:w-52 rounded-[2rem] md:rounded-[2.5rem] border-4 border-gray-800 shadow-2xl transform -rotate-6 z-10 -mr-16 mt-8 hover:scale-105 transition duration-500"
+              />
+              <!-- Screenshot 5 (Fundo) -->
+              <img
+                src="images/screenshot5.png"
+                alt="Tela do App"
+                class="w-32 md:w-48 rounded-[1.5rem] md:rounded-[2rem] border-4 border-gray-800 shadow-2xl transform -rotate-6 z-10 -mr-16 mt-8 hover:scale-105 transition duration-500"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vídeo de Demonstração -->
+    <section class="bg-gray-900 py-20 text-white">
+      <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8 fade-in-up">
+          Veja como é fácil gerenciar
+        </h2>
+        <p
+          class="text-gray-400 mb-10 max-w-2xl mx-auto fade-in-up"
+          style="transition-delay: 100ms"
+        >
+          Confira em menos de 2 minutos como o FastDelivery organiza sua
+          operação.
+        </p>
+        <div
+          class="max-w-4xl mx-auto fade-in-up"
+          style="transition-delay: 200ms"
+        >
+          <div
+            class="relative pb-[56.25%] h-0 overflow-hidden rounded-xl shadow-2xl border border-gray-700"
+          >
+            <!-- Substitua o src pelo link do seu vídeo (YouTube/Vimeo) -->
+            <iframe
+              class="absolute top-0 left-0 w-full h-full"
+              src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+            <video
+              class="absolute top-0 left-0 w-full h-full object-cover"
+              autoplay
+              muted
+              loop
+              playsinline
+              controls
+            >
+              <source src="images/video.mp4" type="video/mp4" />
+              Seu navegador não suporta a tag de vídeo.
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section id="depoimentos" class="py-20 bg-white">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 fade-in-up">
+            Quem usa, recomenda ⭐
+          </h2>
+          <p
+            class="text-gray-600 mt-2 fade-in-up"
+            style="transition-delay: 100ms"
+          >
+            Junte-se a centenas de estabelecimentos que cresceram com o
+            FastDelivery.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Depoimento 1 -->
+          <div
+            class="bg-gray-50 p-8 rounded-xl shadow-sm border border-gray-100 fade-in-up"
+            style="transition-delay: 200ms"
+          >
+            <div class="flex items-center mb-4">
+              <img
+                src="https://randomuser.me/api/portraits/men/32.jpg"
+                alt="Cliente"
+                class="w-12 h-12 rounded-full mr-4 border-2 border-[#EA1D2C]"
+              />
+              <div>
+                <h5 class="font-bold text-gray-900">Carlos Silva</h5>
+                <p class="text-sm text-gray-500">Hamburgueria Top</p>
+              </div>
+            </div>
+            <p class="text-gray-600 italic">
+              "O sistema mudou a forma como organizamos os pedidos. Antes era
+              uma bagunça no WhatsApp, agora tudo flui perfeitamente. O suporte
+              é nota 10!"
+            </p>
+            <div class="text-yellow-400 mt-4 text-sm">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i
+              ><i class="fas fa-star"></i><i class="fas fa-star"></i
+              ><i class="fas fa-star"></i>
+            </div>
+          </div>
+
+          <!-- Depoimento 2 -->
+          <div
+            class="bg-gray-50 p-8 rounded-xl shadow-sm border border-gray-100 fade-in-up"
+            style="transition-delay: 300ms"
+          >
+            <div class="flex items-center mb-4">
+              <img
+                src="https://randomuser.me/api/portraits/women/44.jpg"
+                alt="Cliente"
+                class="w-12 h-12 rounded-full mr-4 border-2 border-[#EA1D2C]"
+              />
+              <div>
+                <h5 class="font-bold text-gray-900">Mariana Souza</h5>
+                <p class="text-sm text-gray-500">Pizzaria da Mari</p>
+              </div>
+            </div>
+            <p class="text-gray-600 italic">
+              "O melhor investimento que fiz. O app do cliente é lindo e meus
+              clientes adoraram não precisar baixar nada. As vendas aumentaram
+              30%."
+            </p>
+            <div class="text-yellow-400 mt-4 text-sm">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i
+              ><i class="fas fa-star"></i><i class="fas fa-star"></i
+              ><i class="fas fa-star"></i>
+            </div>
+          </div>
+
+          <!-- Depoimento 3 -->
+          <div
+            class="bg-gray-50 p-8 rounded-xl shadow-sm border border-gray-100 fade-in-up"
+            style="transition-delay: 400ms"
+          >
+            <div class="flex items-center mb-4">
+              <img
+                src="https://randomuser.me/api/portraits/men/85.jpg"
+                alt="Cliente"
+                class="w-12 h-12 rounded-full mr-4 border-2 border-[#EA1D2C]"
+              />
+              <div>
+                <h5 class="font-bold text-gray-900">Roberto Junior</h5>
+                <p class="text-sm text-gray-500">Açaí do Beto</p>
+              </div>
+            </div>
+            <p class="text-gray-600 italic">
+              "Simples, direto e funcional. O controle financeiro me ajudou a
+              ver onde eu estava gastando muito. Recomendo demais!"
+            </p>
+            <div class="text-yellow-400 mt-4 text-sm">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i
+              ><i class="fas fa-star"></i><i class="fas fa-star"></i
+              ><i class="fas fa-star"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção de Preço -->
+    <section id="preco" class="bg-white py-20">
+      <div class="container mx-auto px-6 text-center">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 fade-in-up"
+        >
+          Um preço justo, sem surpresas.
+        </h2>
+        <p
+          class="text-gray-600 mb-10 max-w-2xl mx-auto fade-in-up"
+          style="transition-delay: 100ms"
+        >
+          Cansado de pagar comissões abusivas? Com nosso sistema, você tem
+          controle total por um valor fixo.
+        </p>
+
+        <div
+          class="bg-gray-50 border-2 border-[#EA1D2C] rounded-2xl p-10 max-w-md mx-auto shadow-2xl transform hover:scale-105 transition duration-300 fade-in-up"
+          style="transition-delay: 200ms"
+        >
+          <h3 class="text-2xl font-bold text-gray-800">Plano Completo</h3>
+          <p class="text-gray-500 mt-2">
+            Todas as funcionalidades, sem limites.
+          </p>
+          <div class="my-8">
+            <span class="text-5xl font-extrabold text-gray-900">R$ 99</span>
+            <span class="text-gray-600 font-medium">/mês</span>
+          </div>
+          <ul class="space-y-3 text-gray-600 text-left">
+            <li class="flex items-center gap-3">
+              <i class="fas fa-check-circle text-green-500"></i> Pedidos
+              Ilimitados
+            </li>
+            <li class="flex items-center gap-3">
+              <i class="fas fa-check-circle text-green-500"></i> Sem comissão
+              sobre vendas
+            </li>
+            <li class="flex items-center gap-3">
+              <i class="fas fa-check-circle text-green-500"></i> Suporte via
+              WhatsApp
+            </li>
+            <li class="flex items-center gap-3">
+              <i class="fas fa-check-circle text-green-500"></i> Atualizações
+              Inclusas
+            </li>
+          </ul>
+          <a
+            href="#contato"
+            class="mt-10 block w-full bg-[#EA1D2C] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#c91b29] transition"
+          >
+            Contratar Agora
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seção de Preço -->
+    <section id="preco" class="bg-white py-20">
+      <div class="container mx-auto px-6 text-center">
+        <h2
+          class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 fade-in-up"
+        >
+          Um preço justo, sem surpresas.
+        </h2>
+        <p
+          class="text-gray-600 mb-10 max-w-2xl mx-auto fade-in-up"
+          style="transition-delay: 100ms"
+        >
+          Cansado de pagar comissões abusivas? Com nosso sistema, você tem
+          controle total por um valor fixo.
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-8">
+          <!-- Plano Mensal -->
+          <div
+            class="bg-gray-50 border border-gray-200 rounded-2xl p-8 w-full max-w-sm transform hover:scale-105 transition duration-300 fade-in-up"
+            style="transition-delay: 200ms"
+          >
+            <h3 class="text-2xl font-bold text-gray-800">Plano Mensal</h3>
+            <div class="my-6">
+              <span class="text-5xl font-extrabold text-gray-900">R$ 99</span>
+              <span class="text-gray-600 font-medium">/mês</span>
+            </div>
+            <ul class="space-y-3 text-gray-600 text-left mb-8">
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check-circle text-green-500"></i> Todas as
+                Funcionalidades
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check-circle text-green-500"></i> Suporte via
+                WhatsApp
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check-circle text-green-500"></i> Sem taxa de
+                cancelamento
+              </li>
+            </ul>
+            <a
+              href="#contato"
+              class="block w-full bg-[#EA1D2C] text-white px-8 py-3 rounded-full font-bold hover:bg-[#c91b29] transition"
+              >Contratar Agora</a
+            >
+          </div>
+
+          <!-- Plano Anual -->
+          <div
+            class="relative bg-gray-900 text-white border-2 border-[#EA1D2C] rounded-2xl p-8 w-full max-w-sm shadow-2xl transform hover:scale-105 transition duration-300 fade-in-up"
+            style="transition-delay: 300ms"
+          >
+            <div
+              class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2"
+            >
+              <span
+                class="bg-[#EA1D2C] text-white text-xs font-bold uppercase px-4 py-1 rounded-full"
+                >Mais Popular</span
+              >
+            </div>
+            <h3 class="text-2xl font-bold">Plano Anual</h3>
+            <p class="text-gray-400 mt-1">Economize 2 meses!</p>
+            <div class="my-6">
+              <span class="text-5xl font-extrabold">R$ 990</span>
+              <span class="text-gray-400 font-medium">/ano</span>
+            </div>
+            <ul class="space-y-3 text-gray-300 text-left mb-8">
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check-circle text-green-500"></i> Todas as
+                Funcionalidades
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check-circle text-green-500"></i> Suporte
+                Prioritário
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-check-circle text-green-500"></i>
+                <strong>12 meses pelo preço de 10</strong>
+              </li>
+            </ul>
+            <a
+              href="#contato"
+              class="block w-full bg-white text-[#EA1D2C] px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition"
+              >Quero o Desconto Anual</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="bg-gray-100 py-20">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 fade-in-up">
+            Perguntas Frequentes
+          </h2>
+          <p
+            class="text-gray-600 mt-2 fade-in-up"
+            style="transition-delay: 100ms"
+          >
+            Tirando suas principais dúvidas sobre o FastDelivery.
+          </p>
+        </div>
+
+        <div class="max-w-3xl mx-auto space-y-4">
+          <!-- FAQ Item 1 -->
+          <div
+            class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden fade-in-up"
+            style="transition-delay: 200ms"
+          >
+            <details class="group">
+              <summary
+                class="flex justify-between items-center font-semibold cursor-pointer list-none p-5 text-gray-800 hover:bg-gray-50"
+              >
+                <span>Como funcionam os pagamentos dos pedidos?</span>
+                <span class="transition group-open:rotate-180">
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+              </summary>
+              <div
+                class="text-gray-600 border-t border-gray-100 p-5 bg-gray-50/50"
+              >
+                <p>
+                  Nossa plataforma <strong>não intermedia pagamentos</strong>. O
+                  pedido chega para você no painel e no WhatsApp, e você
+                  finaliza o pagamento diretamente com o cliente usando seus
+                  próprios meios, como maquininha de cartão, link de pagamento
+                  ou a sua chave Pix. O dinheiro vai direto para sua conta, sem
+                  passar por nós.
+                </p>
+              </div>
+            </details>
+          </div>
+
+          <!-- FAQ Item 2 -->
+          <div
+            class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden fade-in-up"
+            style="transition-delay: 300ms"
+          >
+            <details class="group">
+              <summary
+                class="flex justify-between items-center font-semibold cursor-pointer list-none p-5 text-gray-800 hover:bg-gray-50"
+              >
+                <span>Preciso pagar comissão sobre as vendas?</span>
+                <span class="transition group-open:rotate-180">
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+              </summary>
+              <div
+                class="text-gray-600 border-t border-gray-100 p-5 bg-gray-50/50"
+              >
+                <p>
+                  <strong>Não!</strong> Diferente de outros marketplaces, nosso
+                  sistema funciona com uma mensalidade fixa. Todo o faturamento
+                  da sua loja é 100% seu, sem nenhuma taxa ou comissão sobre os
+                  pedidos.
+                </p>
+              </div>
+            </details>
+          </div>
+
+          <!-- FAQ Item 3 -->
+          <div
+            class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden fade-in-up"
+            style="transition-delay: 400ms"
+          >
+            <details class="group">
+              <summary
+                class="flex justify-between items-center font-semibold cursor-pointer list-none p-5 text-gray-800 hover:bg-gray-50"
+              >
+                <span>Como meus clientes acessam o aplicativo?</span>
+                <span class="transition group-open:rotate-180">
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+              </summary>
+              <div
+                class="text-gray-600 border-t border-gray-100 p-5 bg-gray-50/50"
+              >
+                <p>
+                  Seu cliente acessa através de um link exclusivo (ex:
+                  <em>seunome.com.br</em>). O sistema é um Aplicativo Web
+                  Progressivo (PWA), o que significa que ele pode adicionar um
+                  ícone à tela inicial do celular, funcionando como um app
+                  nativo, mas sem precisar baixar de uma loja de aplicativos.
+                </p>
+              </div>
+            </details>
+          </div>
+
+          <!-- FAQ Item 4 -->
+          <div
+            class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden fade-in-up"
+            style="transition-delay: 500ms"
+          >
+            <details class="group">
+              <summary
+                class="flex justify-between items-center font-semibold cursor-pointer list-none p-5 text-gray-800 hover:bg-gray-50"
+              >
+                <span>O que preciso ter para o sistema funcionar?</span>
+                <span class="transition group-open:rotate-180">
+                  <i class="fas fa-chevron-down"></i>
+                </span>
+              </summary>
+              <div
+                class="text-gray-600 border-t border-gray-100 p-5 bg-gray-50/50"
+              >
+                <p>
+                  O valor da assinatura refere-se à licença de uso do software.
+                  <strong
+                    >O cliente (lojista) é responsável por contratar e manter um
+                    serviço de hospedagem e um domínio (ex:
+                    www.sualoja.com.br)</strong
+                  >. Nós realizamos toda a instalação e configuração do sistema
+                  na sua hospedagem, entregando tudo pronto para usar.
+                </p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contato -->
+    <section id="contato" class="py-20">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
+            Vamos conversar?
+          </h2>
+          <p class="text-gray-600 mt-2">
+            Envie uma mensagem ou chame no WhatsApp. Estamos prontos para
+            ajudar!
+          </p>
+        </div>
+
+        <div
+          class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-100"
+        >
+          <!-- Formulário -->
+          <div class="fade-in-up">
+            <h3 class="text-xl font-bold mb-4">Envie sua mensagem</h3>
+            <form
+              onsubmit="event.preventDefault(); enviarContatoPeloWhatsApp();"
+            >
+              <div class="mb-4">
+                <label
+                  for="name"
+                  class="block text-sm font-medium text-gray-700"
+                  >Seu Nome</label
+                >
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#EA1D2C] focus:border-[#EA1D2C]"
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="email"
+                  class="block text-sm font-medium text-gray-700"
+                  >Seu E-mail</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#EA1D2C] focus:border-[#EA1D2C]"
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="phone"
+                  class="block text-sm font-medium text-gray-700"
+                  >Seu Telefone</label
+                >
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#EA1D2C] focus:border-[#EA1D2C]"
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="message"
+                  class="block text-sm font-medium text-gray-700"
+                  >Mensagem</label
+                >
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="4"
+                  required
+                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#EA1D2C] focus:border-[#EA1D2C]"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                class="w-full bg-[#EA1D2C] text-white px-6 py-3 rounded-lg font-bold hover:bg-[#c91b29] transition"
+              >
+                Enviar Contato
+              </button>
+            </form>
+          </div>
+
+          <!-- Informações de Contato -->
+          <div class="fade-in-up" style="transition-delay: 150ms">
+            <h3 class="text-xl font-bold mb-4">Ou fale conosco diretamente</h3>
+            <div class="space-y-6">
+              <a
+                href="https://wa.me/5521983856779?text=Ol%C3%A1%21+Gostaria+de+saber+mais+sobre+o+sistema+FastDelivery."
+                target="_blank"
+                class="flex items-center p-4 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 transition"
+              >
+                <i class="fab fa-whatsapp text-3xl text-green-500"></i>
+                <div class="ml-4">
+                  <p class="font-bold text-gray-800">WhatsApp</p>
+                  <p class="text-gray-600">(21) 98385-6779</p>
+                </div>
+              </a>
+              <a
+                href="mailto:lucianosantoseverino@gmail.com"
+                class="flex items-center p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition"
+              >
+                <i class="fas fa-envelope text-3xl text-blue-500"></i>
+                <div class="ml-4">
+                  <p class="font-bold text-gray-800">E-mail</p>
+                  <p class="text-gray-600">lucianosantoseverino@gmail.com</p>
+                </div>
+              </a>
+            </div>
+            <div class="mt-8 text-sm text-gray-500">
+              <p class="font-semibold">Horário de Atendimento:</p>
+              <p>Segunda a Sexta, das 9h às 18h.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white text-gray-700 pt-10 pb-5 border-t">
+      <div class="container mx-auto px-6 text-center md:text-left">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="mx-auto md:mx-0">
+            <a
+              href="#"
+              class="text-2xl font-bold text-[#EA1D2C] flex items-center gap-2 mb-2 justify-center md:justify-start"
+            >
+              <i class="fas fa-shipping-fast"></i> FastDelivery
+            </a>
+            <p class="text-gray-500 text-sm">
+              A solução completa para o seu negócio decolar.
+            </p>
+          </div>
+
+          <div>
+            <h6 class="text-uppercase font-bold mb-3">Navegação</h6>
+            <p class="mb-2">
+              <a href="#funcionalidades" class="text-gray-600 hover:underline"
+                >Funcionalidades</a
+              >
+            </p>
+            <p class="mb-2">
+              <a href="#preco" class="text-gray-600 hover:underline">Preço</a>
+            </p>
+            <p class="mb-2">
+              <a href="#faq" class="text-gray-600 hover:underline">Dúvidas</a>
+            </p>
+            <p class="mb-2">
+              <a href="#contato" class="text-gray-600 hover:underline"
+                >Contato</a
+              >
+            </p>
+          </div>
+
+          <div>
+            <h6 class="text-uppercase font-bold mb-3">Jurídico</h6>
+            <p class="mb-2">
+              <a href="termos.html" class="text-gray-600 hover:underline"
+                >Termos de Uso</a
+              >
+            </p>
+            <p class="mb-2">
+              <a href="politica.html" class="text-gray-600 hover:underline"
+                >Política de Privacidade</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center p-4 mt-8 border-t border-gray-100">
+        <p class="text-sm text-gray-500">
+          ©
+          <span>2024</span>
+          Copyright:
+          <a class="font-semibold" href="#">FastDelivery</a>
+          | Desenvolvido por
+          <strong>
+            <a
+              href="https://lucianodevfrontend.netlify.app/"
+              target="_blank"
+              class="text-gray-700 hover:underline"
+              >@santoscodes</a
+            >
+          </strong>
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            threshold: 0.1,
+          }
+        );
+
+        const elementsToAnimate = document.querySelectorAll(".fade-in-up");
+        elementsToAnimate.forEach((element) => {
+          observer.observe(element);
+        });
+
+        // Atualiza o ano no rodapé
+        const yearSpan = document.querySelector("footer p span");
+        if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+      });
+
+      function enviarContatoPeloWhatsApp() {
+        const nome = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const telefone = document.getElementById("phone").value;
+        const mensagem = document.getElementById("message").value;
+
+        if (!nome || !mensagem) {
+          alert("Por favor, preencha seu nome e a mensagem.");
+          return;
+        }
+
+        const numeroWhatsApp = "5521983856779"; // Seu número
+        const textoFormatado = `Olá! Tenho interesse no sistema FastDelivery.\n\n*Nome:* ${nome}\n*E-mail:* ${email}\n*Telefone:* ${telefone}\n\n*Mensagem:*\n${mensagem}`;
+        const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(
+          textoFormatado
+        )}`;
+
+        window.open(urlWhatsApp, "_blank");
+      }
+    </script>
+  </body>
+</html>

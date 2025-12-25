@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard de Licenças</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <div
+      id="loader"
+      class="fixed inset-0 bg-white flex items-center justify-center z-50"
+    >
+      <p>Carregando...</p>
+    </div>
+
+    <div id="app" class="hidden">
+      <header class="bg-white shadow-sm">
+        <div
+          class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center"
+        >
+          <h1 class="text-xl font-bold text-gray-900">
+            Gerenciador de Licenças
+          </h1>
+          <button
+            id="logout-button"
+            class="text-sm text-red-600 hover:underline"
+          >
+            Sair
+          </button>
+        </div>
+      </header>
+
+      <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Estatísticas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div class="bg-white p-6 rounded-lg shadow">
+            <h2 class="text-lg font-semibold mb-4">Crescimento de Clientes</h2>
+            <canvas id="chartClientes"></canvas>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow">
+            <h2 class="text-lg font-semibold mb-4">Faturamento Estimado</h2>
+            <canvas id="chartFaturamento"></canvas>
+          </div>
+        </div>
+
+        <!-- Gerenciamento de Licenças -->
+        <div class="bg-white p-6 rounded-lg shadow mb-8">
+          <h2 class="text-lg font-semibold mb-4">Adicionar Nova Licença</h2>
+          <form
+            id="add-license-form"
+            class="grid grid-cols-1 md:grid-cols-3 gap-4"
+          >
+            <input
+              type="text"
+              id="store-name"
+              placeholder="Nome da Loja"
+              required
+              class="p-2 border rounded"
+            />
+            <input
+              type="text"
+              id="store-url"
+              placeholder="URL da Loja (https://...)"
+              required
+              class="p-2 border rounded"
+            />
+            <input
+              type="text"
+              id="client-contact"
+              placeholder="Contato do Cliente"
+              required
+              class="p-2 border rounded"
+            />
+            <select id="plan-type" class="p-2 border rounded bg-white">
+              <option value="mensal">Plano Mensal</option>
+              <option value="anual">Plano Anual</option>
+            </select>
+            <input
+              type="date"
+              id="expires-at"
+              required
+              class="p-2 border rounded"
+            />
+            <button
+              type="submit"
+              class="md:col-span-3 bg-red-600 text-white py-2 rounded hover:bg-red-700"
+            >
+              Gerar Licença
+            </button>
+          </form>
+          <div
+            id="generated-key"
+            class="mt-4 bg-green-100 text-green-800 p-3 rounded hidden text-center font-mono"
+          ></div>
+        </div>
+
+        <!-- Lista de Licenças -->
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Loja / URL
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Chave
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Plano
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Expira em
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
+                  Ações
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              id="licenses-table"
+              class="bg-white divide-y divide-gray-200"
+            >
+              <!-- Linhas serão inseridas via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Sistema de Suporte (Admin View) -->
+        <div class="mt-12">
+          <h2 class="text-2xl font-bold text-gray-900 mb-6">
+            Tickets de Suporte
+          </h2>
+          <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div id="tickets-container" class="divide-y divide-gray-200">
+              <!-- Tickets serão carregados aqui -->
+              <p class="p-6 text-gray-500 text-center">Carregando tickets...</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal de Resposta -->
+    <div
+      id="reply-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div
+        class="bg-white rounded-lg w-full max-w-2xl mx-4 flex flex-col max-h-[80vh]"
+      >
+        <div class="p-4 border-b flex justify-between items-center">
+          <h3 class="font-bold text-lg" id="modal-ticket-title">
+            Responder Ticket
+          </h3>
+          <button
+            onclick="closeReplyModal()"
+            class="text-gray-500 hover:text-gray-700"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div
+          id="modal-messages"
+          class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50"
+        >
+          <!-- Mensagens -->
+        </div>
+        <form id="reply-form" class="p-4 border-t bg-white">
+          <input type="hidden" id="modal-ticket-id" />
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="reply-input"
+              class="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Digite sua resposta..."
+              required
+            />
+            <button
+              type="submit"
+              class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-medium"
+            >
+              Enviar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        getDocs,
+        serverTimestamp,
+        deleteDoc,
+        doc,
+        query,
+        orderBy,
+        updateDoc,
+        arrayUnion,
+        onSnapshot,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBJspCFmB7IQQdLdxLYQrZZ-TFAiDPXrXk",
+        authDomain: "fastdelivery-46457.firebaseapp.com",
+        projectId: "fastdelivery-46457",
+        storageBucket: "fastdelivery-46457.appspot.com",
+        messagingSenderId: "889884008498",
+        appId: "1:889884008498:web:418e00c16326df6d4e1c2b",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const adminUID = "DGfO0ZsoU0W7CXbDdbYPRSmweKx2";
+
+      // Variáveis globais para gráficos
+      let chartClientesInstance = null;
+      let chartFaturamentoInstance = null;
+
+      // Função global para copiar
+      window.copiarChave = (texto) => {
+        navigator.clipboard.writeText(texto).then(() => {
+          alert("Chave copiada!");
+        });
+      };
+
+      // Funções do Modal de Resposta
+      window.closeReplyModal = () => {
+        document.getElementById("reply-modal").classList.add("hidden");
+        document.getElementById("reply-modal").classList.remove("flex");
+      };
+
+      window.openReplyModal = (ticketId, subject, messages) => {
+        document.getElementById("modal-ticket-id").value = ticketId;
+        document.getElementById("modal-ticket-title").textContent = subject;
+
+        const msgContainer = document.getElementById("modal-messages");
+        msgContainer.innerHTML = "";
+
+        messages.forEach((msg) => {
+          const isSupport = msg.sender === "support";
+          const div = document.createElement("div");
+          div.className = `flex ${isSupport ? "justify-end" : "justify-start"}`;
+          div.innerHTML = `
+                  <div class="max-w-[80%] rounded-lg p-3 ${
+                    isSupport
+                      ? "bg-blue-100 text-blue-900"
+                      : "bg-white border text-gray-800"
+                  }">
+                      <p class="text-xs font-bold mb-1">${
+                        isSupport ? "Suporte" : "Lojista"
+                      }</p>
+                      <p>${msg.text}</p>
+                      <p class="text-[10px] opacity-70 mt-1 text-right">${new Date(
+                        msg.timestamp?.toDate()
+                      ).toLocaleString()}</p>
+                  </div> 
+              `;
+          msgContainer.appendChild(div);
+        });
+
+        // Scroll para o final
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+
+        const modal = document.getElementById("reply-modal");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      };
+
+      // Proteção de Rota
+      onAuthStateChanged(auth, (user) => {
+        if (user && user.uid === adminUID) {
+          document.getElementById("loader").classList.add("hidden");
+          document.getElementById("app").classList.remove("hidden");
+          loadLicenses();
+          loadTickets();
+        } else {
+          window.location.href = "login.html";
+        }
+      });
+
+      // Logout
+      document.getElementById("logout-button").addEventListener("click", () => {
+        signOut(auth).then(() => (window.location.href = "login.html"));
+      });
+
+      // Enviar Resposta
+      document
+        .getElementById("reply-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const ticketId = document.getElementById("modal-ticket-id").value;
+          const text = document.getElementById("reply-input").value;
+
+          if (!text.trim()) return;
+
+          const message = {
+            sender: "support",
+            text: text,
+            timestamp: new Date(),
+          };
+
+          await updateDoc(doc(db, "tickets", ticketId), {
+            messages: arrayUnion(message),
+            status: "answered",
+            updatedAt: serverTimestamp(),
+            // Não fechar automaticamente, deixar o admin decidir
+          });
+
+          document.getElementById("reply-input").value = "";
+          closeReplyModal();
+        });
+
+      // Adicionar Licença
+      document
+        .getElementById("add-license-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const key = `FAST-${Math.random()
+            .toString(36)
+            .substr(2, 4)
+            .toUpperCase()}-${Math.random()
+            .toString(36)
+            .substr(2, 4)
+            .toUpperCase()}-${Math.random()
+            .toString(36)
+            .substr(2, 4)
+            .toUpperCase()}`;
+
+          const licenseData = {
+            storeName: document.getElementById("store-name").value,
+            storeUrl: document.getElementById("store-url").value,
+            clientContact: document.getElementById("client-contact").value,
+            planType: document.getElementById("plan-type").value,
+            expiresAt: new Date(
+              document.getElementById("expires-at").value + "T23:59:59"
+            ),
+            createdAt: serverTimestamp(),
+            key: key,
+          };
+
+          await addDoc(collection(db, "licenses"), licenseData);
+
+          const keyContainer = document.getElementById("generated-key");
+          keyContainer.innerHTML = `
+            <div class="flex flex-col items-center gap-2">
+                <span>Chave Gerada:</span>
+                <div class="flex items-center gap-2 bg-white px-3 py-1 rounded border border-green-300">
+                    <strong class="text-lg select-all">${key}</strong>
+                    <button onclick="window.copiarChave('${key}')" class="text-gray-500 hover:text-green-700 transition" title="Copiar">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+          `;
+          keyContainer.classList.remove("hidden");
+
+          e.target.reset();
+          loadLicenses();
+        });
+
+      // Carregar Licenças
+      async function loadLicenses() {
+        const querySnapshot = await getDocs(collection(db, "licenses"));
+        const tableBody = document.getElementById("licenses-table");
+        tableBody.innerHTML = "";
+
+        const stats = {}; // { "2023-10": { clientes: 0, faturamento: 0 } }
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const expiresDate = data.expiresAt
+            .toDate()
+            .toLocaleDateString("pt-BR");
+          const isExpired = data.expiresAt.toDate() < new Date();
+
+          // Processar Estatísticas
+          if (data.createdAt) {
+            const date = data.createdAt.toDate();
+            const key = `${date.getFullYear()}-${String(
+              date.getMonth() + 1
+            ).padStart(2, "0")}`;
+
+            if (!stats[key]) stats[key] = { clientes: 0, faturamento: 0 };
+
+            stats[key].clientes++;
+            const valor = data.planType === "anual" ? 990 : 99;
+            stats[key].faturamento += valor;
+          }
+
+          const row = `
+                    <tr class="${isExpired ? "bg-red-50" : ""}">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">${
+                              data.storeName
+                            }</div>
+                            <div class="text-sm text-gray-500">${
+                              data.storeUrl
+                            }</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono" id="license-key-${
+                          doc.id
+                        }">
+                          ${data.key} <button onclick="window.copiarChave('${
+            data.key
+          }')" class="ml-2 text-blue-500 hover:text-blue-700" title="Copiar"><i class="fas fa-copy"></i></button></td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
+                          data.planType
+                        }</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm ${
+                          isExpired ? "text-red-600 font-bold" : "text-gray-500"
+                        }">${expiresDate}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button data-id="${
+                              doc.id
+                            }" class="delete-btn text-red-600 hover:text-red-900" title="Excluir Licença"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+          tableBody.innerHTML += row;
+        });
+
+        renderCharts(stats);
+
+        // Adicionar event listeners para os botões de exclusão
+        document.querySelectorAll(".delete-btn").forEach((button) => {
+          button.addEventListener("click", async (e) => {
+            const id = e.target.getAttribute("data-id");
+            if (confirm("Tem certeza que deseja excluir esta licença?")) {
+              await deleteDoc(doc(db, "licenses", id));
+              loadLicenses();
+            }
+          });
+        });
+      }
+
+      function renderCharts(stats) {
+        const sortedKeys = Object.keys(stats).sort();
+        const labels = sortedKeys.map((monthYear) => {
+          const [year, month] = monthYear.split("-");
+          const monthNames = [
+            "Jan",
+            "Fev",
+            "Mar",
+            "Abr",
+            "Mai",
+            "Jun",
+            "Jul",
+            "Ago",
+            "Set",
+            "Out",
+            "Nov",
+            "Dez",
+          ];
+          return `${monthNames[parseInt(month) - 1]}/${year.slice(2)}`;
+        });
+        const dataClientes = sortedKeys.map((k) => stats[k].clientes);
+        const dataFaturamento = sortedKeys.map((k) => stats[k].faturamento);
+
+        // Gráfico Clientes
+        if (chartClientesInstance) chartClientesInstance.destroy();
+        chartClientesInstance = new Chart(
+          document.getElementById("chartClientes"),
+          {
+            type: "line",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: "Novas Licenças",
+                  data: dataClientes,
+                  borderColor: "#2563eb",
+                  tension: 0.3,
+                  fill: true,
+                  backgroundColor: "rgba(37, 99, 235, 0.2)",
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      return `Novas Licenças: ${context.parsed.y}`;
+                    },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: "Quantidade",
+                  },
+                },
+              },
+            },
+          }
+        );
+
+        // Gráfico Faturamento
+        if (chartFaturamentoInstance) chartFaturamentoInstance.destroy();
+        chartFaturamentoInstance = new Chart(
+          document.getElementById("chartFaturamento"),
+          {
+            type: "bar",
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: "Faturamento Estimado (R$)",
+                  data: dataFaturamento,
+                  backgroundColor: "#16a34a",
+                  borderColor: "#15803d",
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                tooltip: {
+                  callbacks: {
+                    label: function (context) {
+                      return `Faturamento: R$ ${context.parsed.y
+                        .toFixed(2)
+                        .replace(".", ",")}`;
+                    },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: "Valor (R$)",
+                  },
+                  ticks: {
+                    callback: function (value) {
+                      return "R$ " + value.toFixed(2).replace(".", ",");
+                    },
+                  },
+                },
+              },
+            },
+          }
+        );
+      }
+
+      // Carregar Tickets (Realtime)
+      function loadTickets() {
+        const q = query(
+          collection(db, "tickets"),
+          orderBy("updatedAt", "desc")
+        );
+        onSnapshot(q, (snapshot) => {
+          const container = document.getElementById("tickets-container");
+          container.innerHTML = "";
+
+          if (snapshot.empty) {
+            container.innerHTML =
+              '<p class="p-6 text-gray-500 text-center">Nenhum ticket de suporte encontrado.</p>';
+            return;
+          }
+
+          snapshot.forEach((doc) => {
+            const t = doc.data();
+            const lastMsg = t.messages[t.messages.length - 1];
+            const statusColors = {
+              open: "bg-yellow-100 text-yellow-800",
+              answered: "bg-green-100 text-green-800",
+              closed: "bg-gray-100 text-gray-800",
+            };
+            const statusLabels = {
+              open: "Aberto",
+              answered: "Respondido",
+              closed: "Fechado",
+            };
+
+            const div = document.createElement("div");
+            div.className = "p-6 hover:bg-gray-50 transition cursor-pointer";
+            div.innerHTML = `
+                      <div class="flex justify-between items-start">
+                          <div>
+                              <div class="flex items-center gap-2 mb-1">
+                                  <span class="px-2 py-0.5 rounded text-xs font-bold ${
+                                    statusColors[t.status] || "bg-gray-100"
+                                  }">${
+              statusLabels[t.status] || t.status
+            }</span>
+                                  <h3 class="text-lg font-medium text-gray-900">${
+                                    t.subject
+                                  }</h3>
+                              </div>
+                              <p class="text-sm text-gray-500">Loja: <strong>${
+                                t.storeName
+                              }</strong></p>
+                              <p class="text-sm text-gray-600 mt-2 line-clamp-1 text-ellipsis overflow-hidden">
+                                  ${
+                                    lastMsg
+                                      ? lastMsg.text
+                                      : "Nenhuma mensagem ainda."
+                                  }
+                              </p>
+                              <button onclick="markTicketAsClosed('${
+                                doc.id
+                              }')" class="mt-2 text-xs text-gray-500 hover:text-gray-700"><i class="fas fa-check-circle"></i> Marcar como Resolvido</button>
+                          </div>
+                          <div class="text-right text-xs text-gray-400">
+                              ${
+                                t.updatedAt
+                                  ? new Date(
+                                      t.updatedAt.toDate()
+                                    ).toLocaleDateString()
+                                  : ""
+                              }
+                          </div>
+                      </div>
+                  `;
+            div.onclick = () => openReplyModal(doc.id, t.subject, t.messages);
+            container.appendChild(div);
+          });
+        });
+      }
+
+      // Marcar Ticket como Resolvido
+      async function markTicketAsClosed(ticketId) {
+        if (
+          confirm("Tem certeza que deseja marcar este ticket como RESOLVIDO?")
+        ) {
+          await updateDoc(doc(db, "tickets", ticketId), {
+            status: "closed",
+            updatedAt: serverTimestamp(),
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

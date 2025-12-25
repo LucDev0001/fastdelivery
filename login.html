@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin de Licenças</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <script>
+      window.tailwind.config = { corePlugins: { preflight: false } };
+    </script>
+  </head>
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">
+        Login - Admin de Licenças
+      </h2>
+      <div
+        id="error-message"
+        class="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm hidden"
+      ></div>
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label for="email" class="block text-sm font-medium text-gray-700"
+            >E-mail</label
+          >
+          <input
+            type="email"
+            id="email"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500"
+          />
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700"
+            >Senha</label
+          >
+          <input
+            type="password"
+            id="password"
+            required
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500"
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition"
+        >
+          Entrar
+        </button>
+      </form>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBJspCFmB7IQQdLdxLYQrZZ-TFAiDPXrXk",
+        authDomain: "fastdelivery-46457.firebaseapp.com",
+        projectId: "fastdelivery-46457",
+        storageBucket: "fastdelivery-46457.appspot.com",
+        messagingSenderId: "889884008498",
+        appId: "1:889884008498:web:418e00c16326df6d4e1c2b",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      document.getElementById("login-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const errorDiv = document.getElementById("error-message");
+
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            window.location.href = "dashboard.html";
+          })
+          .catch((error) => {
+            console.error("Erro Firebase:", error);
+            let msg = "Erro ao fazer login.";
+            if (error.code === "auth/operation-not-allowed") {
+              msg =
+                "O login por E-mail/Senha não está ativado no Firebase Console.";
+            } else if (
+              error.code === "auth/user-not-found" ||
+              error.code === "auth/wrong-password"
+            ) {
+              msg = "E-mail ou senha incorretos.";
+            } else {
+              msg = error.message;
+            }
+            errorDiv.textContent = msg;
+            errorDiv.classList.remove("hidden");
+          });
+      });
+    </script>
+  </body>
+</html>
