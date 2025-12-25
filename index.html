@@ -8,14 +8,84 @@
       name="description"
       content="Gerencie pedidos, cardápio, entregadores e finanças com um sistema de delivery completo, moderno e sem comissões."
     />
+    <meta
+      name="keywords"
+      content="sistema delivery, gestão de restaurante, cardápio digital, app de delivery, sistema para pizzaria, sistema para hamburgueria"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="FastDelivery" />
+    <link rel="canonical" href="https://fastdeliverysistema.netlify.app/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://fastdeliverysistema.netlify.app/"
+    />
+    <meta
+      property="og:title"
+      content="FastDelivery - O Sistema Completo para o seu Restaurante"
+    />
+    <meta
+      property="og:description"
+      content="Gerencie pedidos, cardápio, entregadores e finanças com um sistema de delivery completo, moderno e sem comissões."
+    />
+    <meta
+      property="og:image"
+      content="https://fastdeliverysistema.netlify.app/images/og-image.jpg"
+    />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta
+      property="twitter:url"
+      content="https://fastdeliverysistema.netlify.app/"
+    />
+    <meta
+      property="twitter:title"
+      content="FastDelivery - O Sistema Completo para o seu Restaurante"
+    />
+    <meta
+      property="twitter:description"
+      content="Gerencie pedidos, cardápio, entregadores e finanças com um sistema de delivery completo, moderno e sem comissões."
+    />
+    <meta
+      property="twitter:image"
+      content="https://fastdeliverysistema.netlify.app/images/og-image.jpg"
+    />
+
+    <!-- Preconnect para performance de fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
       rel="stylesheet"
     />
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap");
 
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "FastDelivery",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": {
+          "@type": "Offer",
+          "price": "99.00",
+          "priceCurrency": "BRL"
+        },
+        "description": "Sistema de gestão completo para delivery, restaurantes e lanchonetes."
+      }
+    </script>
+
+    <style>
       body {
         font-family: "Inter", sans-serif;
       }
@@ -435,62 +505,6 @@
               ><i class="fas fa-star"></i>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Seção de Preço -->
-    <section id="preco" class="bg-white py-20">
-      <div class="container mx-auto px-6 text-center">
-        <h2
-          class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 fade-in-up"
-        >
-          Um preço justo, sem surpresas.
-        </h2>
-        <p
-          class="text-gray-600 mb-10 max-w-2xl mx-auto fade-in-up"
-          style="transition-delay: 100ms"
-        >
-          Cansado de pagar comissões abusivas? Com nosso sistema, você tem
-          controle total por um valor fixo.
-        </p>
-
-        <div
-          class="bg-gray-50 border-2 border-[#EA1D2C] rounded-2xl p-10 max-w-md mx-auto shadow-2xl transform hover:scale-105 transition duration-300 fade-in-up"
-          style="transition-delay: 200ms"
-        >
-          <h3 class="text-2xl font-bold text-gray-800">Plano Completo</h3>
-          <p class="text-gray-500 mt-2">
-            Todas as funcionalidades, sem limites.
-          </p>
-          <div class="my-8">
-            <span class="text-5xl font-extrabold text-gray-900">R$ 99</span>
-            <span class="text-gray-600 font-medium">/mês</span>
-          </div>
-          <ul class="space-y-3 text-gray-600 text-left">
-            <li class="flex items-center gap-3">
-              <i class="fas fa-check-circle text-green-500"></i> Pedidos
-              Ilimitados
-            </li>
-            <li class="flex items-center gap-3">
-              <i class="fas fa-check-circle text-green-500"></i> Sem comissão
-              sobre vendas
-            </li>
-            <li class="flex items-center gap-3">
-              <i class="fas fa-check-circle text-green-500"></i> Suporte via
-              WhatsApp
-            </li>
-            <li class="flex items-center gap-3">
-              <i class="fas fa-check-circle text-green-500"></i> Atualizações
-              Inclusas
-            </li>
-          </ul>
-          <a
-            href="#contato"
-            class="mt-10 block w-full bg-[#EA1D2C] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#c91b29] transition"
-          >
-            Contratar Agora
-          </a>
         </div>
       </div>
     </section>
@@ -956,6 +970,25 @@
 
         window.open(urlWhatsApp, "_blank");
       }
+    </script>
+
+    <!-- Firebase Analytics -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBJspCFmB7IQQdLdxLYQrZZ-TFAiDPXrXk",
+        authDomain: "fastdelivery-46457.firebaseapp.com",
+        projectId: "fastdelivery-46457",
+        storageBucket: "fastdelivery-46457.appspot.com",
+        messagingSenderId: "889884008498",
+        appId: "1:889884008498:web:418e00c16326df6d4e1c2b",
+        // measurementId: "G-XXXXXXXXXX" // Adicione seu ID de medição do GA4 aqui se disponível no console
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
     </script>
   </body>
 </html>
