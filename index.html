@@ -113,8 +113,13 @@
       }
 
       @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-15px); }
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-15px);
+        }
       }
       .animate-float {
         animation: float 6s ease-in-out infinite;
@@ -354,7 +359,7 @@
               </div>
 
               <!-- Screenshot 3 (Centro) -->
-              <div class="animate-float z-20" style="animation-delay: 1s;">
+              <div class="animate-float z-20" style="animation-delay: 1s">
                 <img
                   src="images/screenshot3.png"
                   alt="Tela do App"
@@ -363,7 +368,10 @@
               </div>
 
               <!-- Screenshot 2 (Direita) -->
-              <div class="animate-float z-10 -ml-12" style="animation-delay: 2s;">
+              <div
+                class="animate-float z-10 -ml-12"
+                style="animation-delay: 2s"
+              >
                 <img
                   src="images/screenshot2.png"
                   alt="Tela do App"
@@ -987,14 +995,6 @@
         storageBucket: "fastdelivery-46457.appspot.com",
         messagingSenderId: "889884008498",
         appId: "1:889884008498:web:418e00c16326df6d4e1c2b",
-        // measurementId: "G-XXXXXXXXXX" // Adicione seu ID de medição do GA4 aqui se disponível no console
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-    </script>
-  </body>
-</html>
         // measurementId: "G-XXXXXXXXXX" // Adicione seu ID de medição do GA4 aqui se disponível no console
       };
 
