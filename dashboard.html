@@ -102,6 +102,24 @@
 
         <!-- Lista de Licenças -->
         <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+          <div
+            class="p-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center flex-wrap gap-4"
+          >
+            <h3 class="text-lg font-medium text-gray-900">Licenças Ativas</h3>
+            <div class="relative">
+              <span
+                class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"
+              >
+                <i class="fas fa-search"></i>
+              </span>
+              <input
+                type="text"
+                id="search-license"
+                placeholder="Buscar loja ou cliente..."
+                class="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-red-500 focus:border-red-500 text-sm w-64"
+              />
+            </div>
+          </div>
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
               <tr>
@@ -154,6 +172,80 @@
           </div>
         </div>
       </main>
+    </div>
+
+    <!-- Modal de Edição de Licença -->
+    <div
+      id="edit-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50"
+    >
+      <div class="bg-white rounded-lg w-full max-w-md mx-4 p-6 shadow-xl">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-bold text-gray-900">Editar Licença</h3>
+          <button
+            onclick="closeEditModal()"
+            class="text-gray-400 hover:text-gray-600"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <form id="edit-form" class="space-y-4">
+          <input type="hidden" id="edit-id" />
+          <div>
+            <label class="block text-sm font-medium text-gray-700"
+              >Nome da Loja</label
+            >
+            <input
+              type="text"
+              id="edit-store-name"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">URL</label>
+            <input
+              type="text"
+              id="edit-store-url"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700"
+              >Contato</label
+            >
+            <input
+              type="text"
+              id="edit-client-contact"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700"
+              >Vencimento</label
+            >
+            <input
+              type="date"
+              id="edit-expires-at"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500"
+            />
+          </div>
+          <div class="flex justify-end gap-3 mt-6">
+            <button
+              type="button"
+              onclick="closeEditModal()"
+              class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Salvar Alterações
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- Modal de Resposta -->
@@ -241,6 +333,7 @@
       // Variáveis globais para gráficos
       let chartClientesInstance = null;
       let chartFaturamentoInstance = null;
+      let allLicensesData = []; // Cache local para busca
 
       // Função global para copiar
       window.copiarChave = (texto) => {
@@ -253,6 +346,11 @@
       window.closeReplyModal = () => {
         document.getElementById("reply-modal").classList.add("hidden");
         document.getElementById("reply-modal").classList.remove("flex");
+      };
+
+      window.closeEditModal = () => {
+        document.getElementById("edit-modal").classList.add("hidden");
+        document.getElementById("edit-modal").classList.remove("flex");
       };
 
       window.openReplyModal = (ticketId, subject, messages) => {
@@ -384,20 +482,29 @@
           loadLicenses();
         });
 
+      // Listener de Busca
+      document
+        .getElementById("search-license")
+        .addEventListener("input", (e) => {
+          const term = e.target.value.toLowerCase();
+          const filtered = allLicensesData.filter(
+            (l) =>
+              l.storeName.toLowerCase().includes(term) ||
+              l.clientContact.toLowerCase().includes(term) ||
+              l.storeUrl.toLowerCase().includes(term)
+          );
+          renderLicensesTable(filtered);
+        });
+
       // Carregar Licenças
       async function loadLicenses() {
         const querySnapshot = await getDocs(collection(db, "licenses"));
-        const tableBody = document.getElementById("licenses-table");
-        tableBody.innerHTML = "";
-
+        allLicensesData = [];
         const stats = {}; // { "2023-10": { clientes: 0, faturamento: 0 } }
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const expiresDate = data.expiresAt
-            .toDate()
-            .toLocaleDateString("pt-BR");
-          const isExpired = data.expiresAt.toDate() < new Date();
+          allLicensesData.push({ id: doc.id, ...data });
 
           // Processar Estatísticas
           if (data.createdAt) {
@@ -412,6 +519,20 @@
             const valor = data.planType === "anual" ? 990 : 99;
             stats[key].faturamento += valor;
           }
+        });
+
+        renderLicensesTable(allLicensesData);
+        renderCharts(stats);
+      }
+
+      function renderLicensesTable(licenses) {
+        const tableBody = document.getElementById("licenses-table");
+        tableBody.innerHTML = "";
+
+        licenses.forEach((data) => {
+          const expiresDateObj = data.expiresAt.toDate();
+          const expiresDate = expiresDateObj.toLocaleDateString("pt-BR");
+          const isExpired = expiresDateObj < new Date();
 
           const row = `
                     <tr class="${isExpired ? "bg-red-50" : ""}">
@@ -436,16 +557,20 @@
                           isExpired ? "text-red-600 font-bold" : "text-gray-500"
                         }">${expiresDate}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button onclick="window.editLicense('${
+                              data.id
+                            }')" class="text-blue-600 hover:text-blue-900 mr-3" title="Editar"><i class="fas fa-edit"></i></button>
+                            <button onclick="window.renewLicense('${
+                              data.id
+                            }')" class="text-green-600 hover:text-green-900 mr-3" title="Renovar +30 dias"><i class="fas fa-calendar-plus"></i></button>
                             <button data-id="${
-                              doc.id
+                              data.id
                             }" class="delete-btn text-red-600 hover:text-red-900" title="Excluir Licença"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>
                 `;
           tableBody.innerHTML += row;
         });
-
-        renderCharts(stats);
 
         // Adicionar event listeners para os botões de exclusão
         document.querySelectorAll(".delete-btn").forEach((button) => {
@@ -458,6 +583,65 @@
           });
         });
       }
+
+      // Funções Globais de Edição e Renovação
+      window.editLicense = (id) => {
+        const license = allLicensesData.find((l) => l.id === id);
+        if (!license) return;
+
+        document.getElementById("edit-id").value = id;
+        document.getElementById("edit-store-name").value = license.storeName;
+        document.getElementById("edit-store-url").value = license.storeUrl;
+        document.getElementById("edit-client-contact").value =
+          license.clientContact;
+        // Formata data para input date (YYYY-MM-DD)
+        const date = license.expiresAt.toDate();
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, "0");
+        const dd = String(date.getDate()).padStart(2, "0");
+        document.getElementById(
+          "edit-expires-at"
+        ).value = `${yyyy}-${mm}-${dd}`;
+
+        const modal = document.getElementById("edit-modal");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      };
+
+      document
+        .getElementById("edit-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const id = document.getElementById("edit-id").value;
+          const updates = {
+            storeName: document.getElementById("edit-store-name").value,
+            storeUrl: document.getElementById("edit-store-url").value,
+            clientContact: document.getElementById("edit-client-contact").value,
+            expiresAt: new Date(
+              document.getElementById("edit-expires-at").value + "T23:59:59"
+            ),
+          };
+          await updateDoc(doc(db, "licenses", id), updates);
+          closeEditModal();
+          loadLicenses();
+        });
+
+      window.renewLicense = async (id) => {
+        const license = allLicensesData.find((l) => l.id === id);
+        if (!license) return;
+
+        if (
+          confirm(`Renovar licença de ${license.storeName} por mais 30 dias?`)
+        ) {
+          const currentExpire = license.expiresAt.toDate();
+          // Adiciona 30 dias
+          currentExpire.setDate(currentExpire.getDate() + 30);
+          await updateDoc(doc(db, "licenses", id), {
+            expiresAt: currentExpire,
+          });
+          loadLicenses();
+        }
+      };
 
       function renderCharts(stats) {
         const sortedKeys = Object.keys(stats).sort();
