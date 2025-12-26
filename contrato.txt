@@ -1,0 +1,68 @@
+CONTRATO DE LICENCIAMENTO DE USO DE SOFTWARE E PRESTAÇÃO DE SERVIÇOS
+
+IDENTIFICAÇÃO DAS PARTES
+
+CONTRATADA: Luciano Severino dos Santos, com sede em Rua Dois de Maio, 413 - Sampaio, Rio de Janeiro - RJ, CEP 20.961-160, inscrita no CNPJ sob o nº 55.003.035/0001-76, doravante denominada simplesmente CONTRATADA.
+
+CONTRATANTE: [NOME DA EMPRESA DO CLIENTE], com sede em [ENDEREÇO DO CLIENTE], inscrita no CNPJ sob o nº [CNPJ DO CLIENTE], neste ato representada por [NOME DO REPRESENTANTE LEGAL], doravante denominada simplesmente CONTRATANTE.
+
+As partes acima identificadas têm, entre si, justo e acertado o presente Contrato de Licenciamento de Uso de Software, que se regerá pelas cláusulas seguintes e pelas condições descritas no presente.
+
+
+CLÁUSULA 1ª - DO OBJETO DO CONTRATO
+
+1.1. O presente contrato tem como objeto a licença de uso, não exclusiva e intransferível, do software "FastDelivery" (doravante "SOFTWARE"), de propriedade da CONTRATADA, a ser instalado e utilizado pela CONTRATANTE para gestão de seu serviço de delivery de alimentos.
+
+1.2. A licença inclui o acesso a todas as funcionalidades descritas na proposta comercial, como gestão de pedidos, cardápio, estoque, entregadores, financeiro, relatórios e o aplicativo web (PWA) para os clientes finais.
+
+
+CLÁUSULA 2ª - DAS OBRIGAÇÕES DA CONTRATADA
+
+2.1. Realizar a instalação inicial do SOFTWARE no ambiente de hospedagem fornecido ou indicado pela CONTRATANTE.
+2.2. Prestar suporte técnico para correção de falhas e bugs do SOFTWARE, em horário comercial (Segunda a Sexta, 9h-18h), via WhatsApp e e-mail.
+2.3. Manter o SOFTWARE atualizado com correções e melhorias, a seu critério.
+
+
+CLÁUSULA 3ª - DAS OBRIGAÇÕES DA CONTRATANTE
+
+3.1. Efetuar o pagamento da mensalidade na data de vencimento acordada.
+3.2. Utilizar o SOFTWARE de acordo com suas finalidades, não tentando realizar engenharia reversa, copiar ou distribuir o código-fonte.
+3.3. Manter a segurança do ambiente de hospedagem e das credenciais de acesso ao painel administrativo.
+3.4. A CONTRATANTE é a única e exclusiva responsável por todos os dados inseridos no sistema, incluindo dados de seus clientes, produtos e informações financeiras, devendo cumprir a Lei Geral de Proteção de Dados (LGPD).
+
+
+CLÁUSULA 4ª - DO PREÇO E DAS CONDIÇÕES DE PAGAMENTO
+
+4.1. Pela licença de uso do SOFTWARE, a CONTRATANTE pagará à CONTRATADA o valor mensal de R$ [VALOR MENSAL] ([VALOR POR EXTENSO]), a ser pago todo dia [DIA DO VENCIMENTO] de cada mês, via [MÉTODO DE PAGAMENTO, EX: PIX, BOLETO].
+4.2. O não pagamento na data de vencimento acarretará multa de 2% (dois por cento) e juros de 1% (um por cento) ao mês.
+4.3. O atraso superior a 15 (quinze) dias poderá acarretar na suspensão do acesso ao SOFTWARE até a regularização dos débitos.
+
+
+CLÁUSULA 5ª - DA VIGÊNCIA E RESCISÃO
+
+5.1. O presente contrato terá vigência de 12 (doze) meses, renovando-se automaticamente por iguais períodos, caso não haja manifestação contrária de nenhuma das partes com 30 (trinta) dias de antecedência.
+5.2. O contrato poderá ser rescindido por qualquer uma das partes, sem ônus, mediante aviso prévio de 30 (trinta) dias.
+5.3. A violação de qualquer cláusula deste contrato pela CONTRATANTE poderá levar à rescisão imediata e suspensão do serviço.
+
+
+CLÁUSULA 6ª - DA CONFIDENCIALIDADE
+
+6.1. As partes se comprometem a manter sigilo sobre todas as informações comerciais e técnicas a que tiverem acesso em virtude deste contrato. A CONTRATADA, em especial, compromete-se a não acessar ou utilizar os dados operacionais da CONTRATANTE para qualquer fim que não seja a prestação de suporte técnico solicitado.
+
+
+CLÁUSULA 7ª - DO FORO
+
+7.1. Para dirimir quaisquer controvérsias oriundas do CONTRATO, as partes elegem o foro da comarca de Rio de Janeiro/RJ.
+
+
+E por estarem assim justos e contratados, firmam o presente instrumento.
+
+Rio de Janeiro, [DATA ATUAL].
+
+
+_________________________________________
+CONTRATADA: Luciano Severino dos Santos
+
+
+_________________________________________
+CONTRATANTE: [NOME DA EMPRESA DO CLIENTE]

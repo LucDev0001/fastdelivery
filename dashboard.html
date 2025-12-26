@@ -65,6 +65,18 @@
             />
             <input
               type="text"
+              id="company-name"
+              placeholder="Razão Social"
+              class="p-2 border rounded"
+            />
+            <input
+              type="text"
+              id="cnpj"
+              placeholder="CNPJ"
+              class="p-2 border rounded"
+            />
+            <input
+              type="text"
               id="store-url"
               placeholder="URL da Loja (https://...)"
               required
@@ -76,6 +88,12 @@
               placeholder="Contato do Cliente"
               required
               class="p-2 border rounded"
+            />
+            <input
+              type="text"
+              id="address"
+              placeholder="Endereço Completo"
+              class="p-2 border rounded md:col-span-2"
             />
             <select id="plan-type" class="p-2 border rounded bg-white">
               <option value="mensal">Plano Mensal</option>
@@ -146,6 +164,11 @@
                 <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
                 >
+                  Contrato
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
                   Ações
                 </th>
               </tr>
@@ -202,6 +225,24 @@
             />
           </div>
           <div>
+            <label class="block text-sm font-medium text-gray-700"
+              >Razão Social</label
+            >
+            <input
+              type="text"
+              id="edit-company-name"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">CNPJ</label>
+            <input
+              type="text"
+              id="edit-cnpj"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500"
+            />
+          </div>
+          <div>
             <label class="block text-sm font-medium text-gray-700">URL</label>
             <input
               type="text"
@@ -216,6 +257,16 @@
             <input
               type="text"
               id="edit-client-contact"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700"
+              >Endereço</label
+            >
+            <input
+              type="text"
+              id="edit-address"
               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500"
             />
           </div>
@@ -338,7 +389,7 @@
       // Função global para copiar
       window.copiarChave = (texto) => {
         navigator.clipboard.writeText(texto).then(() => {
-          alert("Chave copiada!");
+          alert("Copiado com sucesso!");
         });
       };
 
@@ -452,6 +503,9 @@
 
           const licenseData = {
             storeName: document.getElementById("store-name").value,
+            companyName: document.getElementById("company-name").value,
+            cnpj: document.getElementById("cnpj").value,
+            address: document.getElementById("address").value,
             storeUrl: document.getElementById("store-url").value,
             clientContact: document.getElementById("client-contact").value,
             planType: document.getElementById("plan-type").value,
@@ -529,10 +583,18 @@
         const tableBody = document.getElementById("licenses-table");
         tableBody.innerHTML = "";
 
+        // Base URL para o contrato
+        const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/contrato.html';
+
         licenses.forEach((data) => {
           const expiresDateObj = data.expiresAt.toDate();
           const expiresDate = expiresDateObj.toLocaleDateString("pt-BR");
           const isExpired = expiresDateObj < new Date();
+          const contractUrl = `${baseUrl}?key=${data.key}`;
+          
+          const contractStatus = data.contractAccepted 
+            ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Assinado</span>'
+            : '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pendente</span>';
 
           const row = `
                     <tr class="${isExpired ? "bg-red-50" : ""}">
@@ -556,7 +618,9 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm ${
                           isExpired ? "text-red-600 font-bold" : "text-gray-500"
                         }">${expiresDate}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${contractStatus}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button onclick="window.copiarChave('${contractUrl}')" class="text-purple-600 hover:text-purple-900 mr-3" title="Copiar Link Contrato"><i class="fas fa-file-contract"></i> Link</button>
                             <button onclick="window.editLicense('${
                               data.id
                             }')" class="text-blue-600 hover:text-blue-900 mr-3" title="Editar"><i class="fas fa-edit"></i></button>
@@ -575,7 +639,7 @@
         // Adicionar event listeners para os botões de exclusão
         document.querySelectorAll(".delete-btn").forEach((button) => {
           button.addEventListener("click", async (e) => {
-            const id = e.target.getAttribute("data-id");
+            const id = e.currentTarget.getAttribute("data-id");
             if (confirm("Tem certeza que deseja excluir esta licença?")) {
               await deleteDoc(doc(db, "licenses", id));
               loadLicenses();
@@ -591,9 +655,12 @@
 
         document.getElementById("edit-id").value = id;
         document.getElementById("edit-store-name").value = license.storeName;
+        document.getElementById("edit-company-name").value = license.companyName || "";
+        document.getElementById("edit-cnpj").value = license.cnpj || "";
         document.getElementById("edit-store-url").value = license.storeUrl;
         document.getElementById("edit-client-contact").value =
           license.clientContact;
+        document.getElementById("edit-address").value = license.address || "";
         // Formata data para input date (YYYY-MM-DD)
         const date = license.expiresAt.toDate();
         const yyyy = date.getFullYear();
@@ -615,8 +682,11 @@
           const id = document.getElementById("edit-id").value;
           const updates = {
             storeName: document.getElementById("edit-store-name").value,
+            companyName: document.getElementById("edit-company-name").value,
+            cnpj: document.getElementById("edit-cnpj").value,
             storeUrl: document.getElementById("edit-store-url").value,
             clientContact: document.getElementById("edit-client-contact").value,
+            address: document.getElementById("edit-address").value,
             expiresAt: new Date(
               document.getElementById("edit-expires-at").value + "T23:59:59"
             ),
@@ -843,6 +913,12 @@
           await updateDoc(doc(db, "tickets", ticketId), {
             status: "closed",
             updatedAt: serverTimestamp(),
+          });
+        }
+      }
+    </script>
+  </body>
+</html>
           });
         }
       }

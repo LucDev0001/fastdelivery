@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assinatura de Contrato - FastDelivery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .contrato-box {
+        white-space: pre-wrap;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 min-h-screen py-10 px-4">
+    <div
+      class="max-w-4xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden"
+    >
+      <div class="bg-[#EA1D2C] p-6 text-white text-center">
+        <h1 class="text-2xl font-bold">Contrato de Prestação de Serviços</h1>
+        <p class="opacity-90 text-sm mt-1">FastDelivery Sistemas</p>
+      </div>
+
+      <div id="loader" class="p-10 text-center">
+        <i class="fas fa-circle-notch fa-spin text-4xl text-gray-400"></i>
+        <p class="mt-4 text-gray-500">Carregando contrato...</p>
+      </div>
+
+      <div id="content" class="hidden">
+        <div class="p-6 border-b border-gray-100 bg-gray-50">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+            <div>
+              <span class="block text-xs text-gray-500 uppercase"
+                >Contratante</span
+              >
+              <span class="font-bold text-gray-800" id="store-name">...</span>
+            </div>
+            <div>
+              <span class="block text-xs text-gray-500 uppercase">Plano</span>
+              <span class="font-bold text-gray-800" id="plan-type">...</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-8 bg-white">
+          <div
+            id="contract-text"
+            class="contrato-box border p-6 rounded bg-gray-50 text-gray-700 h-96 overflow-y-auto mb-6"
+          ></div>
+
+          <div
+            id="action-area"
+            class="text-center pt-4 border-t border-gray-100"
+          >
+            <div class="flex items-center justify-center gap-2 mb-4">
+              <input
+                type="checkbox"
+                id="check-terms"
+                class="w-5 h-5 text-[#EA1D2C] rounded focus:ring-[#EA1D2C]"
+              />
+              <label for="check-terms" class="text-gray-700 select-none"
+                >Li e concordo com os termos do contrato acima.</label
+              >
+            </div>
+            <button
+              onclick="signContract()"
+              class="bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-lg transform hover:-translate-y-0.5"
+            >
+              Assinar Digitalmente
+            </button>
+          </div>
+
+          <div
+            id="signed-area"
+            class="hidden text-center py-6 bg-green-50 rounded-lg border border-green-200"
+          >
+            <i class="fas fa-check-circle text-4xl text-green-600 mb-2"></i>
+            <h3 class="text-xl font-bold text-green-800">Contrato Assinado</h3>
+            <p class="text-green-700 text-sm mt-1">
+              Este documento já foi aceito em
+              <span id="signed-date" class="font-bold"></span>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        query,
+        where,
+        getDocs,
+        updateDoc,
+        doc,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBJspCFmB7IQQdLdxLYQrZZ-TFAiDPXrXk",
+        authDomain: "fastdelivery-46457.firebaseapp.com",
+        projectId: "fastdelivery-46457",
+        storageBucket: "fastdelivery-46457.appspot.com",
+        messagingSenderId: "889884008498",
+        appId: "1:889884008498:web:418e00c16326df6d4e1c2b",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const key = urlParams.get("key");
+      let docId = null;
+
+      async function loadContract() {
+        if (!key) {
+          document.getElementById("loader").innerHTML =
+            '<p class="text-red-500">Chave de licença inválida.</p>';
+          return;
+        }
+
+        try {
+          const q = query(collection(db, "licenses"), where("key", "==", key));
+          const snapshot = await getDocs(q);
+
+          if (snapshot.empty) {
+            document.getElementById("loader").innerHTML =
+              '<p class="text-red-500">Licença não encontrada.</p>';
+            return;
+          }
+
+          const docSnap = snapshot.docs[0];
+          const data = docSnap.data();
+          docId = docSnap.id;
+
+          document.getElementById("store-name").innerText = data.storeName;
+          document.getElementById("plan-type").innerText =
+            data.planType === "anual" ? "Anual" : "Mensal";
+
+          // Carrega template do contrato (simulado aqui, idealmente viria de um arquivo ou DB)
+          const response = await fetch("contrato.txt");
+          let text = await response.text();
+
+          text = text.replace(
+            /\[NOME DA EMPRESA DO CLIENTE\]/g,
+            data.companyName || data.storeName
+          );
+          text = text.replace(
+            /\[CNPJ DO CLIENTE\]/g,
+            data.cnpj || "Não informado"
+          );
+          text = text.replace(
+            /\[ENDEREÇO DO CLIENTE\]/g,
+            data.address || "Não informado"
+          );
+          text = text.replace(
+            /\[NOME DO REPRESENTANTE LEGAL\]/g,
+            data.clientContact ||
+              data.ownerName ||
+              data.contactName ||
+              "Representante Legal"
+          );
+          text = text.replace(
+            /\[VALOR MENSAL\]/g,
+            data.planType === "anual" ? "990,00" : "99,00"
+          );
+          // Adicione mais replaces conforme necessário
+
+          const valorExtenso =
+            data.planType === "anual"
+              ? "novecentos e noventa reais"
+              : "noventa e nove reais";
+          text = text.replace(/\[VALOR POR EXTENSO\]/g, valorExtenso);
+
+          // Pega o dia do vencimento da data de expiração
+          const diaVencimento = data.expiresAt
+            ? data.expiresAt.toDate().getDate()
+            : "10";
+          text = text.replace(/\[DIA DO VENCIMENTO\]/g, diaVencimento);
+
+          // Substitui a data atual
+          const dataAtual = new Date().toLocaleDateString("pt-BR", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          });
+          text = text.replace(/\[DATA ATUAL\]/g, dataAtual);
+
+          if (data.contractAccepted) {
+            document.getElementById("action-area").classList.add("hidden");
+            document.getElementById("signed-area").classList.remove("hidden");
+            if (data.acceptedAt) {
+              const signedDate = data.acceptedAt.toDate().toLocaleString();
+              document.getElementById("signed-date").innerText = signedDate;
+
+              text += `\n\n
+================================================================================
+REGISTRO DE ASSINATURA DIGITAL
+================================================================================
+
+Este contrato foi aceito e assinado digitalmente.
+
+CONTRATADA:
+Luciano Severino dos Santos
+CNPJ: 55.003.035/0001-76
+
+CONTRATANTE:
+${data.companyName || data.storeName}
+CNPJ: ${data.cnpj || "Não informado"}
+Responsável: ${
+                data.clientContact ||
+                data.ownerName ||
+                data.contactName ||
+                "Representante Legal"
+              }
+
+DADOS DA ASSINATURA:
+Data/Hora: ${signedDate}
+IP de Origem: ${data.ip || "Não registrado"}
+ID da Licença: ${data.key}
+================================================================================`;
+            }
+          }
+
+          document.getElementById("contract-text").innerText = text;
+          document.getElementById("loader").classList.add("hidden");
+          document.getElementById("content").classList.remove("hidden");
+        } catch (error) {
+          console.error(error);
+          document.getElementById("loader").innerHTML =
+            '<p class="text-red-500">Erro ao carregar dados.</p>';
+        }
+      }
+
+      window.signContract = async () => {
+        if (!document.getElementById("check-terms").checked) {
+          return Swal.fire(
+            "Atenção",
+            "Você precisa marcar a caixa concordando com os termos.",
+            "warning"
+          );
+        }
+
+        try {
+          await updateDoc(doc(db, "licenses", docId), {
+            contractAccepted: true,
+            acceptedAt: serverTimestamp(),
+            ip: "Client Side Sign",
+          });
+
+          document.getElementById("action-area").classList.add("hidden");
+          document.getElementById("signed-area").classList.remove("hidden");
+          document.getElementById("signed-date").innerText =
+            new Date().toLocaleString();
+
+          Swal.fire("Sucesso", "Contrato assinado com sucesso!", "success");
+        } catch (error) {
+          console.error(error);
+          if (error.code === "permission-denied") {
+            Swal.fire(
+              "Erro de Permissão",
+              "O sistema não tem permissão para salvar. Verifique as Regras de Segurança do Firebase (Firestore Rules) para permitir a escrita na coleção 'licenses'.",
+              "error"
+            );
+          } else {
+            Swal.fire(
+              "Erro",
+              "Não foi possível assinar: " + error.message,
+              "error"
+            );
+          }
+        }
+      };
+
+      loadContract();
+    </script>
+  </body>
+</html>

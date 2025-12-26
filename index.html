@@ -67,6 +67,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
       rel="stylesheet"
     />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
@@ -123,6 +124,29 @@
       }
       .animate-float {
         animation: float 6s ease-in-out infinite;
+      }
+
+      .whatsapp-float {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        z-index: 100;
+        animation: pulse-green 2s infinite;
+      }
+
+      @keyframes pulse-green {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+        }
+        70% {
+          transform: scale(1.05);
+          box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+        }
       }
     </style>
   </head>
@@ -941,6 +965,48 @@
       </div>
     </footer>
 
+    <!-- Botão Flutuante WhatsApp -->
+    <a
+      href="https://wa.me/5521983856779?text=Ol%C3%A1%21+Vim+pelo+site+e+gostaria+de+saber+mais+sobre+o+FastDelivery."
+      target="_blank"
+      class="whatsapp-float bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-lg hover:bg-green-600 transition duration-300"
+      title="Fale conosco no WhatsApp"
+    >
+      <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Aviso de Cookies (LGPD) -->
+    <div
+      id="cookie-banner"
+      class="fixed bottom-0 left-0 w-full bg-gray-900 text-white p-4 z-50 hidden flex-col md:flex-row justify-between items-center gap-4 shadow-inner"
+    >
+      <div class="text-sm text-center md:text-left">
+        <p>
+          Utilizamos cookies para melhorar sua experiência e analisar o tráfego.
+          Ao continuar, você concorda com nossa
+          <a
+            href="politica.html"
+            class="underline text-[#EA1D2C] hover:text-red-400"
+            >Política de Privacidade</a
+          >.
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <button
+          onclick="acceptCookies()"
+          class="bg-[#EA1D2C] hover:bg-[#c91b29] text-white px-6 py-2 rounded-lg text-sm font-bold transition"
+        >
+          Aceitar
+        </button>
+        <button
+          onclick="document.getElementById('cookie-banner').style.display='none'"
+          class="text-gray-400 hover:text-white text-sm underline"
+        >
+          Fechar
+        </button>
+      </div>
+    </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const observer = new IntersectionObserver(
@@ -965,7 +1031,18 @@
         // Atualiza o ano no rodapé
         const yearSpan = document.querySelector("footer p span");
         if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+        // Verifica Cookies
+        if (!localStorage.getItem("cookiesAccepted")) {
+          document.getElementById("cookie-banner").classList.remove("hidden");
+          document.getElementById("cookie-banner").classList.add("flex");
+        }
       });
+
+      function acceptCookies() {
+        localStorage.setItem("cookiesAccepted", "true");
+        document.getElementById("cookie-banner").style.display = "none";
+      }
 
       function enviarContatoPeloWhatsApp() {
         const nome = document.getElementById("name").value;
@@ -974,7 +1051,12 @@
         const mensagem = document.getElementById("message").value;
 
         if (!nome || !mensagem) {
-          alert("Por favor, preencha seu nome e a mensagem.");
+          Swal.fire({
+            icon: "warning",
+            title: "Atenção",
+            text: "Por favor, preencha seu nome e a mensagem para continuar.",
+            confirmButtonColor: "#EA1D2C",
+          });
           return;
         }
 
@@ -984,7 +1066,16 @@
           textoFormatado
         )}`;
 
+        // Abre o WhatsApp e mostra confirmação
         window.open(urlWhatsApp, "_blank");
+
+        Swal.fire({
+          icon: "success",
+          title: "Redirecionando...",
+          text: "Estamos te levando para o WhatsApp para finalizar o atendimento!",
+          timer: 3000,
+          showConfirmButton: false,
+        });
       }
     </script>
 
