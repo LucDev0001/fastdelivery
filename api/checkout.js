@@ -33,7 +33,7 @@ export default async function handler(req, res) {
         description: title,
         frequency: plan === "anual" ? "YEARLY" : "MONTHLY", // Se for assinatura recorrente
         methods: ["PIX", "CREDIT_CARD"], // Métodos aceitos
-        returnUrl: `${baseUrl}/sucesso.html`, // Página de obrigado (crie se não existir)
+        returnUrl: `${baseUrl}/sucesso.html?email=${encodeURIComponent(email)}`, // Página de obrigado com email para busca
         webhookUrl: `${baseUrl}/api/webhook`, // Onde o Abacate avisa que pagou
       },
       {
@@ -44,7 +44,9 @@ export default async function handler(req, res) {
       }
     );
 
-    return res.status(200).json({ url: response.data.url }); // Ajuste conforme retorno da API deles
+    return res
+      .status(200)
+      .json({ url: response.data.url, id: response.data.id });
   } catch (error) {
     console.error("Erro Abacate Pay:", error.response?.data || error.message);
     return res.status(500).json({ error: "Erro ao gerar pagamento." });

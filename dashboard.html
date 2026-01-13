@@ -490,6 +490,14 @@
         .getElementById("add-license-form")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
+          
+          const btn = e.target.querySelector("button[type=submit]");
+          const originalText = btn.innerText;
+          btn.innerText = "Gerando Link de Pagamento...";
+          btn.disabled = true;
+
+          try {
+          // 1. Gera a chave localmente
           const key = `FAST-${Math.random()
             .toString(36)
             .substr(2, 4)
@@ -501,32 +509,71 @@
             .substr(2, 4)
             .toUpperCase()}`;
 
+          // 2. Coleta dados do formulário
+          const storeName = document.getElementById("store-name").value;
+          const companyName = document.getElementById("company-name").value;
+          const cnpj = document.getElementById("cnpj").value;
+          const email = document.getElementById("client-contact").value;
+          const planType = document.getElementById("plan-type").value;
+          
+          // 3. Chama a API para gerar o Link de Pagamento
+          const checkoutResponse = await fetch('/api/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: companyName || storeName,
+                email: email,
+                cpf: cnpj,
+                plan: planType,
+                phone: "" // Adicione campo de telefone no form se desejar
+            })
+          });
+
+          if (!checkoutResponse.ok) throw new Error("Erro ao gerar pagamento");
+          const paymentData = await checkoutResponse.json();
+
+          // 4. Salva no Firestore (Inativa / Aguardando Pagamento)
           const licenseData = {
-            storeName: document.getElementById("store-name").value,
-            companyName: document.getElementById("company-name").value,
-            cnpj: document.getElementById("cnpj").value,
+            storeName: storeName,
+            companyName: companyName,
+            cnpj: cnpj,
             address: document.getElementById("address").value,
             storeUrl: document.getElementById("store-url").value,
-            clientContact: document.getElementById("client-contact").value,
-            planType: document.getElementById("plan-type").value,
+            clientContact: email,
+            planType: planType,
             expiresAt: new Date(
               document.getElementById("expires-at").value + "T23:59:59"
             ),
             createdAt: serverTimestamp(),
             key: key,
+            paymentId: paymentData.id, // ID do Abacate Pay para vincular
+            paymentLink: paymentData.url,
+            active: false, // Começa inativa
+            status: 'aguardando_pagamento'
           };
 
           await addDoc(collection(db, "licenses"), licenseData);
 
           const keyContainer = document.getElementById("generated-key");
           keyContainer.innerHTML = `
-            <div class="flex flex-col items-center gap-2">
-                <span>Chave Gerada:</span>
-                <div class="flex items-center gap-2 bg-white px-3 py-1 rounded border border-green-300">
-                    <strong class="text-lg select-all">${key}</strong>
-                    <button onclick="window.copiarChave('${key}')" class="text-gray-500 hover:text-green-700 transition" title="Copiar">
-                        <i class="fas fa-copy"></i>
-                    </button>
+            <div class="flex flex-col gap-4 text-left">
+                <div class="bg-yellow-50 p-3 rounded border border-yellow-200">
+                    <p class="font-bold text-yellow-800"><i class="fas fa-exclamation-triangle"></i> Licença criada (Inativa)</p>
+                    <p class="text-sm text-yellow-700">Envie o link abaixo para o cliente pagar e ativar a chave.</p>
+                </div>
+                <div>
+                    <span class="text-sm font-bold text-gray-600">Link de Pagamento:</span>
+                    <div class="flex gap-2 mt-1">
+                        <input type="text" value="${paymentData.url}" class="flex-1 p-2 border rounded text-sm bg-gray-50" readonly>
+                        <button onclick="window.copiarChave('${paymentData.url}')" class="bg-blue-600 text-white px-3 rounded hover:bg-blue-700">Copiar</button>
+                    </div>
+                </div>
+                <div>
+                    <span class="text-sm font-bold text-gray-600">Chave da Licença:</span>
+                    <div class="flex gap-2 mt-1">
+                        <input type="text" value="${key}" class="flex-1 p-2 border rounded text-sm bg-gray-50 font-mono" readonly>
+                        <button onclick="window.copiarChave('${key}')" class="bg-gray-600 text-white px-3 rounded hover:bg-gray-700">Copiar</button>
+                    </div>
                 </div>
             </div>
           `;
@@ -534,6 +581,14 @@
 
           e.target.reset();
           loadLicenses();
+
+          } catch (error) {
+            console.error(error);
+            alert("Erro ao gerar licença: " + error.message);
+          } finally {
+            btn.innerText = originalText;
+            btn.disabled = false;
+          }
         });
 
       // Listener de Busca
@@ -595,6 +650,10 @@
           const contractStatus = data.contractAccepted 
             ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Assinado</span>'
             : '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pendente</span>';
+          
+          const paymentStatus = data.active 
+            ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Ativa</span>'
+            : '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
 
           const row = `
                     <tr class="${isExpired ? "bg-red-50" : ""}">
@@ -615,9 +674,9 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
                           data.planType
                         }</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm ${
-                          isExpired ? "text-red-600 font-bold" : "text-gray-500"
-                        }">${expiresDate}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            ${expiresDate}<br>${paymentStatus}
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap">${contractStatus}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <button onclick="window.copiarChave('${contractUrl}')" class="text-purple-600 hover:text-purple-900 mr-3" title="Copiar Link Contrato"><i class="fas fa-file-contract"></i> Link</button>

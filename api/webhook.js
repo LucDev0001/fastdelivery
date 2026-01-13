@@ -19,39 +19,32 @@ export default async function handler(req, res) {
   try {
     // Verifique na documentação do Abacate Pay qual o status de sucesso (ex: "PAID", "COMPLETED")
     if (event.status === "PAID" || event.event === "billing.paid") {
-      const { customer, amount } = event.data;
+      const paymentId = event.data.id;
 
-      // Gera uma chave de licença única
-      const key = `FAST-${Math.random()
-        .toString(36)
-        .substr(2, 4)
-        .toUpperCase()}-${Math.random()
-        .toString(36)
-        .substr(2, 4)
-        .toUpperCase()}-${Math.random()
-        .toString(36)
-        .substr(2, 4)
-        .toUpperCase()}`;
+      // Busca a licença que tem esse ID de pagamento
+      const licensesRef = db.collection("licenses");
+      const snapshot = await licensesRef
+        .where("paymentId", "==", paymentId)
+        .get();
 
-      // Define validade
-      // Se o valor for maior que R$ 500, assume anual (lógica simples)
-      const isAnual = amount > 50000;
-      const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getDate() + (isAnual ? 365 : 30));
+      if (snapshot.empty) {
+        console.log("Nenhuma licença encontrada para o pagamento:", paymentId);
+        return res
+          .status(200)
+          .json({ received: true, status: "no_license_found" });
+      }
 
-      // Cria a licença no Firestore
-      await db.collection("licenses").add({
-        storeName: customer.name || "Nova Loja",
-        clientContact: customer.email,
-        cnpj: customer.taxId || "",
-        planType: isAnual ? "anual" : "mensal",
-        expiresAt: admin.firestore.Timestamp.fromDate(expiresAt),
-        key: key,
-        createdAt: admin.firestore.FieldValue.serverTimestamp(),
-        paymentId: event.id,
-        storeUrl: "Aguardando configuração",
-        contractAccepted: false,
+      // Atualiza a licença para ATIVA
+      const batch = db.batch();
+      snapshot.forEach((doc) => {
+        batch.update(doc.ref, {
+          active: false, // Mantém inativa até o cliente assinar o contrato
+          status: "paid", // Status 'paid' libera o acesso à página de contrato
+          paidAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
       });
+
+      await batch.commit();
 
       // Aqui você poderia enviar um e-mail para o cliente com a chave (usando Resend, SendGrid, etc)
     }
