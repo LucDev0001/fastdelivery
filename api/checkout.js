@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { plan, name, email, cpf, phone } = req.body;
+  const { plan, name, email, cpf, phone, key } = req.body;
 
   // Defina os valores em centavos (R$ 99,00 = 9900)
   const amount = plan === "anual" ? 99000 : 9900;
@@ -16,6 +16,13 @@ export default async function handler(req, res) {
 
   // URL base do seu site (Vercel preenche isso automaticamente)
   const baseUrl = `https://${req.headers.host}`;
+
+  // Se vier uma chave (fluxo do Dashboard), retorna para o contrato
+  // Se não (fluxo do site), retorna para a página de sucesso genérica
+  let returnUrl = `${baseUrl}/sucesso.html?email=${encodeURIComponent(email)}`;
+  if (key) {
+    returnUrl = `${baseUrl}/contrato.html?key=${key}`;
+  }
 
   try {
     // CHAMADA PARA O ABACATE PAY
@@ -33,7 +40,7 @@ export default async function handler(req, res) {
         description: title,
         frequency: plan === "anual" ? "YEARLY" : "MONTHLY", // Se for assinatura recorrente
         methods: ["PIX", "CREDIT_CARD"], // Métodos aceitos
-        returnUrl: `${baseUrl}/sucesso.html?email=${encodeURIComponent(email)}`, // Página de obrigado com email para busca
+        returnUrl: returnUrl, // Página de retorno dinâmica
         webhookUrl: `${baseUrl}/api/webhook`, // Onde o Abacate avisa que pagou
       },
       {

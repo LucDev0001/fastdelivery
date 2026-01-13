@@ -51,6 +51,13 @@
         <p id="error-msg" class="text-gray-600 mb-6">
           Não foi possível carregar o contrato.
         </p>
+        <button
+          id="retry-btn"
+          onclick="location.reload()"
+          class="hidden bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition mb-4"
+        >
+          Verificar Novamente
+        </button>
         <a href="index.html" class="text-[#EA1D2C] font-bold hover:underline"
           >Voltar ao Início</a
         >
@@ -235,10 +242,15 @@ Rio de Janeiro, {{CURRENT_DATE}}.
 
           // VERIFICAÇÃO DE PAGAMENTO
           if (licenseData.status !== "paid" && !licenseData.active) {
-            showError(
-              "Aguardando Pagamento",
-              "Este contrato só estará disponível após a confirmação do pagamento. Se você já pagou via Pix, aguarde alguns instantes e recarregue a página."
-            );
+            document.getElementById("loading").classList.add("hidden");
+            document.getElementById("error-screen").classList.remove("hidden");
+            document.getElementById("error-title").innerText =
+              "Confirmando Pagamento...";
+            document.getElementById("error-msg").innerHTML =
+              "Estamos aguardando a confirmação do banco.<br>Se você acabou de pagar, aguarde alguns segundos e clique abaixo.";
+            document.getElementById("retry-btn").classList.remove("hidden");
+            // Esconde o botão de voltar ao início para não confundir
+            document.querySelector("#error-screen a").classList.add("hidden");
             return;
           }
 
