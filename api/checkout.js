@@ -34,18 +34,26 @@ export default async function handler(req, res) {
     const response = await axios.post(
       "https://api.abacatepay.com/v1/billing/create",
       {
-        amount: amount,
+        frequency: plan === "anual" ? "YEARLY" : "MONTHLY", // Se for assinatura recorrente
+        methods: ["PIX", "CREDIT_CARD"], // Métodos aceitos
+        products: [
+          {
+            externalId: plan,
+            name: title,
+            description: title,
+            quantity: 1,
+            price: amount,
+          },
+        ],
+        returnUrl: returnUrl, // Página de retorno dinâmica
+        completionUrl: returnUrl,
+        webhookUrl: `${baseUrl}/api/webhook`, // Onde o Abacate avisa que pagou
         customer: {
           name: name,
           email: email,
           taxId: cleanCpf, // CPF/CNPJ
           phone: cleanPhone,
         },
-        description: title,
-        frequency: plan === "anual" ? "YEARLY" : "MONTHLY", // Se for assinatura recorrente
-        methods: ["PIX", "CREDIT_CARD"], // Métodos aceitos
-        returnUrl: returnUrl, // Página de retorno dinâmica
-        webhookUrl: `${baseUrl}/api/webhook`, // Onde o Abacate avisa que pagou
       },
       {
         headers: {
