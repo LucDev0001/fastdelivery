@@ -85,7 +85,14 @@
             <input
               type="text"
               id="client-contact"
-              placeholder="Contato do Cliente"
+              placeholder="E-mail do Cliente"
+              required
+              class="p-2 border rounded"
+            />
+            <input
+              type="text"
+              id="client-phone"
+              placeholder="WhatsApp (com DDD)"
               required
               class="p-2 border rounded"
             />
@@ -514,6 +521,7 @@
           const companyName = document.getElementById("company-name").value;
           const cnpj = document.getElementById("cnpj").value;
           const email = document.getElementById("client-contact").value;
+          const phone = document.getElementById("client-phone").value;
           const planType = document.getElementById("plan-type").value;
           
           // 3. Chama a API para gerar o Link de Pagamento
@@ -525,12 +533,15 @@
                 email: email,
                 cpf: cnpj,
                 plan: planType,
-                phone: "", // Adicione campo de telefone no form se desejar
+                phone: phone,
                 key: key // Envia a chave para vincular ao redirecionamento
             })
           });
 
-          if (!checkoutResponse.ok) throw new Error("Erro ao gerar pagamento");
+          if (!checkoutResponse.ok) {
+            const errorData = await checkoutResponse.json().catch(() => ({}));
+            throw new Error(errorData.error || "Erro ao gerar pagamento");
+          }
           const paymentData = await checkoutResponse.json();
 
           // 4. Salva no Firestore (Inativa / Aguardando Pagamento)

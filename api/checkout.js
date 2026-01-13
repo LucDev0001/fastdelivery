@@ -56,6 +56,4 @@ export default async function handler(req, res) {
       .json({ url: response.data.url, id: response.data.id });
   } catch (error) {
     console.error("Erro Abacate Pay:", error.response?.data || error.message);
-    return res.status(500).json({ error: "Erro ao gerar pagamento." });
-  }
-}
+    return res.status(50
