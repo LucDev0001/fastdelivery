@@ -7,6 +7,10 @@ export default async function handler(req, res) {
 
   const { plan, name, email, cpf, phone, key } = req.body;
 
+  // Sanitização (remove caracteres não numéricos para evitar erro na API)
+  const cleanCpf = cpf ? cpf.replace(/\D/g, "") : "";
+  const cleanPhone = phone ? phone.replace(/\D/g, "") : "";
+
   // Defina os valores em centavos (R$ 99,00 = 9900)
   const amount = plan === "anual" ? 99000 : 9900;
   const title =
@@ -34,8 +38,8 @@ export default async function handler(req, res) {
         customer: {
           name: name,
           email: email,
-          taxId: cpf, // CPF/CNPJ
-          phone: phone,
+          taxId: cleanCpf, // CPF/CNPJ
+          phone: cleanPhone,
         },
         description: title,
         frequency: plan === "anual" ? "YEARLY" : "MONTHLY", // Se for assinatura recorrente
@@ -56,4 +60,10 @@ export default async function handler(req, res) {
       .json({ url: response.data.url, id: response.data.id });
   } catch (error) {
     console.error("Erro Abacate Pay:", error.response?.data || error.message);
-    return res.status(50
+    const errorMessage =
+      error.response?.data?.error ||
+      error.message ||
+      "Erro ao gerar pagamento.";
+    return res.status(500).json({ error: errorMessage });
+  }
+}
