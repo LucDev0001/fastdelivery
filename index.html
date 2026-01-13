@@ -590,11 +590,12 @@
                 cancelamento
               </li>
             </ul>
-            <a
-              href="#contato"
-              class="block w-full bg-[#EA1D2C] text-white px-8 py-3 rounded-full font-bold hover:bg-[#c91b29] transition"
-              >Contratar Agora</a
+            <button
+              onclick="iniciarCheckout('mensal')"
+              class="block w-full bg-[#EA1D2C] text-white px-8 py-3 rounded-full font-bold hover:bg-[#c91b29] transition shadow-lg"
             >
+              Contratar Agora
+            </button>
           </div>
 
           <!-- Plano Anual -->
@@ -630,11 +631,12 @@
                 <strong>12 meses pelo preço de 10</strong>
               </li>
             </ul>
-            <a
-              href="#contato"
-              class="block w-full bg-white text-[#EA1D2C] px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition"
-              >Quero o Desconto Anual</a
+            <button
+              onclick="iniciarCheckout('anual')"
+              class="block w-full bg-white text-[#EA1D2C] px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition shadow-lg"
             >
+              Quero o Desconto Anual
+            </button>
           </div>
         </div>
       </div>
@@ -1076,6 +1078,79 @@
           timer: 3000,
           showConfirmButton: false,
         });
+      }
+
+      async function iniciarCheckout(plano) {
+        const valor = plano === "anual" ? "R$ 990,00" : "R$ 99,00";
+
+        const { value: formValues } = await Swal.fire({
+          title: `Assinar Plano ${
+            plano.charAt(0).toUpperCase() + plano.slice(1)
+          }`,
+          html: `
+            <p class="mb-4 text-gray-600">Preencha seus dados para gerar o pagamento (${valor})</p>
+            <input id="swal-name" class="swal2-input" placeholder="Nome Completo">
+            <input id="swal-email" class="swal2-input" placeholder="E-mail">
+            <input id="swal-cpf" class="swal2-input" placeholder="CPF ou CNPJ">
+            <input id="swal-phone" class="swal2-input" placeholder="Telefone (WhatsApp)">
+          `,
+          focusConfirm: false,
+          showCancelButton: true,
+          confirmButtonText: "Ir para Pagamento",
+          confirmButtonColor: "#EA1D2C",
+          cancelButtonText: "Cancelar",
+          preConfirm: () => {
+            return {
+              name: document.getElementById("swal-name").value,
+              email: document.getElementById("swal-email").value,
+              cpf: document.getElementById("swal-cpf").value,
+              phone: document.getElementById("swal-phone").value,
+              plan: plano,
+            };
+          },
+        });
+
+        if (formValues) {
+          if (!formValues.name || !formValues.email || !formValues.cpf) {
+            return Swal.fire(
+              "Erro",
+              "Por favor preencha todos os campos.",
+              "error"
+            );
+          }
+
+          Swal.fire({
+            title: "Gerando pagamento...",
+            text: "Aguarde um momento",
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+
+          try {
+            const response = await fetch("/api/checkout", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formValues),
+            });
+
+            const data = await response.json();
+
+            if (data.url) {
+              window.location.href = data.url; // Redireciona para o Abacate Pay
+            } else {
+              throw new Error("URL de pagamento não retornada");
+            }
+          } catch (error) {
+            console.error(error);
+            Swal.fire(
+              "Erro",
+              "Não foi possível gerar o pagamento. Tente novamente.",
+              "error"
+            );
+          }
+        }
       }
     </script>
 
