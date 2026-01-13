@@ -497,77 +497,77 @@
         .getElementById("add-license-form")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
-          
+
           const btn = e.target.querySelector("button[type=submit]");
           const originalText = btn.innerText;
           btn.innerText = "Gerando Link de Pagamento...";
           btn.disabled = true;
 
           try {
-          // 1. Gera a chave localmente
-          const key = `FAST-${Math.random()
-            .toString(36)
-            .substr(2, 4)
-            .toUpperCase()}-${Math.random()
-            .toString(36)
-            .substr(2, 4)
-            .toUpperCase()}-${Math.random()
-            .toString(36)
-            .substr(2, 4)
-            .toUpperCase()}`;
+            // 1. Gera a chave localmente
+            const key = `FAST-${Math.random()
+              .toString(36)
+              .substr(2, 4)
+              .toUpperCase()}-${Math.random()
+              .toString(36)
+              .substr(2, 4)
+              .toUpperCase()}-${Math.random()
+              .toString(36)
+              .substr(2, 4)
+              .toUpperCase()}`;
 
-          // 2. Coleta dados do formulário
-          const storeName = document.getElementById("store-name").value;
-          const companyName = document.getElementById("company-name").value;
-          const cnpj = document.getElementById("cnpj").value;
-          const email = document.getElementById("client-contact").value;
-          const phone = document.getElementById("client-phone").value;
-          const planType = document.getElementById("plan-type").value;
-          
-          // 3. Chama a API para gerar o Link de Pagamento
-          const checkoutResponse = await fetch('/api/checkout', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
+            // 2. Coleta dados do formulário
+            const storeName = document.getElementById("store-name").value;
+            const companyName = document.getElementById("company-name").value;
+            const cnpj = document.getElementById("cnpj").value;
+            const email = document.getElementById("client-contact").value;
+            const phone = document.getElementById("client-phone").value;
+            const planType = document.getElementById("plan-type").value;
+
+            // 3. Chama a API para gerar o Link de Pagamento
+            const checkoutResponse = await fetch("/api/checkout", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
                 name: companyName || storeName,
                 email: email,
                 cpf: cnpj,
                 plan: planType,
                 phone: phone,
-                key: key // Envia a chave para vincular ao redirecionamento
-            })
-          });
+                key: key, // Envia a chave para vincular ao redirecionamento
+              }),
+            });
 
-          if (!checkoutResponse.ok) {
-            const errorData = await checkoutResponse.json().catch(() => ({}));
-            throw new Error(errorData.error || "Erro ao gerar pagamento");
-          }
-          const paymentData = await checkoutResponse.json();
+            if (!checkoutResponse.ok) {
+              const errorData = await checkoutResponse.json().catch(() => ({}));
+              throw new Error(errorData.error || "Erro ao gerar pagamento");
+            }
+            const paymentData = await checkoutResponse.json();
 
-          // 4. Salva no Firestore (Inativa / Aguardando Pagamento)
-          const licenseData = {
-            storeName: storeName,
-            companyName: companyName,
-            cnpj: cnpj,
-            address: document.getElementById("address").value,
-            storeUrl: document.getElementById("store-url").value,
-            clientContact: email,
-            planType: planType,
-            expiresAt: new Date(
-              document.getElementById("expires-at").value + "T23:59:59"
-            ),
-            createdAt: serverTimestamp(),
-            key: key,
-            paymentId: paymentData.id, // ID do Abacate Pay para vincular
-            paymentLink: paymentData.url,
-            active: false, // Começa inativa
-            status: 'aguardando_pagamento'
-          };
+            // 4. Salva no Firestore (Inativa / Aguardando Pagamento)
+            const licenseData = {
+              storeName: storeName,
+              companyName: companyName,
+              cnpj: cnpj,
+              address: document.getElementById("address").value,
+              storeUrl: document.getElementById("store-url").value,
+              clientContact: email,
+              planType: planType,
+              expiresAt: new Date(
+                document.getElementById("expires-at").value + "T23:59:59"
+              ),
+              createdAt: serverTimestamp(),
+              key: key,
+              paymentId: paymentData.id, // ID do Abacate Pay para vincular
+              paymentLink: paymentData.url,
+              active: false, // Começa inativa
+              status: "aguardando_pagamento",
+            };
 
-          await addDoc(collection(db, "licenses"), licenseData);
+            await addDoc(collection(db, "licenses"), licenseData);
 
-          const keyContainer = document.getElementById("generated-key");
-          keyContainer.innerHTML = `
+            const keyContainer = document.getElementById("generated-key");
+            keyContainer.innerHTML = `
             <div class="flex flex-col gap-4 text-left">
                 <div class="bg-yellow-50 p-3 rounded border border-yellow-200">
                     <p class="font-bold text-yellow-800"><i class="fas fa-exclamation-triangle"></i> Licença criada (Inativa)</p>
@@ -589,11 +589,10 @@
                 </div>
             </div>
           `;
-          keyContainer.classList.remove("hidden");
+            keyContainer.classList.remove("hidden");
 
-          e.target.reset();
-          loadLicenses();
-
+            e.target.reset();
+            loadLicenses();
           } catch (error) {
             console.error(error);
             alert("Erro ao gerar licença: " + error.message);
@@ -651,19 +650,25 @@
         tableBody.innerHTML = "";
 
         // Base URL para o contrato
-        const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/contrato.html';
+        const baseUrl =
+          window.location.origin +
+          window.location.pathname.substring(
+            0,
+            window.location.pathname.lastIndexOf("/")
+          ) +
+          "/contrato.html";
 
         licenses.forEach((data) => {
           const expiresDateObj = data.expiresAt.toDate();
           const expiresDate = expiresDateObj.toLocaleDateString("pt-BR");
           const isExpired = expiresDateObj < new Date();
           const contractUrl = `${baseUrl}?key=${data.key}`;
-          
-          const contractStatus = data.contractAccepted 
+
+          const contractStatus = data.contractAccepted
             ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Assinado</span>'
             : '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pendente</span>';
-          
-          const paymentStatus = data.active 
+
+          const paymentStatus = data.active
             ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Ativa</span>'
             : '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
 
@@ -726,7 +731,8 @@
 
         document.getElementById("edit-id").value = id;
         document.getElementById("edit-store-name").value = license.storeName;
-        document.getElementById("edit-company-name").value = license.companyName || "";
+        document.getElementById("edit-company-name").value =
+          license.companyName || "";
         document.getElementById("edit-cnpj").value = license.cnpj || "";
         document.getElementById("edit-store-url").value = license.storeUrl;
         document.getElementById("edit-client-contact").value =
@@ -984,12 +990,6 @@
           await updateDoc(doc(db, "tickets", ticketId), {
             status: "closed",
             updatedAt: serverTimestamp(),
-          });
-        }
-      }
-    </script>
-  </body>
-</html>
           });
         }
       }
