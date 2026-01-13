@@ -151,7 +151,9 @@
                 "O login por E-mail/Senha não está ativado no Firebase Console.";
             } else if (
               error.code === "auth/user-not-found" ||
-              error.code === "auth/wrong-password"
+              error.code === "auth/wrong-password" ||
+              error.code === "auth/invalid-login-credentials" ||
+              error.code === "auth/invalid-credential"
             ) {
               msg = "E-mail ou senha incorretos.";
             } else {
