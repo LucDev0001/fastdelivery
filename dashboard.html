@@ -544,8 +544,10 @@
                 const errorData = await checkoutResponse.json();
                 errorMsg = errorData.error || errorMsg;
               } catch (e) {
-                // Se falhar ao ler JSON, é um erro de infraestrutura (Vercel 500/502/504 HTML)
-                errorMsg = `Erro no Servidor (${checkoutResponse.status}). Verifique as Variáveis de Ambiente no Vercel.`;
+                // Tenta ler o texto do erro para logar no console
+                const errorText = await checkoutResponse.text().catch(() => "Sem resposta de texto");
+                console.error("Erro Crítico do Servidor (HTML/Texto):", errorText);
+                errorMsg = `Erro no Servidor (${checkoutResponse.status}). Verifique o console do navegador para detalhes.`;
               }
               throw new Error(errorMsg);
             }
