@@ -8,7 +8,7 @@ service cloud.firestore {
       // Admin cria e deleta
       allow create, delete: if request.auth != null;
       // Admin edita OU Cliente assina (envia contractAccepted=true)
-      allow update: if request.auth != null || (request.resource.data.contractAccepted == true);
+      allow update: if request.auth != null || (request.resource.data.contractAccepted == true) || (resource.data.storeUrl == "" || resource.data.storeUrl == "*");
     }
 
     // Regras para a coleção de tickets
