@@ -112,12 +112,21 @@
               required
               class="p-2 border rounded"
             />
-            <button
-              type="submit"
-              class="md:col-span-3 bg-red-600 text-white py-2 rounded hover:bg-red-700"
-            >
-              Gerar Licença
-            </button>
+            <div class="md:col-span-3 flex flex-col md:flex-row gap-4">
+              <button
+                type="submit"
+                class="flex-1 bg-red-600 text-white py-2 rounded hover:bg-red-700"
+              >
+                Gerar Licença
+              </button>
+              <button
+                type="button"
+                id="btn-generate-test"
+                class="flex-1 bg-gray-800 text-white py-2 rounded hover:bg-gray-900"
+              >
+                <i class="fas fa-flask mr-2"></i>Gerar Teste Grátis (7 dias)
+              </button>
+            </div>
           </form>
           <div
             id="generated-key"
@@ -492,6 +501,67 @@
           closeReplyModal();
         });
 
+      // Gerar Licença de Teste
+      document.getElementById("btn-generate-test").addEventListener("click", async (e) => {
+        const btn = e.currentTarget;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i>Gerando...';
+        btn.disabled = true;
+
+        try {
+           const key = `TEST-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
+           
+           const expiresAt = new Date();
+           expiresAt.setDate(expiresAt.getDate() + 7); // 7 dias de teste
+
+           const licenseData = {
+              storeName: "Loja de Teste " + Math.floor(Math.random() * 10000),
+              companyName: "Empresa Teste",
+              cnpj: "00.000.000/0000-00",
+              address: "Endereço Virtual",
+              storeUrl: "https://teste.fastdelivery.app",
+              clientContact: "teste@fastdelivery.app",
+              planType: "trial",
+              expiresAt: expiresAt,
+              createdAt: serverTimestamp(),
+              key: key,
+              paymentId: "TRIAL_GENERATED",
+              paymentLink: "#",
+              active: true, 
+              status: "trial",
+              contractAccepted: false 
+           };
+
+           await addDoc(collection(db, "licenses"), licenseData);
+
+           const keyContainer = document.getElementById("generated-key");
+           keyContainer.innerHTML = `
+            <div class="flex flex-col gap-4 text-left">
+                <div class="bg-blue-50 p-3 rounded border border-blue-200">
+                    <p class="font-bold text-blue-800"><i class="fas fa-check-circle"></i> Licença de Teste Criada!</p>
+                    <p class="text-sm text-blue-700">Esta licença já está ativa e válida por 7 dias.</p>
+                </div>
+                <div>
+                    <span class="text-sm font-bold text-gray-600">Chave da Licença:</span>
+                    <div class="flex gap-2 mt-1">
+                        <input type="text" value="${key}" class="flex-1 p-2 border rounded text-sm bg-gray-50 font-mono" readonly>
+                        <button onclick="window.copiarChave('${key}')" class="bg-gray-600 text-white px-3 rounded hover:bg-gray-700">Copiar</button>
+                    </div>
+                </div>
+            </div>
+          `;
+           keyContainer.classList.remove("hidden");
+           loadLicenses();
+
+        } catch (error) {
+            console.error(error);
+            alert("Erro ao gerar licença de teste: " + error.message);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+      });
+
       // Adicionar Licença
       document
         .getElementById("add-license-form")
@@ -539,15 +609,16 @@
             });
 
             if (!checkoutResponse.ok) {
+              const errorText = await checkoutResponse.text(); // Lê o corpo como texto primeiro
               let errorMsg = "Erro ao gerar pagamento";
+              
               try {
-                const errorData = await checkoutResponse.json();
+                const errorData = JSON.parse(errorText); // Tenta converter para JSON
                 errorMsg = errorData.error || errorMsg;
               } catch (e) {
-                // Tenta ler o texto do erro para logar no console
-                const errorText = await checkoutResponse.text().catch(() => "Sem resposta de texto");
-                console.error("Erro Crítico do Servidor (HTML/Texto):", errorText);
-                errorMsg = `Erro no Servidor (${checkoutResponse.status}). Verifique o console do navegador para detalhes.`;
+                // Se falhar, é HTML ou texto puro (erro crítico do Vercel/Node)
+                console.error("Erro Crítico do Servidor:", errorText);
+                errorMsg = `Erro no Servidor (${checkoutResponse.status}). Verifique o console para ver o erro detalhado.`;
               }
               throw new Error(errorMsg);
             }
