@@ -539,8 +539,15 @@
             });
 
             if (!checkoutResponse.ok) {
-              const errorData = await checkoutResponse.json().catch(() => ({}));
-              throw new Error(errorData.error || "Erro ao gerar pagamento");
+              let errorMsg = "Erro ao gerar pagamento";
+              try {
+                const errorData = await checkoutResponse.json();
+                errorMsg = errorData.error || errorMsg;
+              } catch (e) {
+                // Se não for JSON, provavelmente é erro do servidor (404, 405 HTML)
+                errorMsg = `Erro ${checkoutResponse.status}: ${checkoutResponse.statusText}. Verifique se a API está rodando corretamente (use 'vercel dev').`;
+              }
+              throw new Error(errorMsg);
             }
             const paymentData = await checkoutResponse.json();
 
