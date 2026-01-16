@@ -584,15 +584,21 @@
         tableBody.innerHTML = "";
 
         // Base URL para o contrato
-        const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/')) + '/contrato.html';
+        const baseUrl =
+          window.location.origin +
+          window.location.pathname.substring(
+            0,
+            window.location.pathname.lastIndexOf("/")
+          ) +
+          "/contrato.html";
 
         licenses.forEach((data) => {
           const expiresDateObj = data.expiresAt.toDate();
           const expiresDate = expiresDateObj.toLocaleDateString("pt-BR");
           const isExpired = expiresDateObj < new Date();
           const contractUrl = `${baseUrl}?key=${data.key}`;
-          
-          const contractStatus = data.contractAccepted 
+
+          const contractStatus = data.contractAccepted
             ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Assinado</span>'
             : '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pendente</span>';
 
@@ -655,7 +661,8 @@
 
         document.getElementById("edit-id").value = id;
         document.getElementById("edit-store-name").value = license.storeName;
-        document.getElementById("edit-company-name").value = license.companyName || "";
+        document.getElementById("edit-company-name").value =
+          license.companyName || "";
         document.getElementById("edit-cnpj").value = license.cnpj || "";
         document.getElementById("edit-store-url").value = license.storeUrl;
         document.getElementById("edit-client-contact").value =
@@ -913,12 +920,6 @@
           await updateDoc(doc(db, "tickets", ticketId), {
             status: "closed",
             updatedAt: serverTimestamp(),
-          });
-        }
-      }
-    </script>
-  </body>
-</html>
           });
         }
       }

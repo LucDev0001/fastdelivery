@@ -1,0 +1,7 @@
+{
+  "name": "fastdelivery-backend",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "firebase-admin": "^11.11.0"
+  }
+}
