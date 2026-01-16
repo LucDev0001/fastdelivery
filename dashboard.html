@@ -544,8 +544,8 @@
                 const errorData = await checkoutResponse.json();
                 errorMsg = errorData.error || errorMsg;
               } catch (e) {
-                // Se não for JSON, provavelmente é erro do servidor (404, 405 HTML)
-                errorMsg = `Erro ${checkoutResponse.status}: ${checkoutResponse.statusText}. Verifique se a API está rodando corretamente (use 'vercel dev').`;
+                // Se falhar ao ler JSON, é um erro de infraestrutura (Vercel 500/502/504 HTML)
+                errorMsg = `Erro no Servidor (${checkoutResponse.status}). Verifique as Variáveis de Ambiente no Vercel.`;
               }
               throw new Error(errorMsg);
             }
@@ -602,7 +602,11 @@
             loadLicenses();
           } catch (error) {
             console.error(error);
-            alert("Erro ao gerar licença: " + error.message);
+            let msg = error.message;
+            if (msg === "Failed to fetch") {
+                msg = "Não foi possível conectar ao servidor. Verifique se o backend (Vercel) está rodando (use 'vercel dev').";
+            }
+            alert("Erro ao gerar licença: " + msg);
           } finally {
             btn.innerText = originalText;
             btn.disabled = false;
@@ -1002,4 +1006,5 @@
       }
     </script>
   </body>
+</html>
 </html>
