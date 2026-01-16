@@ -11,88 +11,158 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Courier+Prime&display=swap");
       body {
         font-family: "Inter", sans-serif;
       }
-      .contrato-box {
-        white-space: pre-wrap;
-        font-family: "Courier New", Courier, monospace;
-        font-size: 0.85rem;
-        line-height: 1.5;
+      .contract-text {
+        font-family: "Courier Prime", monospace;
       }
     </style>
   </head>
   <body class="bg-gray-100 min-h-screen py-10 px-4">
     <div
-      class="max-w-4xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden"
+      class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden"
     >
+      <!-- Header -->
       <div class="bg-[#EA1D2C] p-6 text-white text-center">
-        <h1 class="text-2xl font-bold">Contrato de Prestação de Serviços</h1>
-        <p class="opacity-90 text-sm mt-1">FastDelivery Sistemas</p>
+        <h1 class="text-2xl font-bold uppercase tracking-wider">
+          Contrato de Licenciamento
+        </h1>
+        <p class="text-sm opacity-90 mt-1">FastDelivery Software</p>
       </div>
 
-      <div id="loader" class="p-10 text-center">
-        <i class="fas fa-circle-notch fa-spin text-4xl text-gray-400"></i>
-        <p class="mt-4 text-gray-500">Carregando contrato...</p>
+      <!-- Loading -->
+      <div id="loading" class="p-20 text-center">
+        <i class="fas fa-circle-notch fa-spin text-4xl text-[#EA1D2C] mb-4"></i>
+        <p class="text-gray-600">Carregando dados do contrato...</p>
       </div>
 
-      <div id="content" class="hidden">
-        <div class="p-6 border-b border-gray-100 bg-gray-50">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div>
-              <span class="block text-xs text-gray-500 uppercase"
-                >Contratante</span
-              >
-              <span class="font-bold text-gray-800" id="store-name">...</span>
-            </div>
-            <div>
-              <span class="block text-xs text-gray-500 uppercase">Plano</span>
-              <span class="font-bold text-gray-800" id="plan-type">...</span>
-            </div>
-          </div>
+      <!-- Erro / Bloqueio -->
+      <div id="error-screen" class="hidden p-12 text-center">
+        <div
+          class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6"
+        >
+          <i class="fas fa-lock text-3xl text-red-600"></i>
+        </div>
+        <h2 id="error-title" class="text-2xl font-bold text-gray-800 mb-2">
+          Acesso Bloqueado
+        </h2>
+        <p id="error-msg" class="text-gray-600 mb-6">
+          Não foi possível carregar o contrato.
+        </p>
+        <button
+          id="retry-btn"
+          onclick="location.reload()"
+          class="hidden bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition mb-4"
+        >
+          Verificar Novamente
+        </button>
+        <a href="index.html" class="text-[#EA1D2C] font-bold hover:underline"
+          >Voltar ao Início</a
+        >
+      </div>
+
+      <!-- Conteúdo do Contrato -->
+      <div id="contract-content" class="hidden">
+        <!-- Área do Texto -->
+        <div
+          class="p-8 md:p-12 bg-gray-50 border-b border-gray-200 h-96 overflow-y-auto text-sm text-gray-800 leading-relaxed contract-text shadow-inner"
+          id="contract-body"
+        >
+          <!-- O texto será injetado via JS -->
         </div>
 
+        <!-- Formulário de Assinatura -->
         <div class="p-8 bg-white">
           <div
-            id="contract-text"
-            class="contrato-box border p-6 rounded bg-gray-50 text-gray-700 h-96 overflow-y-auto mb-6"
-          ></div>
-
-          <div
-            id="action-area"
-            class="text-center pt-4 border-t border-gray-100"
+            class="flex items-start gap-4 mb-6 p-4 bg-blue-50 rounded-lg border border-blue-100"
           >
-            <div class="flex items-center justify-center gap-2 mb-4">
-              <input
-                type="checkbox"
-                id="check-terms"
-                class="w-5 h-5 text-[#EA1D2C] rounded focus:ring-[#EA1D2C]"
-              />
-              <label for="check-terms" class="text-gray-700 select-none"
-                >Li e concordo com os termos do contrato acima.</label
-              >
-            </div>
-            <button
-              onclick="signContract()"
-              class="bg-green-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-green-700 transition shadow-lg transform hover:-translate-y-0.5"
-            >
-              Assinar Digitalmente
-            </button>
-          </div>
-
-          <div
-            id="signed-area"
-            class="hidden text-center py-6 bg-green-50 rounded-lg border border-green-200"
-          >
-            <i class="fas fa-check-circle text-4xl text-green-600 mb-2"></i>
-            <h3 class="text-xl font-bold text-green-800">Contrato Assinado</h3>
-            <p class="text-green-700 text-sm mt-1">
-              Este documento já foi aceito em
-              <span id="signed-date" class="font-bold"></span>.
+            <i class="fas fa-info-circle text-blue-600 mt-1"></i>
+            <p class="text-sm text-blue-800">
+              Ao assinar este contrato digitalmente, sua licença será
+              <strong>ativada imediatamente</strong> e você receberá acesso
+              total ao sistema.
             </p>
           </div>
+
+          <form id="sign-form" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2"
+                  >Nome do Responsável</label
+                >
+                <input
+                  type="text"
+                  id="signer-name"
+                  required
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EA1D2C] focus:border-[#EA1D2C] outline-none transition"
+                  placeholder="Digite seu nome completo"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2"
+                  >CPF do Responsável</label
+                >
+                <input
+                  type="text"
+                  id="signer-cpf"
+                  required
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EA1D2C] focus:border-[#EA1D2C] outline-none transition"
+                  placeholder="000.000.000-00"
+                />
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="terms-check"
+                required
+                class="w-5 h-5 text-[#EA1D2C] border-gray-300 rounded focus:ring-[#EA1D2C]"
+              />
+              <label for="terms-check" class="text-gray-700 text-sm">
+                Li e concordo com todos os termos do contrato acima descrito.
+              </label>
+            </div>
+
+            <button
+              type="submit"
+              class="w-full bg-[#EA1D2C] text-white font-bold py-4 rounded-xl hover:bg-[#c91b29] transition shadow-lg transform hover:-translate-y-1 flex justify-center items-center gap-2"
+            >
+              <i class="fas fa-file-signature"></i> Assinar e Ativar Licença
+            </button>
+          </form>
         </div>
+      </div>
+
+      <!-- Sucesso -->
+      <div id="success-screen" class="hidden p-12 text-center">
+        <div
+          class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"
+        >
+          <i class="fas fa-check text-4xl text-green-600"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">
+          Contrato Assinado!
+        </h2>
+        <p class="text-gray-600 mb-8">
+          Sua licença foi ativada com sucesso. Você já pode utilizar o sistema.
+        </p>
+
+        <div class="bg-gray-100 p-4 rounded-lg mb-8 max-w-md mx-auto">
+          <p class="text-xs text-gray-500 uppercase font-bold mb-1">
+            Sua Chave de Acesso
+          </p>
+          <p
+            id="final-key"
+            class="font-mono text-xl font-bold text-gray-900 break-all select-all"
+          ></p>
+        </div>
+
+        <p class="text-sm text-gray-500">
+          Uma cópia deste contrato foi registrada em nosso sistema.
+        </p>
       </div>
     </div>
 
@@ -105,7 +175,6 @@
         where,
         getDocs,
         updateDoc,
-        doc,
         serverTimestamp,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
@@ -123,12 +192,36 @@
 
       const urlParams = new URLSearchParams(window.location.search);
       const key = urlParams.get("key");
-      let docId = null;
+      let licenseDoc = null;
+      let licenseData = null;
 
-      async function loadContract() {
+      // Template do Contrato (Texto Puro)
+      const contractTemplate = `CONTRATO DE LICENCIAMENTO DE USO DE SOFTWARE E PRESTAÇÃO DE SERVIÇOS
+
+IDENTIFICAÇÃO DAS PARTES
+
+CONTRATADA: Luciano Severino dos Santos, com sede em Rua Dois de Maio, 413 - Sampaio, Rio de Janeiro - RJ, CEP 20.961-160, inscrita no CNPJ sob o nº 55.003.035/0001-76.
+
+CONTRATANTE: {{COMPANY_NAME}}, com sede em {{ADDRESS}}, inscrita no CNPJ sob o nº {{CNPJ}}.
+
+CLÁUSULA 1ª - DO OBJETO DO CONTRATO
+1.1. O presente contrato tem como objeto a licença de uso do software "FastDelivery".
+
+CLÁUSULA 2ª - DO PREÇO
+2.1. A CONTRATANTE pagará o valor de {{PRICE}} referente ao plano {{PLAN_TYPE}}.
+
+CLÁUSULA 3ª - DA VIGÊNCIA
+3.1. O contrato é válido até {{EXPIRES_AT}}, renovável automaticamente mediante pagamento.
+
+Rio de Janeiro, {{CURRENT_DATE}}.
+`;
+
+      async function init() {
         if (!key) {
-          document.getElementById("loader").innerHTML =
-            '<p class="text-red-500">Chave de licença inválida.</p>';
+          showError(
+            "Chave Inválida",
+            "Nenhuma chave de licença foi fornecida."
+          );
           return;
         }
 
@@ -137,155 +230,138 @@
           const snapshot = await getDocs(q);
 
           if (snapshot.empty) {
-            document.getElementById("loader").innerHTML =
-              '<p class="text-red-500">Licença não encontrada.</p>';
+            showError(
+              "Licença não encontrada",
+              "Verifique se o link está correto."
+            );
             return;
           }
 
-          const docSnap = snapshot.docs[0];
-          const data = docSnap.data();
-          docId = docSnap.id;
+          licenseDoc = snapshot.docs[0];
+          licenseData = licenseDoc.data();
 
-          document.getElementById("store-name").innerText = data.storeName;
-          document.getElementById("plan-type").innerText =
-            data.planType === "anual" ? "Anual" : "Mensal";
-
-          // Carrega template do contrato (simulado aqui, idealmente viria de um arquivo ou DB)
-          const response = await fetch("contrato.txt");
-          let text = await response.text();
-
-          text = text.replace(
-            /\[NOME DA EMPRESA DO CLIENTE\]/g,
-            data.companyName || data.storeName
-          );
-          text = text.replace(
-            /\[CNPJ DO CLIENTE\]/g,
-            data.cnpj || "Não informado"
-          );
-          text = text.replace(
-            /\[ENDEREÇO DO CLIENTE\]/g,
-            data.address || "Não informado"
-          );
-          text = text.replace(
-            /\[NOME DO REPRESENTANTE LEGAL\]/g,
-            data.clientContact ||
-              data.ownerName ||
-              data.contactName ||
-              "Representante Legal"
-          );
-          text = text.replace(
-            /\[VALOR MENSAL\]/g,
-            data.planType === "anual" ? "990,00" : "99,00"
-          );
-          // Adicione mais replaces conforme necessário
-
-          const valorExtenso =
-            data.planType === "anual"
-              ? "novecentos e noventa reais"
-              : "noventa e nove reais";
-          text = text.replace(/\[VALOR POR EXTENSO\]/g, valorExtenso);
-
-          // Pega o dia do vencimento da data de expiração
-          const diaVencimento = data.expiresAt
-            ? data.expiresAt.toDate().getDate()
-            : "10";
-          text = text.replace(/\[DIA DO VENCIMENTO\]/g, diaVencimento);
-
-          // Substitui a data atual
-          const dataAtual = new Date().toLocaleDateString("pt-BR", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          });
-          text = text.replace(/\[DATA ATUAL\]/g, dataAtual);
-
-          if (data.contractAccepted) {
-            document.getElementById("action-area").classList.add("hidden");
-            document.getElementById("signed-area").classList.remove("hidden");
-            if (data.acceptedAt) {
-              const signedDate = data.acceptedAt.toDate().toLocaleString();
-              document.getElementById("signed-date").innerText = signedDate;
-
-              text += `\n\n
-================================================================================
-REGISTRO DE ASSINATURA DIGITAL
-================================================================================
-
-Este contrato foi aceito e assinado digitalmente.
-
-CONTRATADA:
-Luciano Severino dos Santos
-CNPJ: 55.003.035/0001-76
-
-CONTRATANTE:
-${data.companyName || data.storeName}
-CNPJ: ${data.cnpj || "Não informado"}
-Responsável: ${
-                data.clientContact ||
-                data.ownerName ||
-                data.contactName ||
-                "Representante Legal"
-              }
-
-DADOS DA ASSINATURA:
-Data/Hora: ${signedDate}
-IP de Origem: ${data.ip || "Não registrado"}
-ID da Licença: ${data.key}
-================================================================================`;
-            }
+          // VERIFICAÇÃO DE PAGAMENTO
+          if (licenseData.status !== "paid" && !licenseData.active) {
+            document.getElementById("loading").classList.add("hidden");
+            document.getElementById("error-screen").classList.remove("hidden");
+            document.getElementById("error-title").innerText =
+              "Confirmando Pagamento...";
+            document.getElementById("error-msg").innerHTML =
+              "Estamos aguardando a confirmação do banco.<br>Se você acabou de pagar, aguarde alguns segundos e clique abaixo.";
+            document.getElementById("retry-btn").classList.remove("hidden");
+            // Esconde o botão de voltar ao início para não confundir
+            document.querySelector("#error-screen a").classList.add("hidden");
+            return;
           }
 
-          document.getElementById("contract-text").innerText = text;
-          document.getElementById("loader").classList.add("hidden");
-          document.getElementById("content").classList.remove("hidden");
+          // Se já assinou
+          if (licenseData.contractAccepted) {
+            showSuccess();
+            return;
+          }
+
+          renderContract();
         } catch (error) {
           console.error(error);
-          document.getElementById("loader").innerHTML =
-            '<p class="text-red-500">Erro ao carregar dados.</p>';
+          showError(
+            "Erro no Sistema",
+            "Ocorreu um erro ao carregar os dados. Tente novamente."
+          );
         }
       }
 
-      window.signContract = async () => {
-        if (!document.getElementById("check-terms").checked) {
-          return Swal.fire(
-            "Atenção",
-            "Você precisa marcar a caixa concordando com os termos.",
-            "warning"
-          );
-        }
+      function renderContract() {
+        document.getElementById("loading").classList.add("hidden");
+        document.getElementById("contract-content").classList.remove("hidden");
 
-        try {
-          await updateDoc(doc(db, "licenses", docId), {
-            contractAccepted: true,
-            acceptedAt: serverTimestamp(),
-            ip: "Client Side Sign",
-          });
+        // Formata valores
+        const price =
+          licenseData.planType === "anual"
+            ? "R$ 990,00 (Anual)"
+            : "R$ 99,00 (Mensal)";
+        const expires = licenseData.expiresAt
+          ? new Date(licenseData.expiresAt.toDate()).toLocaleDateString("pt-BR")
+          : "N/A";
+        const today = new Date().toLocaleDateString("pt-BR");
 
-          document.getElementById("action-area").classList.add("hidden");
-          document.getElementById("signed-area").classList.remove("hidden");
-          document.getElementById("signed-date").innerText =
-            new Date().toLocaleString();
+        // Substitui placeholders
+        let text = contractTemplate
+          .replace(
+            "{{COMPANY_NAME}}",
+            licenseData.companyName || licenseData.storeName
+          )
+          .replace(
+            "{{ADDRESS}}",
+            licenseData.address || "Endereço não informado"
+          )
+          .replace("{{CNPJ}}", licenseData.cnpj || "Não informado")
+          .replace("{{PRICE}}", price)
+          .replace("{{PLAN_TYPE}}", licenseData.planType)
+          .replace("{{EXPIRES_AT}}", expires)
+          .replace("{{CURRENT_DATE}}", today);
 
-          Swal.fire("Sucesso", "Contrato assinado com sucesso!", "success");
-        } catch (error) {
-          console.error(error);
-          if (error.code === "permission-denied") {
-            Swal.fire(
-              "Erro de Permissão",
-              "O sistema não tem permissão para salvar. Verifique as Regras de Segurança do Firebase (Firestore Rules) para permitir a escrita na coleção 'licenses'.",
-              "error"
-            );
-          } else {
+        // Converte quebras de linha em HTML
+        document.getElementById("contract-body").innerHTML = text.replace(
+          /\n/g,
+          "<br>"
+        );
+      }
+
+      document
+        .getElementById("sign-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const btn = e.target.querySelector("button");
+          const originalText = btn.innerHTML;
+          btn.innerHTML =
+            '<i class="fas fa-circle-notch fa-spin"></i> Processando...';
+          btn.disabled = true;
+
+          const signerName = document.getElementById("signer-name").value;
+          const signerCpf = document.getElementById("signer-cpf").value;
+
+          try {
+            // ATIVAÇÃO DA LICENÇA
+            await updateDoc(licenseDoc.ref, {
+              contractAccepted: true,
+              active: true, // AQUI A CHAVE É ATIVADA
+              signedAt: serverTimestamp(),
+              signedBy: {
+                name: signerName,
+                cpf: signerCpf,
+                ip: "IP_CLIENTE", // Em produção idealmente pega via Cloud Function
+              },
+            });
+
+            showSuccess();
+          } catch (error) {
+            console.error(error);
             Swal.fire(
               "Erro",
-              "Não foi possível assinar: " + error.message,
+              "Não foi possível assinar o contrato. Tente novamente.",
               "error"
             );
+            btn.innerHTML = originalText;
+            btn.disabled = false;
           }
-        }
-      };
+        });
 
-      loadContract();
+      function showError(title, msg) {
+        document.getElementById("loading").classList.add("hidden");
+        document.getElementById("error-screen").classList.remove("hidden");
+        document.getElementById("error-title").innerText = title;
+        document.getElementById("error-msg").innerText = msg;
+      }
+
+      function showSuccess() {
+        document.getElementById("loading").classList.add("hidden");
+        document.getElementById("contract-content").classList.add("hidden");
+        document.getElementById("success-screen").classList.remove("hidden");
+        document.getElementById("final-key").innerText = licenseData.key;
+      }
+
+      init();
     </script>
   </body>
 </html>
