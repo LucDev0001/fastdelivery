@@ -18,6 +18,30 @@
       .contract-text {
         font-family: "Courier Prime", monospace;
       }
+      @media print {
+        .no-print,
+        #sign-form,
+        .bg-[#10B981] {
+          display: none !important;
+        }
+        body {
+          background: white;
+          padding: 0;
+        }
+        .max-w-4xl {
+          max-width: 100%;
+          box-shadow: none;
+        }
+        #contract-body {
+          height: auto;
+          overflow: visible;
+          border: none;
+          padding: 0;
+        }
+        #contract-content {
+          display: block !important;
+        }
+      }
     </style>
   </head>
   <body class="bg-gray-100 min-h-screen py-10 px-4">
@@ -65,6 +89,14 @@
 
       <!-- Conteúdo do Contrato -->
       <div id="contract-content" class="hidden">
+        <div class="flex justify-end px-8 pt-4 no-print">
+          <button
+            onclick="window.print()"
+            class="text-gray-600 hover:text-[#10B981] font-bold flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-lg transition"
+          >
+            <i class="fas fa-print"></i> Imprimir Contrato
+          </button>
+        </div>
         <!-- Área do Texto -->
         <div
           class="p-8 md:p-12 bg-gray-50 border-b border-gray-200 h-96 overflow-y-auto text-sm text-gray-800 leading-relaxed contract-text shadow-inner"
