@@ -6,11 +6,11 @@ export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
     "Access-Control-Allow-Methods",
-    "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT",
   );
   res.setHeader(
     "Access-Control-Allow-Headers",
-    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
   );
 
   // Responde imediatamente a requisições OPTIONS (Preflight do navegador)
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     // Verifica se a chave da API está configurada
     if (!process.env.ABACATE_PAY_TOKEN) {
       throw new Error(
-        "A chave ABACATE_PAY_TOKEN não está configurada nas Variáveis de Ambiente do Vercel."
+        "A chave ABACATE_PAY_TOKEN não está configurada nas Variáveis de Ambiente do Vercel.",
       );
     }
 
@@ -39,9 +39,7 @@ export default async function handler(req, res) {
     // Defina os valores em centavos (R$ 99,00 = 9900)
     const amount = plan === "anual" ? 99000 : 9900;
     const title =
-      plan === "anual"
-        ? "FastDelivery - Plano Anual"
-        : "FastDelivery - Plano Mensal";
+      plan === "anual" ? "VouFood - Plano Anual" : "VouFood - Plano Mensal";
 
     // URL base do seu site (Vercel preenche isso automaticamente)
     const baseUrl = `https://${req.headers.host}`;
@@ -49,7 +47,7 @@ export default async function handler(req, res) {
     // Se vier uma chave (fluxo do Dashboard), retorna para o contrato
     // Se não (fluxo do site), retorna para a página de sucesso genérica
     let returnUrl = `${baseUrl}/sucesso.html?email=${encodeURIComponent(
-      email
+      email,
     )}`;
     if (key) {
       returnUrl = `${baseUrl}/contrato.html?key=${key}`;
@@ -86,7 +84,7 @@ export default async function handler(req, res) {
           Authorization: `Bearer ${process.env.ABACATE_PAY_TOKEN}`,
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     return res

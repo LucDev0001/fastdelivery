@@ -1,19 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trazzi - Seu Delivery. Suas Regras.</title>
+    <title>VouFood - O Delivery que pede passagem.</title>
     <meta
       name="description"
-      content="Trazzi: O sistema de delivery que elimina taxas abusivas. Gestão completa, cardápio digital e app próprio para seu restaurante."
+      content="VouFood: O sistema ágil para quem não quer perder tempo. Tenha seu cardápio online, receba pedidos no WhatsApp e fidelize seus clientes."
     />
     <meta
       name="keywords"
       content="sistema delivery, gestão de restaurante, cardápio digital, app de delivery, sistema para pizzaria, sistema para hamburgueria"
     />
     <meta name="robots" content="index, follow" />
-    <meta name="author" content="Trazzi" />
+    <meta name="author" content="VouFood" />
     <link rel="canonical" href="https://fastdeliverysistema.netlify.app/" />
 
     <!-- Open Graph / Facebook -->
@@ -24,11 +24,11 @@
     />
     <meta
       property="og:title"
-      content="Trazzi - Seu Delivery. Suas Regras."
+      content="VouFood - O Delivery que pede passagem."
     />
     <meta
       property="og:description"
-      content="Livre-se das taxas abusivas com o Trazzi. Sistema completo para delivery com app próprio."
+      content="VouFood: O sistema ágil para quem não quer perder tempo. Tenha seu cardápio online, receba pedidos no WhatsApp e fidelize seus clientes."
     />
     <meta
       property="og:image"
@@ -43,11 +43,11 @@
     />
     <meta
       property="twitter:title"
-      content="Trazzi - Seu Delivery. Suas Regras."
+      content="VouFood - O Delivery que pede passagem."
     />
     <meta
       property="twitter:description"
-      content="Livre-se das taxas abusivas com o Trazzi. Sistema completo para delivery com app próprio."
+      content="VouFood: O sistema ágil para quem não quer perder tempo. Tenha seu cardápio online, receba pedidos no WhatsApp e fidelize seus clientes."
     />
     <meta
       property="twitter:image"
@@ -74,7 +74,7 @@
       {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "Trazzi",
+        "name": "VouFood",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Web",
         "offers": {
@@ -94,7 +94,9 @@
       .fade-in-up {
         opacity: 0;
         transform: translateY(30px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        transition:
+          opacity 0.6s ease-out,
+          transform 0.6s ease-out;
       }
 
       .fade-in-up.is-visible {
@@ -103,11 +105,8 @@
       }
 
       .hero-bg {
-        background-image: linear-gradient(
-            to right,
-            rgba(0, 0, 0, 0.7),
-            rgba(0, 0, 0, 0.5)
-          ),
+        background-image:
+          linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
           url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1974&auto=format&fit=crop");
         background-size: cover;
         background-position: center;
@@ -151,39 +150,47 @@
     </style>
   </head>
 
-  <body class="bg-slate-900 text-gray-100">
+  <body class="bg-gray-900 text-gray-100">
     <!-- Header -->
-    <header class="bg-slate-900/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-slate-800">
+    <header
+      class="bg-gray-900/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-800"
+    >
       <nav
         class="container mx-auto px-6 py-4 flex justify-between items-center"
       >
         <a
           href="#"
-          class="text-2xl font-bold text-[#F97316] flex items-center gap-2"
+          class="text-2xl font-bold text-[#10B981] flex items-center gap-2"
         >
-          <i class="fas fa-rocket"></i> Trazzi
+          <i class="fas fa-paper-plane"></i> VouFood
         </a>
         <div class="hidden md:flex items-center space-x-6">
-          <a href="#funcionalidades" class="text-gray-300 hover:text-[#F97316] transition"
+          <a
+            href="#funcionalidades"
+            class="text-gray-300 hover:text-[#10B981] transition"
             >Funcionalidades</a
           >
-          <a href="#preco" class="text-gray-300 hover:text-[#F97316] transition">Preço</a>
-          <a href="#faq" class="text-gray-300 hover:text-[#F97316] transition">Dúvidas</a>
+          <a href="#preco" class="text-gray-300 hover:text-[#10B981] transition"
+            >Preço</a
+          >
+          <a href="#faq" class="text-gray-300 hover:text-[#10B981] transition"
+            >Dúvidas</a
+          >
           <a
             href="login.html"
-            class="text-gray-300 hover:text-[#F97316] font-medium transition"
+            class="text-gray-300 hover:text-[#10B981] font-medium transition"
             >Login</a
           >
           <a
             href="#contato"
-            class="bg-[#F97316] text-white px-4 py-2 rounded-full hover:bg-orange-600 transition shadow-lg shadow-orange-500/30"
+            class="bg-[#10B981] text-white px-4 py-2 rounded-full hover:bg-emerald-600 transition shadow-lg shadow-emerald-500/30"
             >Quero o Sistema</a
           >
         </div>
         <div class="md:hidden">
           <a
             href="#contato"
-            class="bg-[#F97316] text-white px-4 py-2 rounded-full hover:bg-orange-600 transition text-sm"
+            class="bg-[#10B981] text-white px-4 py-2 rounded-full hover:bg-emerald-600 transition text-sm"
             >Contato</a
           >
         </div>
@@ -196,18 +203,18 @@
         <h1
           class="text-4xl md:text-6xl font-extrabold leading-tight mb-4 fade-in-up"
         >
-          Seu Delivery. Suas Regras. <br/><span class="text-[#F97316]">Livre-se das taxas abusivas.</span>
+          VouFood: O Delivery que pede passagem.
         </h1>
         <p
           class="text-lg md:text-xl text-gray-200 mb-8 max-w-3xl mx-auto fade-in-up"
           style="transition-delay: 150ms"
         >
-          A plataforma SaaS definitiva para você retomar o controle do seu negócio. 
-          App próprio, gestão financeira e cardápio digital em um único lugar.
+          O sistema ágil para quem não quer perder tempo. Tenha seu cardápio
+          online, receba pedidos no WhatsApp e fidelize seus clientes.
         </p>
         <a
           href="#contato"
-          class="bg-[#F97316] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-orange-600 transition transform hover:scale-105 fade-in-up shadow-xl shadow-orange-500/40"
+          class="bg-[#10B981] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-emerald-600 transition transform hover:scale-105 fade-in-up shadow-xl shadow-emerald-500/40"
           style="transition-delay: 300ms"
         >
           Peça uma Demonstração
@@ -216,7 +223,7 @@
     </section>
 
     <!-- Funcionalidades -->
-    <section id="funcionalidades" class="py-20 bg-slate-900">
+    <section id="funcionalidades" class="py-20 bg-gray-900">
       <div class="container mx-auto px-6">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-4xl font-bold text-white">
@@ -230,12 +237,14 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <!-- Card de Funcionalidade -->
           <div
-            class="bg-slate-800 p-8 rounded-xl shadow-lg border border-slate-700 fade-in-up hover:border-[#F97316] transition duration-300"
+            class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 fade-in-up hover:border-[#10B981] transition duration-300"
           >
-            <div class="text-3xl text-[#F97316] mb-4">
+            <div class="text-3xl text-[#10B981] mb-4">
               <i class="fas fa-receipt"></i>
             </div>
-            <h3 class="text-xl font-bold mb-2 text-white">Painel Kanban de Pedidos</h3>
+            <h3 class="text-xl font-bold mb-2 text-white">
+              Painel Kanban de Pedidos
+            </h3>
             <p class="text-gray-400">
               Visualize todos os pedidos em colunas (Recebidos, Preparo, Em
               Rota) e gerencie seu fluxo de forma simples e rápida.
@@ -243,13 +252,15 @@
           </div>
 
           <div
-            class="bg-slate-800 p-8 rounded-xl shadow-lg border border-slate-700 fade-in-up hover:border-[#F97316] transition duration-300"
+            class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 fade-in-up hover:border-[#10B981] transition duration-300"
             style="transition-delay: 100ms"
           >
-            <div class="text-3xl text-[#F97316] mb-4">
+            <div class="text-3xl text-[#10B981] mb-4">
               <i class="fas fa-print"></i>
             </div>
-            <h3 class="text-xl font-bold mb-2 text-white">Impressão Automática</h3>
+            <h3 class="text-xl font-bold mb-2 text-white">
+              Impressão Automática
+            </h3>
             <p class="text-gray-400">
               Configure a impressão automática de comandas na cozinha assim que
               um novo pedido chega, sem cliques extras.
@@ -257,13 +268,15 @@
           </div>
 
           <div
-            class="bg-slate-800 p-8 rounded-xl shadow-lg border border-slate-700 fade-in-up hover:border-[#F97316] transition duration-300"
+            class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 fade-in-up hover:border-[#10B981] transition duration-300"
             style="transition-delay: 200ms"
           >
-            <div class="text-3xl text-[#F97316] mb-4">
+            <div class="text-3xl text-[#10B981] mb-4">
               <i class="fas fa-hamburger"></i>
             </div>
-            <h3 class="text-xl font-bold mb-2 text-white">Gestão de Cardápio e Estoque</h3>
+            <h3 class="text-xl font-bold mb-2 text-white">
+              Gestão de Cardápio e Estoque
+            </h3>
             <p class="text-gray-400">
               Adicione produtos, crie complementos (obrigatórios ou não) e
               controle o estoque em tempo real para evitar vendas de itens
@@ -272,12 +285,14 @@
           </div>
 
           <div
-            class="bg-slate-800 p-8 rounded-xl shadow-lg border border-slate-700 fade-in-up hover:border-[#F97316] transition duration-300"
+            class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 fade-in-up hover:border-[#10B981] transition duration-300"
           >
-            <div class="text-3xl text-[#F97316] mb-4">
+            <div class="text-3xl text-[#10B981] mb-4">
               <i class="fas fa-motorcycle"></i>
             </div>
-            <h3 class="text-xl font-bold mb-2 text-white">Módulo de Entregadores</h3>
+            <h3 class="text-xl font-bold mb-2 text-white">
+              Módulo de Entregadores
+            </h3>
             <p class="text-gray-400">
               Cadastre seus entregadores, defina turnos, taxas e acompanhe a
               localização de cada um em um mapa em tempo real.
@@ -285,13 +300,15 @@
           </div>
 
           <div
-            class="bg-slate-800 p-8 rounded-xl shadow-lg border border-slate-700 fade-in-up hover:border-[#F97316] transition duration-300"
+            class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 fade-in-up hover:border-[#10B981] transition duration-300"
             style="transition-delay: 100ms"
           >
-            <div class="text-3xl text-[#F97316] mb-4">
+            <div class="text-3xl text-[#10B981] mb-4">
               <i class="fas fa-dollar-sign"></i>
             </div>
-            <h3 class="text-xl font-bold mb-2 text-white">Financeiro Completo</h3>
+            <h3 class="text-xl font-bold mb-2 text-white">
+              Financeiro Completo
+            </h3>
             <p class="text-gray-400">
               Controle receitas, lance despesas, visualize o lucro e acompanhe
               contas a pagar e vencidas em um dashboard financeiro completo.
@@ -299,10 +316,10 @@
           </div>
 
           <div
-            class="bg-slate-800 p-8 rounded-xl shadow-lg border border-slate-700 fade-in-up hover:border-[#F97316] transition duration-300"
+            class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 fade-in-up hover:border-[#10B981] transition duration-300"
             style="transition-delay: 200ms"
           >
-            <div class="text-3xl text-[#F97316] mb-4">
+            <div class="text-3xl text-[#10B981] mb-4">
               <i class="fas fa-users-cog"></i>
             </div>
             <h3 class="text-xl font-bold mb-2 text-white">Níveis de Acesso</h3>
@@ -314,13 +331,15 @@
           </div>
 
           <div
-            class="bg-slate-800 p-8 rounded-xl shadow-lg border border-slate-700 fade-in-up hover:border-[#F97316] transition duration-300"
+            class="bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-700 fade-in-up hover:border-[#10B981] transition duration-300"
             style="transition-delay: 300ms"
           >
-            <div class="text-3xl text-[#F97316] mb-4">
+            <div class="text-3xl text-[#10B981] mb-4">
               <i class="fas fa-mobile-alt"></i>
             </div>
-            <h3 class="text-xl font-bold mb-2 text-white">App do Cliente Incluso</h3>
+            <h3 class="text-xl font-bold mb-2 text-white">
+              App do Cliente Incluso
+            </h3>
             <p class="text-gray-400">
               Seu cliente ganha um App exclusivo (PWA) completo: cardápio
               digital, pedidos online, acompanhamento em tempo real, histórico e
@@ -332,11 +351,11 @@
     </section>
 
     <!-- Seção App do Cliente -->
-    <section id="app-cliente" class="bg-slate-950 py-20 overflow-hidden">
+    <section id="app-cliente" class="bg-gray-950 py-20 overflow-hidden">
       <div class="container mx-auto px-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div class="fade-in-up">
-            <span class="text-sm font-bold uppercase text-[#F97316]"
+            <span class="text-sm font-bold uppercase text-[#10B981]"
               >Exclusivo para seus clientes</span
             >
             <h2 class="text-3xl md:text-4xl font-bold text-white mt-2 mb-4">
@@ -374,7 +393,7 @@
             <div class="flex justify-center items-center relative py-8">
               <!-- Efeito de fundo -->
               <div
-                class="absolute bg-[#F97316] opacity-20 w-64 h-64 md:w-80 md:h-80 rounded-full blur-3xl -z-10"
+                class="absolute bg-[#10B981] opacity-20 w-64 h-64 md:w-80 md:h-80 rounded-full blur-3xl -z-10"
               ></div>
 
               <!-- Screenshot 1 (Esquerda) -->
@@ -413,7 +432,7 @@
     </section>
 
     <!-- Vídeo de Demonstração -->
-    <section class="bg-slate-900 py-20 text-white border-t border-slate-800">
+    <section class="bg-gray-900 py-20 text-white border-t border-gray-800">
       <div class="container mx-auto px-6 text-center">
         <h2 class="text-3xl md:text-4xl font-bold mb-8 fade-in-up">
           Veja como é fácil gerenciar
@@ -422,8 +441,7 @@
           class="text-gray-400 mb-10 max-w-2xl mx-auto fade-in-up"
           style="transition-delay: 100ms"
         >
-          Confira em menos de 2 minutos como o Trazzi organiza sua
-          operação.
+          Confira em menos de 2 minutos como o VouFood organiza sua operação.
         </p>
         <div
           class="max-w-4xl mx-auto fade-in-up"
@@ -438,7 +456,14 @@
               src="https://www.youtube.com/embed/yMtqQZwxx5Y?controls=0"
               title="YouTube video player"
               frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allow="
+                accelerometer;
+                autoplay;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture;
+              "
               allowfullscreen
             ></iframe>
           </div>
@@ -447,7 +472,7 @@
     </section>
 
     <!-- Depoimentos -->
-    <section id="depoimentos" class="py-20 bg-slate-900">
+    <section id="depoimentos" class="py-20 bg-gray-900">
       <div class="container mx-auto px-6">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-4xl font-bold text-white fade-in-up">
@@ -457,21 +482,20 @@
             class="text-gray-400 mt-2 fade-in-up"
             style="transition-delay: 100ms"
           >
-            Junte-se a centenas de estabelecimentos que cresceram com o
-            Trazzi.
+            Junte-se a centenas de estabelecimentos que cresceram com o VouFood.
           </p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <!-- Depoimento 1 -->
           <div
-            class="bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-700 fade-in-up"
+            class="bg-gray-800 p-8 rounded-xl shadow-sm border border-gray-700 fade-in-up"
             style="transition-delay: 200ms"
           >
             <div class="flex items-center mb-4">
               <img
                 src="https://randomuser.me/api/portraits/men/32.jpg"
                 alt="Cliente"
-                class="w-12 h-12 rounded-full mr-4 border-2 border-[#F97316]"
+                class="w-12 h-12 rounded-full mr-4 border-2 border-[#10B981]"
               />
               <div>
                 <h5 class="font-bold text-white">Carlos Silva</h5>
@@ -492,14 +516,14 @@
 
           <!-- Depoimento 2 -->
           <div
-            class="bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-700 fade-in-up"
+            class="bg-gray-800 p-8 rounded-xl shadow-sm border border-gray-700 fade-in-up"
             style="transition-delay: 300ms"
           >
             <div class="flex items-center mb-4">
               <img
                 src="https://randomuser.me/api/portraits/women/44.jpg"
                 alt="Cliente"
-                class="w-12 h-12 rounded-full mr-4 border-2 border-[#F97316]"
+                class="w-12 h-12 rounded-full mr-4 border-2 border-[#10B981]"
               />
               <div>
                 <h5 class="font-bold text-white">Mariana Souza</h5>
@@ -520,14 +544,14 @@
 
           <!-- Depoimento 3 -->
           <div
-            class="bg-slate-800 p-8 rounded-xl shadow-sm border border-slate-700 fade-in-up"
+            class="bg-gray-800 p-8 rounded-xl shadow-sm border border-gray-700 fade-in-up"
             style="transition-delay: 400ms"
           >
             <div class="flex items-center mb-4">
               <img
                 src="https://randomuser.me/api/portraits/men/85.jpg"
                 alt="Cliente"
-                class="w-12 h-12 rounded-full mr-4 border-2 border-[#F97316]"
+                class="w-12 h-12 rounded-full mr-4 border-2 border-[#10B981]"
               />
               <div>
                 <h5 class="font-bold text-white">Roberto Junior</h5>
@@ -549,11 +573,9 @@
     </section>
 
     <!-- Seção de Preço -->
-    <section id="preco" class="bg-slate-900 py-20">
+    <section id="preco" class="bg-gray-900 py-20">
       <div class="container mx-auto px-6 text-center">
-        <h2
-          class="text-3xl md:text-4xl font-bold text-white mb-4 fade-in-up"
-        >
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 fade-in-up">
           Um preço justo, sem surpresas.
         </h2>
         <p
@@ -567,12 +589,12 @@
         <div class="flex flex-wrap justify-center gap-8">
           <!-- Plano Mensal -->
           <div
-            class="bg-slate-800 border border-slate-700 rounded-2xl p-8 w-full max-w-sm transform hover:scale-105 transition duration-300 fade-in-up"
+            class="bg-gray-800 border border-gray-700 rounded-2xl p-8 w-full max-w-sm transform hover:scale-105 transition duration-300 fade-in-up"
             style="transition-delay: 200ms"
           >
             <h3 class="text-2xl font-bold text-white">Plano Mensal</h3>
             <div class="my-6">
-              <span class="text-5xl font-extrabold text-[#F97316]">R$ 99</span>
+              <span class="text-5xl font-extrabold text-[#10B981]">R$ 99</span>
               <span class="text-gray-400 font-medium">/mês</span>
             </div>
             <ul class="space-y-3 text-gray-300 text-left mb-8">
@@ -591,7 +613,7 @@
             </ul>
             <button
               onclick="iniciarCheckout('mensal')"
-              class="block w-full bg-[#F97316] text-white px-8 py-3 rounded-full font-bold hover:bg-orange-600 transition shadow-lg"
+              class="block w-full bg-[#10B981] text-white px-8 py-3 rounded-full font-bold hover:bg-emerald-600 transition shadow-lg"
             >
               Contratar Agora
             </button>
@@ -599,21 +621,21 @@
 
           <!-- Plano Anual -->
           <div
-            class="relative bg-slate-950 text-white border-2 border-[#F97316] rounded-2xl p-8 w-full max-w-sm shadow-2xl transform hover:scale-105 transition duration-300 fade-in-up"
+            class="relative bg-gray-950 text-white border-2 border-[#10B981] rounded-2xl p-8 w-full max-w-sm shadow-2xl transform hover:scale-105 transition duration-300 fade-in-up"
             style="transition-delay: 300ms"
           >
             <div
               class="absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2"
             >
               <span
-                class="bg-[#F97316] text-white text-xs font-bold uppercase px-4 py-1 rounded-full"
+                class="bg-[#10B981] text-white text-xs font-bold uppercase px-4 py-1 rounded-full"
                 >Mais Popular</span
               >
             </div>
             <h3 class="text-2xl font-bold">Plano Anual</h3>
             <p class="text-gray-400 mt-1">Economize 2 meses!</p>
             <div class="my-6">
-              <span class="text-5xl font-extrabold text-[#F97316]">R$ 990</span>
+              <span class="text-5xl font-extrabold text-[#10B981]">R$ 990</span>
               <span class="text-gray-400 font-medium">/ano</span>
             </div>
             <ul class="space-y-3 text-gray-300 text-left mb-8">
@@ -632,7 +654,7 @@
             </ul>
             <button
               onclick="iniciarCheckout('anual')"
-              class="block w-full bg-white text-[#F97316] px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition shadow-lg"
+              class="block w-full bg-white text-[#10B981] px-8 py-3 rounded-full font-bold hover:bg-gray-200 transition shadow-lg"
             >
               Quero o Desconto Anual
             </button>
@@ -642,7 +664,7 @@
     </section>
 
     <!-- FAQ Section -->
-    <section id="faq" class="bg-slate-950 py-20">
+    <section id="faq" class="bg-gray-950 py-20">
       <div class="container mx-auto px-6">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-4xl font-bold text-white fade-in-up">
@@ -652,19 +674,19 @@
             class="text-gray-400 mt-2 fade-in-up"
             style="transition-delay: 100ms"
           >
-            Tirando suas principais dúvidas sobre o Trazzi.
+            Tirando suas principais dúvidas sobre o VouFood.
           </p>
         </div>
 
         <div class="max-w-3xl mx-auto space-y-4">
           <!-- FAQ Item 1 -->
           <div
-            class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 overflow-hidden fade-in-up"
+            class="bg-gray-800 rounded-lg shadow-sm border border-gray-700 overflow-hidden fade-in-up"
             style="transition-delay: 200ms"
           >
             <details class="group">
               <summary
-                class="flex justify-between items-center font-semibold cursor-pointer list-none p-5 text-gray-200 hover:bg-slate-700"
+                class="flex justify-between items-center font-semibold cursor-pointer list-none p-5 text-gray-200 hover:bg-gray-700"
               >
                 <span>Como funcionam os pagamentos dos pedidos?</span>
                 <span class="transition group-open:rotate-180">
@@ -672,7 +694,7 @@
                 </span>
               </summary>
               <div
-                class="text-gray-400 border-t border-slate-700 p-5 bg-slate-800"
+                class="text-gray-400 border-t border-gray-700 p-5 bg-gray-800"
               >
                 <p>
                   Nossa plataforma <strong>não intermedia pagamentos</strong>. O
@@ -688,12 +710,12 @@
 
           <!-- FAQ Item 2 -->
           <div
-            class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 overflow-hidden fade-in-up"
+            class="bg-gray-800 rounded-lg shadow-sm border border-gray-700 overflow-hidden fade-in-up"
             style="transition-delay: 300ms"
           >
             <details class="group">
               <summary
-                class="flex justify-between items-center font-semibold cursor-pointer list-none p-5 text-gray-200 hover:bg-slate-700"
+                class="flex justify-between items-center font-semibold cursor-pointer list-none p-5 text-gray-200 hover:bg-gray-700"
               >
                 <span>Preciso pagar comissão sobre as vendas?</span>
                 <span class="transition group-open:rotate-180">
@@ -701,7 +723,7 @@
                 </span>
               </summary>
               <div
-                class="text-gray-400 border-t border-slate-700 p-5 bg-slate-800"
+                class="text-gray-400 border-t border-gray-700 p-5 bg-gray-800"
               >
                 <p>
                   <strong>Não!</strong> Diferente de outros marketplaces, nosso
@@ -715,12 +737,12 @@
 
           <!-- FAQ Item 3 -->
           <div
-            class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 overflow-hidden fade-in-up"
+            class="bg-gray-800 rounded-lg shadow-sm border border-gray-700 overflow-hidden fade-in-up"
             style="transition-delay: 400ms"
           >
             <details class="group">
               <summary
-                class="flex justify-between items-center font-semibold cursor-pointer list-none p-5 text-gray-200 hover:bg-slate-700"
+                class="flex justify-between items-center font-semibold cursor-pointer list-none p-5 text-gray-200 hover:bg-gray-700"
               >
                 <span>Como meus clientes acessam o aplicativo?</span>
                 <span class="transition group-open:rotate-180">
@@ -728,7 +750,7 @@
                 </span>
               </summary>
               <div
-                class="text-gray-400 border-t border-slate-700 p-5 bg-slate-800"
+                class="text-gray-400 border-t border-gray-700 p-5 bg-gray-800"
               >
                 <p>
                   Seu cliente acessa através de um link exclusivo (ex:
@@ -743,12 +765,12 @@
 
           <!-- FAQ Item 4 -->
           <div
-            class="bg-slate-800 rounded-lg shadow-sm border border-slate-700 overflow-hidden fade-in-up"
+            class="bg-gray-800 rounded-lg shadow-sm border border-gray-700 overflow-hidden fade-in-up"
             style="transition-delay: 500ms"
           >
             <details class="group">
               <summary
-                class="flex justify-between items-center font-semibold cursor-pointer list-none p-5 text-gray-200 hover:bg-slate-700"
+                class="flex justify-between items-center font-semibold cursor-pointer list-none p-5 text-gray-200 hover:bg-gray-700"
               >
                 <span>O que preciso ter para o sistema funcionar?</span>
                 <span class="transition group-open:rotate-180">
@@ -756,7 +778,7 @@
                 </span>
               </summary>
               <div
-                class="text-gray-400 border-t border-slate-700 p-5 bg-slate-800"
+                class="text-gray-400 border-t border-gray-700 p-5 bg-gray-800"
               >
                 <p>
                   O valor da assinatura refere-se à licença de uso do software.
@@ -775,7 +797,7 @@
     </section>
 
     <!-- Contato -->
-    <section id="contato" class="py-20 bg-slate-900">
+    <section id="contato" class="py-20 bg-gray-900">
       <div class="container mx-auto px-6">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-4xl font-bold text-white">
@@ -788,13 +810,18 @@
         </div>
 
         <div
-          class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 bg-slate-800 p-8 md:p-12 rounded-2xl shadow-xl border border-slate-700"
+          class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 bg-gray-800 p-8 md:p-12 rounded-2xl shadow-xl border border-gray-700"
         >
           <!-- Formulário -->
           <div class="fade-in-up">
-            <h3 class="text-xl font-bold mb-4 text-white">Envie sua mensagem</h3>
+            <h3 class="text-xl font-bold mb-4 text-white">
+              Envie sua mensagem
+            </h3>
             <form
-              onsubmit="event.preventDefault(); enviarContatoPeloWhatsApp();"
+              onsubmit="
+                event.preventDefault();
+                enviarContatoPeloWhatsApp();
+              "
             >
               <div class="mb-4">
                 <label
@@ -807,7 +834,7 @@
                   id="name"
                   name="name"
                   required
-                  class="mt-1 block w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-[#F97316] focus:border-[#F97316] text-white"
+                  class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-[#10B981] focus:border-[#10B981] text-white"
                 />
               </div>
               <div class="mb-4">
@@ -821,7 +848,7 @@
                   id="email"
                   name="email"
                   required
-                  class="mt-1 block w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-[#F97316] focus:border-[#F97316] text-white"
+                  class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-[#10B981] focus:border-[#10B981] text-white"
                 />
               </div>
               <div class="mb-4">
@@ -834,7 +861,7 @@
                   type="tel"
                   id="phone"
                   name="phone"
-                  class="mt-1 block w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-[#F97316] focus:border-[#F97316] text-white"
+                  class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-[#10B981] focus:border-[#10B981] text-white"
                 />
               </div>
               <div class="mb-4">
@@ -848,12 +875,12 @@
                   name="message"
                   rows="4"
                   required
-                  class="mt-1 block w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-[#F97316] focus:border-[#F97316] text-white"
+                  class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-[#10B981] focus:border-[#10B981] text-white"
                 ></textarea>
               </div>
               <button
                 type="submit"
-                class="w-full bg-[#F97316] text-white px-6 py-3 rounded-lg font-bold hover:bg-orange-600 transition"
+                class="w-full bg-[#10B981] text-white px-6 py-3 rounded-lg font-bold hover:bg-emerald-600 transition"
               >
                 Enviar Contato
               </button>
@@ -862,12 +889,14 @@
 
           <!-- Informações de Contato -->
           <div class="fade-in-up" style="transition-delay: 150ms">
-            <h3 class="text-xl font-bold mb-4 text-white">Ou fale conosco diretamente</h3>
+            <h3 class="text-xl font-bold mb-4 text-white">
+              Ou fale conosco diretamente
+            </h3>
             <div class="space-y-6">
               <a
-                href="https://wa.me/5521983856779?text=Ol%C3%A1%21+Gostaria+de+saber+mais+sobre+o+sistema+Trazzi."
+                href="https://wa.me/5521983856779?text=Ol%C3%A1%21+Gostaria+de+saber+mais+sobre+o+sistema+VouFood."
                 target="_blank"
-                class="flex items-center p-4 bg-slate-700 border border-slate-600 rounded-lg hover:bg-slate-600 transition"
+                class="flex items-center p-4 bg-gray-700 border border-gray-600 rounded-lg hover:bg-gray-600 transition"
               >
                 <i class="fab fa-whatsapp text-3xl text-green-500"></i>
                 <div class="ml-4">
@@ -877,7 +906,7 @@
               </a>
               <a
                 href="mailto:lucianosantoseverino@gmail.com"
-                class="flex items-center p-4 bg-slate-700 border border-slate-600 rounded-lg hover:bg-slate-600 transition"
+                class="flex items-center p-4 bg-gray-700 border border-gray-600 rounded-lg hover:bg-gray-600 transition"
               >
                 <i class="fas fa-envelope text-3xl text-blue-500"></i>
                 <div class="ml-4">
@@ -896,15 +925,17 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-slate-950 text-gray-300 pt-10 pb-5 border-t border-slate-800">
+    <footer
+      class="bg-gray-950 text-gray-300 pt-10 pb-5 border-t border-gray-800"
+    >
       <div class="container mx-auto px-6 text-center md:text-left">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div class="mx-auto md:mx-0">
             <a
               href="#"
-              class="text-2xl font-bold text-[#F97316] flex items-center gap-2 mb-2 justify-center md:justify-start"
+              class="text-2xl font-bold text-[#10B981] flex items-center gap-2 mb-2 justify-center md:justify-start"
             >
-              <i class="fas fa-rocket"></i> Trazzi
+              <i class="fas fa-paper-plane"></i> VouFood
             </a>
             <p class="text-gray-500 text-sm">
               A solução completa para o seu negócio decolar.
@@ -914,18 +945,24 @@
           <div>
             <h6 class="text-uppercase font-bold mb-3">Navegação</h6>
             <p class="mb-2">
-              <a href="#funcionalidades" class="text-gray-400 hover:text-[#F97316]"
+              <a
+                href="#funcionalidades"
+                class="text-gray-400 hover:text-[#10B981]"
                 >Funcionalidades</a
               >
             </p>
             <p class="mb-2">
-              <a href="#preco" class="text-gray-400 hover:text-[#F97316]">Preço</a>
+              <a href="#preco" class="text-gray-400 hover:text-[#10B981]"
+                >Preço</a
+              >
             </p>
             <p class="mb-2">
-              <a href="#faq" class="text-gray-400 hover:text-[#F97316]">Dúvidas</a>
+              <a href="#faq" class="text-gray-400 hover:text-[#10B981]"
+                >Dúvidas</a
+              >
             </p>
             <p class="mb-2">
-              <a href="#contato" class="text-gray-400 hover:text-[#F97316]"
+              <a href="#contato" class="text-gray-400 hover:text-[#10B981]"
                 >Contato</a
               >
             </p>
@@ -934,12 +971,12 @@
           <div>
             <h6 class="text-uppercase font-bold mb-3">Jurídico</h6>
             <p class="mb-2">
-              <a href="termos.html" class="text-gray-400 hover:text-[#F97316]"
+              <a href="termos.html" class="text-gray-400 hover:text-[#10B981]"
                 >Termos de Uso</a
               >
             </p>
             <p class="mb-2">
-              <a href="politica.html" class="text-gray-400 hover:text-[#F97316]"
+              <a href="politica.html" class="text-gray-400 hover:text-[#10B981]"
                 >Política de Privacidade</a
               >
             </p>
@@ -947,18 +984,18 @@
         </div>
       </div>
 
-      <div class="text-center p-4 mt-8 border-t border-slate-800">
+      <div class="text-center p-4 mt-8 border-t border-gray-800">
         <p class="text-sm text-gray-500">
           ©
           <span>2024</span>
           Copyright:
-          <a class="font-semibold" href="#">Trazzi</a>
+          <a class="font-semibold" href="#">VouFood</a>
           | Desenvolvido por
           <strong>
             <a
               href="https://lucianodevfrontend.netlify.app/"
               target="_blank"
-              class="text-gray-400 hover:text-[#F97316]"
+              class="text-gray-400 hover:text-[#10B981]"
               >@santoscodes</a
             >
           </strong>
@@ -968,7 +1005,7 @@
 
     <!-- Botão Flutuante WhatsApp -->
     <a
-      href="https://wa.me/5521983856779?text=Ol%C3%A1%21+Vim+pelo+site+e+gostaria+de+saber+mais+sobre+o+Trazzi."
+      href="https://wa.me/5521983856779?text=Ol%C3%A1%21+Vim+pelo+site+e+gostaria+de+saber+mais+sobre+o+VouFood."
       target="_blank"
       class="whatsapp-float bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-lg hover:bg-green-600 transition duration-300"
       title="Fale conosco no WhatsApp"
@@ -979,7 +1016,7 @@
     <!-- Aviso de Cookies (LGPD) -->
     <div
       id="cookie-banner"
-      class="fixed bottom-0 left-0 w-full bg-slate-950 text-white p-4 z-50 hidden flex-col md:flex-row justify-between items-center gap-4 shadow-inner border-t border-slate-800"
+      class="fixed bottom-0 left-0 w-full bg-gray-950 text-white p-4 z-50 hidden flex-col md:flex-row justify-between items-center gap-4 shadow-inner border-t border-gray-800"
     >
       <div class="text-sm text-center md:text-left">
         <p>
@@ -987,7 +1024,7 @@
           Ao continuar, você concorda com nossa
           <a
             href="politica.html"
-            class="underline text-[#F97316] hover:text-orange-400"
+            class="underline text-[#10B981] hover:text-emerald-400"
             >Política de Privacidade</a
           >.
         </p>
@@ -995,12 +1032,14 @@
       <div class="flex gap-3">
         <button
           onclick="acceptCookies()"
-          class="bg-[#F97316] hover:bg-orange-600 text-white px-6 py-2 rounded-lg text-sm font-bold transition"
+          class="bg-[#10B981] hover:bg-emerald-600 text-white px-6 py-2 rounded-lg text-sm font-bold transition"
         >
           Aceitar
         </button>
         <button
-          onclick="document.getElementById('cookie-banner').style.display='none'"
+          onclick="
+            document.getElementById('cookie-banner').style.display = 'none'
+          "
           class="text-gray-400 hover:text-white text-sm underline"
         >
           Fechar
@@ -1021,7 +1060,7 @@
           },
           {
             threshold: 0.1,
-          }
+          },
         );
 
         const elementsToAnimate = document.querySelectorAll(".fade-in-up");
@@ -1062,9 +1101,9 @@
         }
 
         const numeroWhatsApp = "5521983856779"; // Seu número
-        const textoFormatado = `Olá! Tenho interesse no sistema Trazzi.\n\n*Nome:* ${nome}\n*E-mail:* ${email}\n*Telefone:* ${telefone}\n\n*Mensagem:*\n${mensagem}`;
+        const textoFormatado = `Olá! Tenho interesse no sistema VouFood.\n\n*Nome:* ${nome}\n*E-mail:* ${email}\n*Telefone:* ${telefone}\n\n*Mensagem:*\n${mensagem}`;
         const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(
-          textoFormatado
+          textoFormatado,
         )}`;
 
         // Abre o WhatsApp e mostra confirmação
@@ -1096,7 +1135,7 @@
           focusConfirm: false,
           showCancelButton: true,
           confirmButtonText: "Finalizar no WhatsApp",
-          confirmButtonColor: "#F97316",
+          confirmButtonColor: "#10B981",
           cancelButtonText: "Cancelar",
           preConfirm: () => {
             return {
@@ -1114,7 +1153,7 @@
             return Swal.fire(
               "Erro",
               "Por favor preencha todos os campos.",
-              "error"
+              "error",
             );
           }
 
@@ -1129,46 +1168,7 @@
 
           // Lógica de Redirecionamento para o WhatsApp
           const numeroWhatsApp = "5521983856779";
-          const mensagem = `🚀 *Nova Assinatura Iniciada*\n\nOlá! Quero assinar o *Trazzi*.\n\n📦 *Plano:* ${plano.toUpperCase()} (${valor})\n👤 *Nome:* ${formValues.name}\n📧 *E-mail:* ${formValues.email}\n🆔 *CPF/CNPJ:* ${formValues.cpf}\n📱 *Telefone:* ${formValues.phone}\n\nAguardo o link de pagamento!`;
-          
-          const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
-          
-          setTimeout(() => {
-            window.open(url, '_blank');
-            Swal.close();
-          }, 1500);
-        }
-      }
-    </script>
-
-    <!-- Firebase Analytics -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyBJspCFmB7IQQdLdxLYQrZZ-TFAiDPXrXk",
-        authDomain: "fastdelivery-46457.firebaseapp.com",
-        projectId: "fastdelivery-46457",
-        storageBucket: "fastdelivery-46457.appspot.com",
-        messagingSenderId: "889884008498",
-        appId: "1:889884008498:web:418e00c16326df6d4e1c2b",
-        // measurementId: "G-XXXXXXXXXX" // Adicione seu ID de medição do GA4 aqui se disponível no console
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-    </script>
-  </body>
-</html>
-            didOpen: () => {
-              Swal.showLoading();
-            },
-          });
-
-          // Lógica de Redirecionamento para o WhatsApp
-          const numeroWhatsApp = "5521983856779";
-          const mensagem = `🚀 *Nova Assinatura Iniciada*\n\nOlá! Quero assinar o *Trazzi*.\n\n📦 *Plano:* ${plano.toUpperCase()} (${valor})\n👤 *Nome:* ${formValues.name}\n📧 *E-mail:* ${formValues.email}\n🆔 *CPF/CNPJ:* ${formValues.cpf}\n📱 *Telefone:* ${formValues.phone}\n\nAguardo o link de pagamento!`;
+          const mensagem = `🚀 *Nova Assinatura Iniciada*\n\nOlá! Quero assinar o *VouFood*.\n\n📦 *Plano:* ${plano.toUpperCase()} (${valor})\n👤 *Nome:* ${formValues.name}\n📧 *E-mail:* ${formValues.email}\n🆔 *CPF/CNPJ:* ${formValues.cpf}\n📱 *Telefone:* ${formValues.phone}\n\nAguardo o link de pagamento!`;
 
           const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
 

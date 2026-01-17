@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Assinatura de Contrato - FastDelivery</title>
+    <title>Assinatura de Contrato - VouFood</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -25,16 +25,16 @@
       class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden"
     >
       <!-- Header -->
-      <div class="bg-[#EA1D2C] p-6 text-white text-center">
+      <div class="bg-[#10B981] p-6 text-white text-center">
         <h1 class="text-2xl font-bold uppercase tracking-wider">
           Contrato de Licenciamento
         </h1>
-        <p class="text-sm opacity-90 mt-1">FastDelivery Software</p>
+        <p class="text-sm opacity-90 mt-1">VouFood Software</p>
       </div>
 
       <!-- Loading -->
       <div id="loading" class="p-20 text-center">
-        <i class="fas fa-circle-notch fa-spin text-4xl text-[#EA1D2C] mb-4"></i>
+        <i class="fas fa-circle-notch fa-spin text-4xl text-[#10B981] mb-4"></i>
         <p class="text-gray-600">Carregando dados do contrato...</p>
       </div>
 
@@ -58,7 +58,7 @@
         >
           Verificar Novamente
         </button>
-        <a href="index.html" class="text-[#EA1D2C] font-bold hover:underline"
+        <a href="index.html" class="text-[#10B981] font-bold hover:underline"
           >Voltar ao Início</a
         >
       </div>
@@ -96,7 +96,7 @@
                   type="text"
                   id="signer-name"
                   required
-                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EA1D2C] focus:border-[#EA1D2C] outline-none transition"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] outline-none transition"
                   placeholder="Digite seu nome completo"
                 />
               </div>
@@ -108,7 +108,7 @@
                   type="text"
                   id="signer-cpf"
                   required
-                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EA1D2C] focus:border-[#EA1D2C] outline-none transition"
+                  class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] outline-none transition"
                   placeholder="000.000.000-00"
                 />
               </div>
@@ -119,7 +119,7 @@
                 type="checkbox"
                 id="terms-check"
                 required
-                class="w-5 h-5 text-[#EA1D2C] border-gray-300 rounded focus:ring-[#EA1D2C]"
+                class="w-5 h-5 text-[#10B981] border-gray-300 rounded focus:ring-[#10B981]"
               />
               <label for="terms-check" class="text-gray-700 text-sm">
                 Li e concordo com todos os termos do contrato acima descrito.
@@ -128,7 +128,7 @@
 
             <button
               type="submit"
-              class="w-full bg-[#EA1D2C] text-white font-bold py-4 rounded-xl hover:bg-[#c91b29] transition shadow-lg transform hover:-translate-y-1 flex justify-center items-center gap-2"
+              class="w-full bg-[#10B981] text-white font-bold py-4 rounded-xl hover:bg-emerald-600 transition shadow-lg transform hover:-translate-y-1 flex justify-center items-center gap-2"
             >
               <i class="fas fa-file-signature"></i> Assinar e Ativar Licença
             </button>
@@ -205,7 +205,7 @@ CONTRATADA: Luciano Severino dos Santos, com sede em Rua Dois de Maio, 413 - Sam
 CONTRATANTE: {{COMPANY_NAME}}, com sede em {{ADDRESS}}, inscrita no CNPJ sob o nº {{CNPJ}}.
 
 CLÁUSULA 1ª - DO OBJETO DO CONTRATO
-1.1. O presente contrato tem como objeto a licença de uso do software "FastDelivery".
+1.1. O presente contrato tem como objeto a licença de uso do software "VouFood".
 
 CLÁUSULA 2ª - DO PREÇO
 2.1. A CONTRATANTE pagará o valor de {{PRICE}} referente ao plano {{PLAN_TYPE}}.
@@ -220,7 +220,7 @@ Rio de Janeiro, {{CURRENT_DATE}}.
         if (!key) {
           showError(
             "Chave Inválida",
-            "Nenhuma chave de licença foi fornecida."
+            "Nenhuma chave de licença foi fornecida.",
           );
           return;
         }
@@ -232,7 +232,7 @@ Rio de Janeiro, {{CURRENT_DATE}}.
           if (snapshot.empty) {
             showError(
               "Licença não encontrada",
-              "Verifique se o link está correto."
+              "Verifique se o link está correto.",
             );
             return;
           }
@@ -265,7 +265,7 @@ Rio de Janeiro, {{CURRENT_DATE}}.
           console.error(error);
           showError(
             "Erro no Sistema",
-            "Ocorreu um erro ao carregar os dados. Tente novamente."
+            "Ocorreu um erro ao carregar os dados. Tente novamente.",
           );
         }
       }
@@ -288,11 +288,11 @@ Rio de Janeiro, {{CURRENT_DATE}}.
         let text = contractTemplate
           .replace(
             "{{COMPANY_NAME}}",
-            licenseData.companyName || licenseData.storeName
+            licenseData.companyName || licenseData.storeName,
           )
           .replace(
             "{{ADDRESS}}",
-            licenseData.address || "Endereço não informado"
+            licenseData.address || "Endereço não informado",
           )
           .replace("{{CNPJ}}", licenseData.cnpj || "Não informado")
           .replace("{{PRICE}}", price)
@@ -303,7 +303,7 @@ Rio de Janeiro, {{CURRENT_DATE}}.
         // Converte quebras de linha em HTML
         document.getElementById("contract-body").innerHTML = text.replace(
           /\n/g,
-          "<br>"
+          "<br>",
         );
       }
 
@@ -340,7 +340,7 @@ Rio de Janeiro, {{CURRENT_DATE}}.
             Swal.fire(
               "Erro",
               "Não foi possível assinar o contrato. Tente novamente.",
-              "error"
+              "error",
             );
             btn.innerHTML = originalText;
             btn.disabled = false;

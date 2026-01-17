@@ -11,7 +11,7 @@ As partes acima identificadas têm, entre si, justo e acertado o presente Contra
 
 CLÁUSULA 1ª - DO OBJETO DO CONTRATO
 
-1.1. O presente contrato tem como objeto a licença de uso, não exclusiva e intransferível, do software "FastDelivery" (doravante "SOFTWARE"), de propriedade da CONTRATADA, a ser instalado e utilizado pela CONTRATANTE para gestão de seu serviço de delivery de alimentos.
+1.1. O presente contrato tem como objeto a licença de uso, não exclusiva e intransferível, do software "VouFood" (doravante "SOFTWARE"), de propriedade da CONTRATADA, a ser instalado e utilizado pela CONTRATANTE para gestão de seu serviço de delivery de alimentos.
 
 1.2. A licença inclui o acesso a todas as funcionalidades descritas na proposta comercial, como gestão de pedidos, cardápio, estoque, entregadores, financeiro, relatórios e o aplicativo web (PWA) para os clientes finais.
 
