@@ -84,6 +84,7 @@ export default async function handler(req, res) {
     const response = await axios.post(
       "https://api.abacatepay.com/v1/billing/create",
       {
+        frequency: plan === "anual" ? "YEARLY" : "MONTHLY",
         methods: ["PIX"], // Métodos aceitos (CREDIT_CARD removido para corrigir erro de validação da API)
         products: [
           {
