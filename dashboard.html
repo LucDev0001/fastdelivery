@@ -204,37 +204,17 @@
                 <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
                 >
-                  Loja / URL
+                  Loja
                 </th>
                 <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
                 >
-                  Chave
+                  Status
                 </th>
                 <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
                 >
-                  Plano
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-                >
-                  Expira em
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-                >
-                  Contrato
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-                >
-                  Status Instalação
-                </th>
-                <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
-                >
-                  Ações
+                  Perfil
                 </th>
               </tr>
             </thead>
@@ -378,6 +358,78 @@
       </div>
     </div>
 
+    <!-- Modal de Detalhes da Licença (Perfil) -->
+    <div id="license-details-modal" class="fixed inset-0 bg-gray-100 z-50 hidden overflow-y-auto">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex justify-between items-center mb-6">
+          <button onclick="closeLicenseDetails()" class="flex items-center text-gray-600 hover:text-gray-900 font-medium">
+            <i class="fas fa-arrow-left mr-2"></i> Voltar para Lista
+          </button>
+          <h1 class="text-2xl font-bold text-gray-900">Detalhes da Licença</h1>
+        </div>
+
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+          <!-- Header do Perfil -->
+          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center flex-wrap gap-4">
+            <div>
+              <h2 class="text-xl font-bold text-gray-900" id="detail-store-name">Nome da Loja</h2>
+              <a href="#" target="_blank" id="detail-store-url" class="text-sm text-blue-600 hover:underline">url.com</a>
+            </div>
+            <div class="flex gap-2" id="detail-badges">
+              <!-- Badges inseridos via JS -->
+            </div>
+          </div>
+
+          <!-- Corpo do Perfil -->
+          <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Informações Principais -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">Informações da Empresa</h3>
+              <p class="text-sm"><span class="font-bold text-gray-500 block">Razão Social:</span> <span id="detail-company"></span></p>
+              <p class="text-sm"><span class="font-bold text-gray-500 block">CNPJ:</span> <span id="detail-cnpj"></span></p>
+              <p class="text-sm"><span class="font-bold text-gray-500 block">Endereço:</span> <span id="detail-address"></span></p>
+            </div>
+
+            <!-- Contato -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">Contato</h3>
+              <p class="text-sm"><span class="font-bold text-gray-500 block">Nome/Email:</span> <span id="detail-contact"></span></p>
+              <p class="text-sm"><span class="font-bold text-gray-500 block">Telefone:</span> <span id="detail-phone"></span></p>
+            </div>
+
+            <!-- Licença e Sistema -->
+            <div class="space-y-4 md:col-span-2">
+              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">Dados da Licença</h3>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <p class="text-sm"><span class="font-bold text-gray-500 block">Chave:</span> <code id="detail-key" class="bg-gray-100 px-2 py-1 rounded"></code></p>
+                <p class="text-sm"><span class="font-bold text-gray-500 block">Plano:</span> <span id="detail-plan"></span></p>
+                <p class="text-sm"><span class="font-bold text-gray-500 block">Expira em:</span> <span id="detail-expires"></span></p>
+              </div>
+            </div>
+
+            <!-- Status Instalação -->
+            <div class="space-y-4 md:col-span-2 bg-blue-50 p-4 rounded-lg">
+              <h3 class="text-lg font-medium text-blue-900">Status da Instalação</h3>
+              <div id="detail-setup-container">
+                <!-- Select inserido via JS -->
+              </div>
+            </div>
+
+            <!-- Observações -->
+            <div class="space-y-4 md:col-span-2">
+              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">Observações Internas</h3>
+              <p id="detail-notes" class="text-sm text-gray-600 bg-gray-50 p-3 rounded whitespace-pre-wrap"></p>
+            </div>
+          </div>
+
+          <!-- Barra de Ações -->
+          <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex flex-wrap gap-3 justify-end" id="detail-actions">
+            <!-- Botões inseridos via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Modal de Resposta -->
     <div
       id="reply-modal"
@@ -447,6 +499,7 @@
         setDoc,
         getDoc,
         writeBatch,
+        where,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -866,8 +919,7 @@
         });
 
       // Listener de Busca
-      document
-entB        .addEventListener("input", (e) => {
+      document.getElementById("search-license").addEventListener("input", (e) => {
           const term = e.target.value.toLowerCase();
           const filtered = allLicensesData.filter(
             (l) =>
@@ -927,10 +979,6 @@ entB        .addEventListener("input", (e) => {
           const contractUrl = `${baseUrl}?key=${data.key}`;
           const statusUrl = `${baseUrl.replace("contrato.html", "status.html")}?key=${data.key}`;
 
-          const contractStatus = data.contractAccepted
-            ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Assinado</span>'
-            : '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pendente</span>';
-
           const paymentStatus = data.active
             ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Ativa</span>'
             : '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
@@ -941,78 +989,107 @@ entB        .addEventListener("input", (e) => {
             ? `https://wa.me/${data.clientPhone.replace(/\D/g, '')}?text=${encodeURIComponent(whatsappMessage)}`
             : '#';
 
-          // Seletor de Status da Instalação
-          const setupOptions = {
-            pending: "Aguardando Início",
-            waiting_materials: "Aguardando Materiais",
-            configuring: "Configurando",
-            ready: "Pronto para Uso"
-          };
-          
-          const setupSelect = `
-            <select id="status-select-${data.id}" onchange="window.changeSetupStatus('${data.id}', this.value)" class="text-xs border-gray-300 rounded shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                ${Object.entries(setupOptions).map(([key, label]) => `<option value="${key}" ${data.setupStatus === key ? 'selected' : ''}>${label}</option>`).join('')}
-            </select>
-          `;
-
           const row = `
                     <tr class="${isExpired ? "bg-red-50" : ""}">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">${
                               data.storeName
                             }</div>
-                            <div class="text-sm text-gray-500">${
-                              data.storeUrl
-                            }</div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono" id="license-key-${
-                          doc.id
-                        }">
-                          ${data.key} <button onclick="window.copiarChave('${
-            data.key
-          }')" class="ml-2 text-blue-500 hover:text-blue-700" title="Copiar"><i class="fas fa-copy"></i></button></td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${
-                          data.planType
-                        }</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            ${expiresDate}<br>${paymentStatus}
+                            ${paymentStatus}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">${contractStatus}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${setupSelect}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button onclick="window.copiarChave('${contractUrl}')" class="text-purple-600 hover:text-purple-900 mr-3" title="Copiar Link Contrato"><i class="fas fa-file-contract"></i> Contrato</button>
-                            <button onclick="window.copiarChave('${statusUrl}')" class="text-orange-600 hover:text-orange-900 mr-3" title="Copiar Link Status"><i class="fas fa-tasks"></i> Status</button>
-                            ${data.clientPhone ? `<a href="${whatsappLink}" target="_blank" class="text-green-600 hover:text-green-900 mr-3" title="Enviar no WhatsApp"><i class="fab fa-whatsapp"></i> Enviar</a>` : ''}
-                            <button onclick="window.resendWelcomeEmail('${data.id}')" class="text-blue-500 hover:text-blue-700 mr-3" title="Reenviar E-mail"><i class="fas fa-envelope"></i> Email</button>
-                            <button onclick="window.editLicense('${
-                              data.id
-                            }')" class="text-blue-600 hover:text-blue-900 mr-3" title="Editar"><i class="fas fa-edit"></i></button>
-                            <button onclick="window.renewLicense('${
-                              data.id
-                            }')" class="text-green-600 hover:text-green-900 mr-3" title="Renovar +30 dias"><i class="fas fa-calendar-plus"></i></button>
-                            <button onclick="window.revokeLicense('${
-                              data.id
-                            }')" class="text-orange-600 hover:text-orange-900 mr-3" title="Revogar Acesso"><i class="fas fa-ban"></i></button>
-                            <button data-id="${
-                              data.id
-                            }" class="delete-btn text-red-600 hover:text-red-900" title="Excluir Licença"><i class="fas fa-trash"></i></button>
+                            <button onclick="window.openLicenseDetails('${data.id}')" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
+                              <i class="fas fa-id-card mr-1"></i> Ver Perfil
+                            </button>
                         </td>
                     </tr>
                 `;
           tableBody.innerHTML += row;
         });
-
-        // Adicionar event listeners para os botões de exclusão
-        document.querySelectorAll(".delete-btn").forEach((button) => {
-          button.addEventListener("click", async (e) => {
-            const id = e.currentTarget.getAttribute("data-id");
-            if (confirm("Tem certeza que deseja excluir esta licença?")) {
-              await deleteDoc(doc(db, "licenses", id));
-              loadLicenses();
-            }
-          });
-        });
       }
+
+      // --- FUNÇÕES DE DETALHES DA LICENÇA (PERFIL) ---
+      window.openLicenseDetails = (id) => {
+        const data = allLicensesData.find(l => l.id === id);
+        if (!data) return;
+
+        // Preencher dados
+        document.getElementById("detail-store-name").innerText = data.storeName;
+        const urlEl = document.getElementById("detail-store-url");
+        urlEl.innerText = data.storeUrl;
+        urlEl.href = data.storeUrl.startsWith("http") ? data.storeUrl : `https://${data.storeUrl}`;
+        
+        document.getElementById("detail-company").innerText = data.companyName || "-";
+        document.getElementById("detail-cnpj").innerText = data.cnpj || "-";
+        document.getElementById("detail-address").innerText = data.address || "-";
+        document.getElementById("detail-contact").innerText = data.clientContact;
+        document.getElementById("detail-phone").innerText = data.clientPhone || "-";
+        document.getElementById("detail-key").innerText = data.key;
+        document.getElementById("detail-plan").innerText = data.planType;
+        document.getElementById("detail-notes").innerText = data.internalNotes || "Nenhuma observação.";
+
+        const expiresDateObj = data.expiresAt.toDate();
+        document.getElementById("detail-expires").innerText = expiresDateObj.toLocaleDateString("pt-BR");
+
+        // Badges
+        const badgesContainer = document.getElementById("detail-badges");
+        const contractStatus = data.contractAccepted
+            ? '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Contrato Assinado</span>'
+            : '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Contrato Pendente</span>';
+        const paymentStatus = data.active
+            ? '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Licença Ativa</span>'
+            : '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
+        badgesContainer.innerHTML = contractStatus + paymentStatus;
+
+        // Setup Status Select
+        const setupOptions = {
+            pending: "Aguardando Início",
+            waiting_materials: "Aguardando Materiais",
+            configuring: "Configurando",
+            ready: "Pronto para Uso"
+        };
+        const setupContainer = document.getElementById("detail-setup-container");
+        setupContainer.innerHTML = `
+            <select onchange="window.changeSetupStatus('${data.id}', this.value)" class="w-full md:w-1/2 border-gray-300 rounded shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                ${Object.entries(setupOptions).map(([key, label]) => `<option value="${key}" ${data.setupStatus === key ? 'selected' : ''}>${label}</option>`).join('')}
+            </select>
+        `;
+
+        // Actions Buttons
+        const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")) + "/contrato.html";
+        const contractUrl = `${baseUrl}?key=${data.key}`;
+        const statusUrl = `${baseUrl.replace("contrato.html", "status.html")}?key=${data.key}`;
+        const whatsappMessage = `Olá! Segue os links para o seu sistema CoraEats:\n\n📄 *Contrato/Ativação:* ${contractUrl}\n📊 *Acompanhar Instalação:* ${statusUrl}`;
+        const whatsappLink = data.clientPhone ? `https://wa.me/${data.clientPhone.replace(/\D/g, '')}?text=${encodeURIComponent(whatsappMessage)}` : '#';
+
+        const actionsContainer = document.getElementById("detail-actions");
+        actionsContainer.innerHTML = `
+            <button onclick="window.copiarChave('${contractUrl}')" class="bg-purple-100 text-purple-700 px-4 py-2 rounded hover:bg-purple-200"><i class="fas fa-file-contract mr-2"></i>Copiar Contrato</button>
+            <button onclick="window.copiarChave('${statusUrl}')" class="bg-orange-100 text-orange-700 px-4 py-2 rounded hover:bg-orange-200"><i class="fas fa-tasks mr-2"></i>Copiar Status</button>
+            ${data.clientPhone ? `<a href="${whatsappLink}" target="_blank" class="bg-green-100 text-green-700 px-4 py-2 rounded hover:bg-green-200 flex items-center"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>` : ''}
+            <button onclick="window.resendWelcomeEmail('${data.id}')" class="bg-blue-100 text-blue-700 px-4 py-2 rounded hover:bg-blue-200"><i class="fas fa-envelope mr-2"></i>Reenviar Email</button>
+            <button onclick="window.editLicense('${data.id}')" class="bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200"><i class="fas fa-edit mr-2"></i>Editar</button>
+            <button onclick="window.renewLicense('${data.id}')" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"><i class="fas fa-calendar-plus mr-2"></i>Renovar</button>
+            <button onclick="window.revokeLicense('${data.id}')" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700"><i class="fas fa-ban mr-2"></i>Revogar</button>
+            <button onclick="window.deleteLicense('${data.id}')" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"><i class="fas fa-trash mr-2"></i>Excluir</button>
+        `;
+
+        document.getElementById("license-details-modal").classList.remove("hidden");
+      };
+
+      window.closeLicenseDetails = () => {
+        document.getElementById("license-details-modal").classList.add("hidden");
+      };
+
+      window.deleteLicense = async (id) => {
+        if (confirm("Tem certeza que deseja excluir esta licença permanentemente?")) {
+          await deleteDoc(doc(db, "licenses", id));
+          closeLicenseDetails();
+          loadLicenses();
+        }
+      };
 
       // Funções Globais de Edição e Renovação
       window.editLicense = (id) => {
