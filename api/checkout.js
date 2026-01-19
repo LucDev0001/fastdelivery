@@ -44,8 +44,16 @@ export default async function handler(req, res) {
     const { plan, name, email, cpf, phone, key, domain } = req.body || {};
 
     // Sanitização (remove caracteres não numéricos)
-    const cleanCpf = cpf ? cpf.replace(/\D/g, "") : "";
-    const cleanPhone = phone ? phone.replace(/\D/g, "") : "";
+    const cleanCpf = cpf ? String(cpf).replace(/\D/g, "") : "";
+    const cleanPhone = phone ? String(phone).replace(/\D/g, "") : "";
+
+    // Validação básica para evitar erro na API externa
+    if (!cleanPhone) {
+      throw new Error("O telefone é obrigatório e deve conter números.");
+    }
+    if (!cleanCpf) {
+      throw new Error("O CPF/CNPJ é obrigatório e deve conter números.");
+    }
 
     // Busca preços do Firestore
     let monthlyPrice = 9900; // Valor padrão em centavos (R$ 99,00)
