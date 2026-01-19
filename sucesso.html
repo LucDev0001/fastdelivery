@@ -215,20 +215,69 @@
       </div>
     </main>
 
-    <script>
-      // Define a URL base para a página de status
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        query,
+        where,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBJspCFmB7IQQdLdxLYQrZZ-TFAiDPXrXk",
+        authDomain: "fastdelivery-46457.firebaseapp.com",
+        projectId: "fastdelivery-46457",
+        storageBucket: "fastdelivery-46457.appspot.com",
+        messagingSenderId: "889884008498",
+        appId: "1:889884008498:web:418e00c16326df6d4e1c2b",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
       const baseUrl = window.location.origin;
       const urlParams = new URLSearchParams(window.location.search);
-      const key = urlParams.get("key");
+      let key = urlParams.get("key");
+      const email = urlParams.get("email");
 
-      let statusUrl = `${baseUrl}/status.html`;
-      if (key) {
-        statusUrl += `?key=${key}`;
+      // URL inicial (pode ser sem chave)
+      window.currentStatusUrl = `${baseUrl}/status.html` + (key ? `?key=${key}` : "");
+      document.getElementById("status-url-display").value = window.currentStatusUrl;
+
+      // Se não tiver chave mas tiver email, busca no Firestore (polling)
+      async function findLicenseKey(attempts = 0) {
+        if (key) return;
+        if (!email) return;
+        if (attempts > 10) return; // Para após ~20s
+
+        try {
+          const q = query(collection(db, "licenses"), where("clientContact", "==", email));
+          const snapshot = await getDocs(q);
+          
+          if (!snapshot.empty) {
+            // Pega a mais recente
+            const licenses = snapshot.docs.map(d => d.data());
+            licenses.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+            
+            key = licenses[0].key;
+            window.currentStatusUrl = `${baseUrl}/status.html?key=${key}`;
+            document.getElementById("status-url-display").value = window.currentStatusUrl;
+          } else {
+            setTimeout(() => findLicenseKey(attempts + 1), 2000);
+          }
+        } catch (e) {
+          console.error("Erro ao buscar licença:", e);
+        }
       }
 
-      document.getElementById("status-url-display").value = statusUrl;
+      if (!key && email) {
+        findLicenseKey();
+      }
 
-      function copiarLink() {
+      // Funções Globais
+      window.copiarLink = function() {
         const copyText = document.getElementById("status-url-display");
         copyText.select();
         copyText.setSelectionRange(0, 99999);
@@ -238,20 +287,20 @@
         const originalText = btn.innerText;
         btn.innerText = "COPIADO!";
         setTimeout(() => (btn.innerText = originalText), 2000);
-      }
+      };
 
-      function contatarWhatsApp() {
+      window.contatarWhatsApp = function() {
         const email = urlParams.get("email") || "";
         const numero = "5521983856779";
 
         // Mensagem formatada com o link de status para o admin saber
-        const mensagem = `Olá! Acabei de realizar o pagamento no site.\n\n📧 *Meu E-mail:* ${email}\n🔗 *Link de Status:* ${statusUrl}\n\nAguardo a geração da minha chave de licença!`;
+        const mensagem = `Olá! Acabei de realizar o pagamento no site.\n\n📧 *Meu E-mail:* ${email}\n🔗 *Link de Status:* ${window.currentStatusUrl}\n\nAguardo a geração da minha chave de licença!`;
 
         window.open(
           `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`,
           "_blank",
         );
-      }
+      };
     </script>
   </body>
 </html>
