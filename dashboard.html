@@ -751,32 +751,41 @@
         });
 
       // Carregar Licenças
-      async function loadLicenses() {
-        const querySnapshot = await getDocs(collection(db, "licenses"));
-        allLicensesData = [];
-        const stats = {}; // { "2023-10": { clientes: 0, faturamento: 0 } }
+      function loadLicenses() {
+        // Listener em tempo real para a coleção de licenças
+        onSnapshot(collection(db, "licenses"), (querySnapshot) => {
+            allLicensesData = [];
+            const stats = {}; 
 
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          allLicensesData.push({ id: doc.id, ...data });
+            querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              allLicensesData.push({ id: doc.id, ...data });
 
-          // Processar Estatísticas
-          if (data.createdAt) {
-            const date = data.createdAt.toDate();
-            const key = `${date.getFullYear()}-${String(
-              date.getMonth() + 1
-            ).padStart(2, "0")}`;
+              // Processar Estatísticas
+              if (data.createdAt) {
+                const date = data.createdAt.toDate();
+                const key = `${date.getFullYear()}-${String(
+                  date.getMonth() + 1
+                ).padStart(2, "0")}`;
 
-            if (!stats[key]) stats[key] = { clientes: 0, faturamento: 0 };
+                if (!stats[key]) stats[key] = { clientes: 0, faturamento: 0 };
 
-            stats[key].clientes++;
-            const valor = data.planType === "anual" ? 990 : 99;
-            stats[key].faturamento += valor;
-          }
+                stats[key].clientes++;
+                const valor = data.planType === "anual" ? 990 : 99;
+                stats[key].faturamento += valor;
+              }
+            });
+            
+            // Ordenar por data de criação (mais recente primeiro)
+            allLicensesData.sort((a, b) => {
+                const tA = a.createdAt ? a.createdAt.seconds : 0;
+                const tB = b.createdAt ? b.createdAt.seconds : 0;
+                return tB - tA;
+            });
+
+            renderLicensesTable(allLicensesData);
+            renderCharts(stats);
         });
-
-        renderLicensesTable(allLicensesData);
-        renderCharts(stats);
       }
 
       function renderLicensesTable(licenses) {
@@ -928,7 +937,6 @@
         if (confirm("Tem certeza que deseja excluir esta licença permanentemente?")) {
           await deleteDoc(doc(db, "licenses", id));
           closeLicenseDetails();
-          loadLicenses();
         }
       };
 
@@ -986,7 +994,6 @@
           };
           await updateDoc(doc(db, "licenses", id), updates);
           closeEditModal();
-          loadLicenses();
         });
 
       window.renewLicense = async (id) => {
@@ -1002,7 +1009,6 @@
           await updateDoc(doc(db, "licenses", id), {
             expiresAt: currentExpire,
           });
-          loadLicenses();
         }
       };
 
@@ -1023,7 +1029,6 @@
           await updateDoc(doc(db, "licenses", id), {
             active: false,
           });
-          loadLicenses();
         }
       };
 

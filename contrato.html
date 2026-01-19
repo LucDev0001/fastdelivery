@@ -214,6 +214,7 @@
         getDocs,
         updateDoc,
         serverTimestamp,
+        onSnapshot,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -268,7 +269,7 @@ CLÁUSULA 5ª - DO PREÇO E VIGÊNCIA
 Rio de Janeiro, {{CURRENT_DATE}}.
 `;
 
-      async function init() {
+      function init() {
         if (!key) {
           showError(
             "Chave Inválida",
@@ -277,49 +278,74 @@ Rio de Janeiro, {{CURRENT_DATE}}.
           return;
         }
 
-        try {
-          const q = query(collection(db, "licenses"), where("key", "==", key));
-          const snapshot = await getDocs(q);
+        const q = query(collection(db, "licenses"), where("key", "==", key));
 
-          if (snapshot.empty) {
+        // Listener em tempo real (onSnapshot)
+        onSnapshot(
+          q,
+          (snapshot) => {
+            if (snapshot.empty) {
+              showError(
+                "Licença não encontrada",
+                "Verifique se o link está correto.",
+              );
+              return;
+            }
+
+            licenseDoc = snapshot.docs[0];
+            const newData = licenseDoc.data();
+
+            // Verifica se estava aguardando e agora foi pago (Recarrega a página)
+            const isWaiting = !document
+              .getElementById("error-screen")
+              .classList.contains("hidden");
+            const isNowPaid = newData.status === "paid" || newData.active;
+
+            if (isWaiting && isNowPaid && licenseData) {
+              location.reload();
+              return;
+            }
+
+            licenseData = newData;
+
+            // VERIFICAÇÃO DE PAGAMENTO
+            if (licenseData.status !== "paid" && !licenseData.active) {
+              document.getElementById("loading").classList.add("hidden");
+              document
+                .getElementById("error-screen")
+                .classList.remove("hidden");
+              document.getElementById("error-title").innerText =
+                "Aguardando Liberação";
+              document.getElementById("error-msg").innerHTML =
+                "Estamos aguardando a confirmação do pagamento ou a liberação pelo administrador.<br>Se você já pagou, aguarde alguns instantes, a página atualizará automaticamente.";
+              document.getElementById("retry-btn").classList.remove("hidden");
+              // Esconde o botão de voltar ao início para não confundir
+              document.querySelector("#error-screen a").classList.add("hidden");
+              document
+                .getElementById("contract-content")
+                .classList.add("hidden");
+              return;
+            }
+
+            // Se pagou, esconde tela de erro
+            document.getElementById("error-screen").classList.add("hidden");
+
+            // Se já assinou
+            if (licenseData.contractAccepted) {
+              renderSignedContract();
+              return;
+            }
+
+            renderContract();
+          },
+          (error) => {
+            console.error(error);
             showError(
-              "Licença não encontrada",
-              "Verifique se o link está correto.",
+              "Erro no Sistema",
+              "Ocorreu um erro ao carregar os dados. Tente novamente.",
             );
-            return;
-          }
-
-          licenseDoc = snapshot.docs[0];
-          licenseData = licenseDoc.data();
-
-          // VERIFICAÇÃO DE PAGAMENTO
-          if (licenseData.status !== "paid" && !licenseData.active) {
-            document.getElementById("loading").classList.add("hidden");
-            document.getElementById("error-screen").classList.remove("hidden");
-            document.getElementById("error-title").innerText =
-              "Confirmando Pagamento...";
-            document.getElementById("error-msg").innerHTML =
-              "Estamos aguardando a confirmação do banco.<br>Se você acabou de pagar, aguarde alguns segundos e clique abaixo.";
-            document.getElementById("retry-btn").classList.remove("hidden");
-            // Esconde o botão de voltar ao início para não confundir
-            document.querySelector("#error-screen a").classList.add("hidden");
-            return;
-          }
-
-          // Se já assinou
-          if (licenseData.contractAccepted) {
-            renderSignedContract();
-            return;
-          }
-
-          renderContract();
-        } catch (error) {
-          console.error(error);
-          showError(
-            "Erro no Sistema",
-            "Ocorreu um erro ao carregar os dados. Tente novamente.",
-          );
-        }
+          },
+        );
       }
 
       function renderContract() {
