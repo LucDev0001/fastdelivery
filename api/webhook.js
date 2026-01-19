@@ -58,10 +58,21 @@ export default async function handler(req, res) {
         .get();
 
       if (snapshot.empty) {
-        console.log("Nenhuma licença encontrada para o pagamento:", paymentId);
+        // Cria uma notificação para o admin no Dashboard
+        await db.collection("notifications").add({
+          type: "sale_site_no_license",
+          customer: customer,
+          paymentId: paymentId,
+          productName: productName,
+          amount: event.data.amount || 0,
+          createdAt: admin.firestore.FieldValue.serverTimestamp(),
+          read: false,
+        });
+
+        console.log("Nenhuma licença encontrada. Notificação criada.");
         return res
           .status(200)
-          .json({ received: true, status: "no_license_found" });
+          .json({ received: true, status: "notification_created" });
       }
 
       // Atualiza a licença para ATIVA
