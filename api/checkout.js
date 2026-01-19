@@ -122,7 +122,7 @@ export default async function handler(req, res) {
      * Payload Abacate Pay
      * =========================== */
     const payload = {
-      frequency: plan === "anual" ? "YEARLY" : "MONTHLY",
+      frequency: "ONE_TIME",
       methods: ["PIX"],
       products: [
         {
@@ -140,7 +140,7 @@ export default async function handler(req, res) {
         name: name || "Cliente",
         email: email,
         taxId: cleanCpf,
-        phone: cleanPhone, // 🔥 CAMPO CORRETO
+        cellphone: cleanPhone,
       },
     };
 
