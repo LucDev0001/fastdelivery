@@ -799,9 +799,13 @@
           const contractUrl = `${baseUrl}?key=${data.key}`;
           const statusUrl = `${baseUrl.replace("contrato.html", "status.html")}?key=${data.key}`;
 
-          const paymentStatus = data.active
-            ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Ativa</span>'
-            : '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
+          let paymentStatus = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
+          
+          if (data.active) {
+            paymentStatus = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Ativa</span>';
+          } else if (data.status === 'paid') {
+            paymentStatus = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Pago / Assinar</span>';
+          }
 
           const whatsappMessage = `Olá! Segue os links para o seu sistema CoraEats:\n\n📄 *Contrato/Ativação:* ${contractUrl}\n📊 *Acompanhar Instalação:* ${statusUrl}`;
 
@@ -869,9 +873,13 @@
         const contractStatus = data.contractAccepted
             ? '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Contrato Assinado</span>'
             : '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Contrato Pendente</span>';
-        const paymentStatus = data.active
-            ? '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Licença Ativa</span>'
-            : '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
+        
+        let paymentStatus = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
+        if (data.active) {
+            paymentStatus = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Licença Ativa</span>';
+        } else if (data.status === 'paid') {
+            paymentStatus = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Pago (Falta Contrato)</span>';
+        }
         badgesContainer.innerHTML = contractStatus + paymentStatus;
 
         // Setup Status Select

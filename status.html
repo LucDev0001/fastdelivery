@@ -58,18 +58,16 @@
           ></div>
 
           <!-- Passo 1: Pagamento -->
-          <div class="relative flex items-start mb-8 z-10">
+          <div class="relative flex items-start mb-8 z-10" id="step-payment">
             <div
-              class="flex-shrink-0 w-16 h-16 rounded-full bg-green-100 flex items-center justify-center border-4 border-white shadow-sm"
+              class="flex-shrink-0 w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center border-4 border-white shadow-sm transition-colors duration-300"
             >
-              <i class="fas fa-check text-green-600 text-xl"></i>
+              <i class="fas fa-credit-card text-gray-400 text-xl"></i>
             </div>
             <div class="ml-6 mt-2">
-              <h3 class="text-lg font-bold text-gray-900">
-                Pagamento Confirmado
-              </h3>
+              <h3 class="text-lg font-bold text-gray-900">Pagamento</h3>
               <p class="text-gray-500 text-sm">
-                Sua assinatura foi processada com sucesso.
+                Aguardando confirmação do pagamento.
               </p>
             </div>
           </div>
@@ -223,6 +221,15 @@
             iconContainer.className = `flex-shrink-0 w-16 h-16 rounded-full bg-green-100 flex items-center justify-center border-4 border-white shadow-sm`;
             icon.className = `fas ${iconClass} ${textClass} text-xl`;
           };
+
+          // Lógica de Pagamento
+          if (data.status === "paid" || data.active) {
+            activate("step-payment", "fa-check");
+            document.querySelector("#step-payment h3").innerText =
+              "Pagamento Confirmado";
+            document.querySelector("#step-payment p").innerText =
+              "Sua assinatura foi processada com sucesso.";
+          }
 
           // Lógica de Status
           if (data.contractAccepted) activate("step-contract", "fa-check");
