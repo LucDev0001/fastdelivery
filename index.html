@@ -159,7 +159,7 @@
         class="container mx-auto px-6 py-4 flex justify-between items-center"
       >
         <a href="#" class="flex items-center gap-2">
-          <img src="images/logocora.jpeg" alt="CoraEats" class="h-10" />
+          <img src="images/logocora.jpeg" alt="CoraEats" class="h-10 rounded-lg" />
         </a>
         <div class="hidden md:flex items-center space-x-6">
           <a
@@ -933,7 +933,7 @@
               href="#"
               class="flex items-center gap-2 mb-2 justify-center md:justify-start"
             >
-              <img src="images/logocora.png" alt="CoraEats" class="h-10" />
+              <img src="images/logocora.png" alt="CoraEats" class="h-10 rounded-lg" />
             </a>
             <p class="text-gray-500 text-sm">
               A solução completa para o seu negócio decolar.
@@ -1190,6 +1190,14 @@
         storageBucket: "fastdelivery-46457.appspot.com",
         messagingSenderId: "889884008498",
         appId: "1:889884008498:web:418e00c16326df6d4e1c2b",
+        // measurementId: "G-XXXXXXXXXX" // Adicione seu ID de medição do GA4 aqui se disponível no console
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+    </script>
+  </body>
+</html>
         // measurementId: "G-XXXXXXXXXX" // Adicione seu ID de medição do GA4 aqui se disponível no console
       };
 
