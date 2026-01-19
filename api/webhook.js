@@ -73,6 +73,14 @@ export default async function handler(req, res) {
     /* =====================================================
      * ENVIO DE EMAIL PARA ADMIN
      * ===================================================== */
+    // Debug SMTP: Verifique nos logs da Vercel se as variáveis estão presentes
+    console.log("Debug SMTP:", {
+      host: process.env.SMTP_HOST,
+      port: process.env.SMTP_PORT,
+      user: process.env.SMTP_USER,
+      hasPass: !!process.env.SMTP_PASS,
+    });
+
     if (
       process.env.SMTP_HOST &&
       process.env.SMTP_PORT &&
