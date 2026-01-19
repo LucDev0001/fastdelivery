@@ -2,8 +2,15 @@
   "name": "fastdelivery-system",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "axios": "^1.6.2",
-    "firebase-admin": "^11.11.1"
+    "firebase-admin": "^11.11.1",
+    "nodemailer": "^6.9.13"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
