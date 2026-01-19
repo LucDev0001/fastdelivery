@@ -90,88 +90,16 @@
 
         <!-- Gerenciamento de Licenças -->
         <div class="bg-white p-6 rounded-lg shadow mb-8">
-          <h2 class="text-lg font-semibold mb-4">Adicionar Nova Licença</h2>
-          <form
-            id="add-license-form"
-            class="grid grid-cols-1 md:grid-cols-3 gap-4"
-          >
-            <input
-              type="text"
-              id="store-name"
-              placeholder="Nome da Loja"
-              required
-              class="p-2 border rounded"
-            />
-            <input
-              type="text"
-              id="company-name"
-              placeholder="Razão Social"
-              class="p-2 border rounded"
-            />
-            <input
-              type="text"
-              id="cnpj"
-              placeholder="CPF ou CNPJ"
-              class="p-2 border rounded"
-            />
-            <input
-              type="text"
-              id="store-url"
-              placeholder="URL da Loja (https://...)"
-              required
-              class="p-2 border rounded"
-            />
-            <input
-              type="text"
-              id="client-contact"
-              placeholder="E-mail do Cliente"
-              required
-              class="p-2 border rounded"
-            />
-            <input
-              type="text"
-              id="client-phone"
-              placeholder="WhatsApp (com DDD)"
-              required
-              class="p-2 border rounded"
-            />
-            <input
-              type="text"
-              id="address"
-              placeholder="Endereço Completo"
-              class="p-2 border rounded md:col-span-2"
-            />
-            <select id="plan-type" class="p-2 border rounded bg-white">
-              <option value="mensal">Plano Mensal</option>
-              <option value="anual">Plano Anual</option>
-            </select>
-            <input
-              type="date"
-              id="expires-at"
-              required
-              class="p-2 border rounded"
-            />
-            <textarea id="internal-notes" placeholder="Observações Internas (Instalação, Detalhes...)" class="p-2 border rounded md:col-span-3" rows="2"></textarea>
-            <div class="md:col-span-3 flex items-center gap-2 py-2">
-              <input type="checkbox" id="already-paid" class="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500">
-              <label for="already-paid" class="text-sm text-gray-700 font-medium">Cliente já pagou pelo site (Gerar apenas chave e contrato)</label>
-            </div>
-            <div class="md:col-span-3 flex flex-col md:flex-row gap-4">
-              <button
-                type="submit"
-                class="flex-1 bg-[#10B981] text-white py-2 rounded hover:bg-emerald-600"
-              >
-                Gerar Licença
-              </button>
+          <h2 class="text-lg font-semibold mb-4">Ações Rápidas</h2>
+          <div class="flex gap-4">
               <button
                 type="button"
                 id="btn-generate-test"
-                class="flex-1 bg-gray-800 text-white py-2 rounded hover:bg-gray-900"
+                class="bg-gray-800 text-white py-2 px-6 rounded hover:bg-gray-900"
               >
                 <i class="fas fa-flask mr-2"></i>Gerar Teste Grátis (7 dias)
               </button>
-            </div>
-          </form>
+          </div>
           <div
             id="generated-key"
             class="mt-4 bg-green-100 text-green-800 p-3 rounded hidden text-center font-mono"
@@ -809,137 +737,6 @@
             btn.disabled = false;
         }
       });
-
-      // Adicionar Licença
-      document
-        .getElementById("add-license-form")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-
-          const btn = e.target.querySelector("button[type=submit]");
-          const alreadyPaid = document.getElementById("already-paid").checked;
-          const originalText = btn.innerText;
-          btn.innerText = "Gerando Link de Pagamento...";
-          btn.disabled = true;
-
-          try {
-            // 1. Gera a chave localmente
-            const key = `VOU-${Math.random()
-              .toString(36)
-              .substr(2, 4)
-              .toUpperCase()}-${Math.random()
-              .toString(36)
-              .substr(2, 4)
-              .toUpperCase()}-${Math.random()
-              .toString(36)
-              .substr(2, 4)
-              .toUpperCase()}`;
-
-            // 2. Coleta dados do formulário
-            const storeName = document.getElementById("store-name").value;
-            const companyName = document.getElementById("company-name").value;
-            const cnpj = document.getElementById("cnpj").value;
-            const email = document.getElementById("client-contact").value;
-            const phone = document.getElementById("client-phone").value;
-            const planType = document.getElementById("plan-type").value;
-            const internalNotes = document.getElementById("internal-notes").value;
-
-            let paymentData = { id: "MANUAL_SITE_" + Date.now(), url: "#" };
-
-            if (!alreadyPaid) {
-              // 3. Chama a API para gerar o Link de Pagamento (apenas se não pagou)
-              const checkoutResponse = await fetch("/api/checkout", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  name: companyName || storeName,
-                  email: email,
-                  cpf: cnpj,
-                  plan: planType,
-                  phone: phone,
-                  key: key, // Envia a chave para vincular ao redirecionamento
-                }),
-              });
-
-              if (!checkoutResponse.ok) {
-                const errorText = await checkoutResponse.text(); // Lê o corpo como texto primeiro
-                let errorMsg = "Erro ao gerar pagamento";
-                
-                try {
-                  const errorData = JSON.parse(errorText); // Tenta converter para JSON
-                  errorMsg = errorData.error || errorMsg;
-                } catch (e) {
-                  // Se falhar, é HTML ou texto puro (erro crítico do Vercel/Node)
-                  console.error("Erro Crítico do Servidor:", errorText);
-                  errorMsg = `Erro no Servidor (${checkoutResponse.status}). Verifique o console para ver o erro detalhado.`;
-                }
-                throw new Error(errorMsg);
-              }
-              paymentData = await checkoutResponse.json();
-            }
-
-            // 4. Salva no Firestore (Inativa / Aguardando Pagamento)
-            const licenseData = {
-              storeName: storeName,
-              companyName: companyName,
-              cnpj: cnpj,
-              address: document.getElementById("address").value,
-              storeUrl: document.getElementById("store-url").value,
-              clientContact: email,
-              clientPhone: phone, // Salva o telefone
-              planType: planType,
-              internalNotes: internalNotes, // Salva observações
-              expiresAt: new Date(
-                document.getElementById("expires-at").value + "T23:59:59"
-              ),
-              createdAt: serverTimestamp(),
-              key: key,
-              paymentId: paymentData.id, // ID do Abacate Pay para vincular
-              paymentLink: paymentData.url,
-              active: false, // Começa inativa
-              status: alreadyPaid ? "paid" : "aguardando_pagamento",
-            };
-
-            await addDoc(collection(db, "licenses"), licenseData);
-
-            const keyContainer = document.getElementById("generated-key");
-            keyContainer.innerHTML = `
-            <div class="flex flex-col gap-4 text-left">
-                <div class="bg-yellow-50 p-3 rounded border border-yellow-200">
-                    <p class="font-bold text-yellow-800"><i class="fas fa-exclamation-triangle"></i> Licença criada (${alreadyPaid ? 'Paga / Aguardando Contrato' : 'Aguardando Pagamento'})</p>
-                    <p class="text-sm text-yellow-700">Envie o ${alreadyPaid ? 'link do contrato' : 'link de pagamento'} para o cliente ativar a chave.</p>
-                </div>
-                ${!alreadyPaid ? `<div>
-                    <span class="text-sm font-bold text-gray-600">Link de Pagamento:</span>
-                    <div class="flex gap-2 mt-1">
-                        <input type="text" value="${paymentData.url}" class="flex-1 p-2 border rounded text-sm bg-gray-50" readonly>
-                        <button onclick="window.copiarChave('${paymentData.url}')" class="bg-blue-600 text-white px-3 rounded hover:bg-blue-700">Copiar</button>
-                    </div>
-                </div>` : ''}
-                <div>
-                    <span class="text-sm font-bold text-gray-600">Chave da Licença:</span>
-                    <div class="flex gap-2 mt-1">
-                        <input type="text" value="${key}" class="flex-1 p-2 border rounded text-sm bg-gray-50 font-mono" readonly>
-                        <button onclick="window.copiarChave('${key}')" class="bg-gray-600 text-white px-3 rounded hover:bg-gray-700">Copiar</button>
-                    </div>
-                </div>
-            </div>`;
-            keyContainer.classList.remove("hidden");
-
-            e.target.reset();
-            loadLicenses();
-          } catch (error) {
-            console.error(error);
-            let msg = error.message;
-            if (msg === "Failed to fetch") {
-                msg = "Não foi possível conectar ao servidor. Verifique se o backend (Vercel) está rodando.";
-            }
-            alert(msg);
-          } finally {
-            btn.innerText = originalText;
-            btn.disabled = false;
-          }
-        });
 
       // Listener de Busca
       document.getElementById("search-license").addEventListener("input", (e) => {
