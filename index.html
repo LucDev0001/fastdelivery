@@ -1132,7 +1132,7 @@
           `,
           focusConfirm: false,
           showCancelButton: true,
-          confirmButtonText: "Finalizar no WhatsApp",
+          confirmButtonText: "Ir para Pagamento",
           confirmButtonColor: "#F47C2C",
           cancelButtonText: "Cancelar",
           preConfirm: () => {
@@ -1156,24 +1156,34 @@
           }
 
           Swal.fire({
-            title: "Redirecionando...",
-            text: "Abrindo WhatsApp para finalizar...",
+            title: "Gerando Pagamento...",
+            text: "Aguarde enquanto criamos seu link seguro...",
             allowOutsideClick: false,
             didOpen: () => {
               Swal.showLoading();
             },
           });
 
-          // Lógica de Redirecionamento para o WhatsApp
-          const numeroWhatsApp = "5521983856779";
-          const mensagem = `🚀 *Nova Assinatura Iniciada*\n\nOlá! Quero assinar o *CoraEats*.\n\n📦 *Plano:* ${plano.toUpperCase()} (${valor})\n👤 *Nome:* ${formValues.name}\n📧 *E-mail:* ${formValues.email}\n🆔 *CPF/CNPJ:* ${formValues.cpf}\n📱 *Telefone:* ${formValues.phone}\n\nAguardo o link de pagamento!`;
+          try {
+            const response = await fetch("/api/checkout", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(formValues),
+            });
 
-          const url = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+            const data = await response.json();
 
-          setTimeout(() => {
-            window.open(url, "_blank");
-            Swal.close();
-          }, 1500);
+            if (response.ok && data.url) {
+              window.location.href = data.url;
+            } else {
+              throw new Error(data.error || "Erro ao processar pagamento.");
+            }
+          } catch (error) {
+            console.error(error);
+            Swal.fire("Erro", error.message, "error");
+          }
         }
       }
     </script>
@@ -1198,4 +1208,11 @@
     </script>
   </body>
 </html>
-        
+        // measurementId: "G-XXXXXXXXXX" // Adicione seu ID de medição do GA4 aqui se disponível no console
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+    </script>
+  </body>
+</html>
