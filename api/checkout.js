@@ -69,6 +69,11 @@ export default async function handler(req, res) {
       throw new Error("CPF/CNPJ é obrigatório.");
     }
 
+    // Remove zero à esquerda se houver (ex: 021... -> 21...)
+    if (cleanPhone.startsWith("0")) {
+      cleanPhone = cleanPhone.substring(1);
+    }
+
     // Validação básica CPF/CNPJ
     if (cleanCpf.length !== 11 && cleanCpf.length !== 14) {
       throw new Error("CPF ou CNPJ inválido.");
