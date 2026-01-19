@@ -245,11 +245,11 @@
     <!-- Modal de Edição de Licença -->
     <div
       id="edit-modal"
-      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4"
     >
-      <div class="bg-white rounded-lg w-full max-w-md mx-4 p-6 shadow-xl">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold text-gray-900">Editar Licença</h3>
+      <div class="bg-white rounded-lg w-full max-w-2xl shadow-xl flex flex-col max-h-[90vh]">
+        <div class="flex justify-between items-center p-6 border-b">
+          <h3 class="text-lg font-bold text-gray-900" id="edit-modal-title">Editar / Ativar Licença</h3>
           <button
             onclick="closeEditModal()"
             class="text-gray-400 hover:text-gray-600"
@@ -257,8 +257,10 @@
             <i class="fas fa-times"></i>
           </button>
         </div>
-        <form id="edit-form" class="space-y-4">
+        <form id="edit-form" class="p-6 overflow-y-auto space-y-4">
           <input type="hidden" id="edit-id" />
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700"
               >Nome da Loja</label
@@ -306,6 +308,14 @@
             />
           </div>
           <div>
+            <label class="block text-sm font-medium text-gray-700">Telefone (WhatsApp)</label>
+            <input
+              type="text"
+              id="edit-client-phone"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+            />
+          </div>
+          <div>
             <label class="block text-sm font-medium text-gray-700"
               >Endereço</label
             >
@@ -325,18 +335,15 @@
               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
             />
           </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700">Status do Pagamento</label>
             <select id="edit-payment-status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
               <option value="aguardando_pagamento">Aguardando Pagamento</option>
               <option value="paid">Pago (Liberar Contrato)</option>
             </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Status da Instalação</label>
-            <select id="edit-setup-status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
-            />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700">Status da Instalação</label>
@@ -348,11 +355,14 @@
             </select>
             <p class="text-xs text-gray-500 mt-1">Atualize para o cliente acompanhar no link de status.</p>
           </div>
+          </div>
+
           <div>
             <label class="block text-sm font-medium text-gray-700">Observações Internas</label>
             <textarea id="edit-internal-notes" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500" rows="3"></textarea>
           </div>
-          <div class="flex justify-end gap-3 mt-6">
+          
+          <div class="flex justify-end gap-3 pt-4 border-t">
             <button
               type="button"
               onclick="closeEditModal()"
@@ -1002,6 +1012,19 @@
             ? `https://wa.me/${data.clientPhone.replace(/\D/g, '')}?text=${encodeURIComponent(whatsappMessage)}`
             : '#';
 
+          // Lógica do Botão de Ação (Ativar vs Perfil)
+          let actionButton = `
+            <button onclick="window.openLicenseDetails('${data.id}')" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
+              <i class="fas fa-id-card mr-1"></i> Ver Perfil
+            </button>`;
+
+          if (!data.storeUrl || data.storeUrl === "") {
+             actionButton = `
+            <button onclick="window.editLicense('${data.id}')" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition shadow-md animate-pulse">
+              <i class="fas fa-check-circle mr-1"></i> ATIVAR
+            </button>`;
+          }
+
           const row = `
                     <tr class="${isExpired ? "bg-red-50" : ""}">
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -1013,9 +1036,7 @@
                             ${paymentStatus}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button onclick="window.openLicenseDetails('${data.id}')" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
-                              <i class="fas fa-id-card mr-1"></i> Ver Perfil
-                            </button>
+                            ${actionButton}
                         </td>
                     </tr>
                 `;
@@ -1065,7 +1086,7 @@
         };
         const setupContainer = document.getElementById("detail-setup-container");
         setupContainer.innerHTML = `
-            <select onchange="window.changeSetupStatus('${data.id}', this.value)" class="w-full md:w-1/2 border-gray-300 rounded shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+            <select id="status-select-${data.id}" onchange="window.changeSetupStatus('${data.id}', this.value)" class="w-full md:w-1/2 border-gray-300 rounded shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 ${Object.entries(setupOptions).map(([key, label]) => `<option value="${key}" ${data.setupStatus === key ? 'selected' : ''}>${label}</option>`).join('')}
             </select>
         `;
@@ -1117,6 +1138,7 @@
         document.getElementById("edit-store-url").value = license.storeUrl;
         document.getElementById("edit-client-contact").value =
           license.clientContact;
+        document.getElementById("edit-client-phone").value = license.clientPhone || "";
         document.getElementById("edit-address").value = license.address || "";
         document.getElementById("edit-payment-status").value = license.status || "aguardando_pagamento";
         document.getElementById("edit-setup-status").value = license.setupStatus || "pending";
@@ -1146,6 +1168,7 @@
             cnpj: document.getElementById("edit-cnpj").value,
             storeUrl: document.getElementById("edit-store-url").value,
             clientContact: document.getElementById("edit-client-contact").value,
+            clientPhone: document.getElementById("edit-client-phone").value,
             address: document.getElementById("edit-address").value,
             status: document.getElementById("edit-payment-status").value,
             setupStatus: document.getElementById("edit-setup-status").value,

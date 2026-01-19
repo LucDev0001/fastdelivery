@@ -158,9 +158,50 @@ export default async function handler(req, res) {
      * NOTIFICAÇÃO SE NÃO HOUVER LICENÇA
      * ===================================================== */
     if (snapshot.empty) {
-      // Nenhuma licença encontrada → notificação
+      console.log("Nenhuma licença encontrada. Criando automaticamente...");
+
+      // 1. Gerar chave
+      const key = `VOU-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
+
+      // 2. Definir plano e validade
+      let planType = "mensal";
+      let daysToAdd = 30;
+
+      if (productName.toLowerCase().includes("anual") || amount > 20000) {
+        planType = "anual";
+        daysToAdd = 365;
+      }
+
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + daysToAdd);
+
+      // 3. Criar Licença no Firestore
+      const newLicense = {
+        storeName: customer.name || "Nova Loja (Pendente)",
+        companyName: "",
+        cnpj: customer.taxId || "",
+        address: "",
+        storeUrl: "", // Campo vazio indica que precisa de ativação
+        clientContact: customer.email || "",
+        clientPhone: customer.phone || customer.cellphone || "",
+        planType: planType,
+        expiresAt: admin.firestore.Timestamp.fromDate(expiresAt),
+        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+        key: key,
+        paymentId: paymentId,
+        paymentLink: "",
+        active: false,
+        status: "paid", // Já nasce paga
+        contractAccepted: false,
+        setupStatus: "pending",
+        autoCreated: true, // Flag para identificar no dashboard
+      };
+
+      await db.collection("licenses").add(newLicense);
+
+      // Notificação de apoio
       await db.collection("notifications").add({
-        type: "sale_no_license",
+        type: "sale_auto_license",
         paymentId,
         customer,
         productName,
@@ -169,11 +210,9 @@ export default async function handler(req, res) {
         read: false,
       });
 
-      console.log("Nenhuma licença encontrada. Notificação criada.");
-
       return res.status(200).json({
         received: true,
-        status: "notification_created",
+        status: "license_created_automatically",
       });
     }
 
