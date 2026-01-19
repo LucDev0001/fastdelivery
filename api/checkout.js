@@ -94,7 +94,7 @@ export default async function handler(req, res) {
     const response = await axios.post(
       "https://api.abacatepay.com/v1/billing/create",
       {
-        frequency: plan === "anual" ? "YEARLY" : "MONTHLY",
+        frequency: "ONE_TIME",
         methods: ["PIX"],
         products: [
           {
