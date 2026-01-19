@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
+Disallow: /login.html
+Disallow: /dashboard.html
+Disallow: /sucesso.html
+Disallow: /contrato.html
+Disallow: /status.html
+Disallow: /api/
 
 Sitemap: https://coraeats.vercel.app/sitemap.xml
