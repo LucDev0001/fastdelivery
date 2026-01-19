@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CoraEats Demo | Hamburgueria Modelo</title>
+    <meta
+      name="description"
+      content="Demonstração do cardápio digital CoraEats."
+    />
+
+    <!-- Bootstrap e FontAwesome -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-blue: #0f1c2e;
+        --accent-orange: #f47c2c;
+      }
+      body {
+        background-color: #f4f6f8;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        padding-bottom: 80px;
+      }
+      .text-danger {
+        color: var(--primary-blue) !important;
+      }
+      .btn-danger {
+        background-color: var(--accent-orange) !important;
+        border-color: var(--accent-orange) !important;
+        color: white;
+      }
+      .btn-danger:hover {
+        background-color: #e06b20 !important;
+      }
+      .btn-outline-danger {
+        color: var(--accent-orange) !important;
+        border-color: var(--accent-orange) !important;
+      }
+      .btn-outline-danger:hover {
+        background-color: var(--accent-orange) !important;
+        color: white !important;
+      }
+
+      .topo-capa-ifood {
+        background: url("https://images.unsplash.com/photo-1550547660-d9450f859349?q=80&w=1000&auto=format&fit=crop")
+          center center / cover no-repeat;
+        height: 200px;
+        position: relative;
+      }
+      .card-topo-ifood {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 15px 20px 10px;
+        width: 90%;
+        max-width: 500px;
+        margin: -50px auto 20px;
+        position: relative;
+        text-align: center;
+        z-index: 2;
+      }
+      .logo-circular-ifood {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 4px solid white;
+        object-fit: cover;
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .status-aberta {
+        color: #16a34a;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+      }
+      .status-aberta::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background-color: #16a34a;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .categoria-scroll {
+        background: white;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        padding: 10px 0;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      .categoria-link {
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 0 5px;
+        color: #666;
+        text-decoration: none;
+        border-radius: 20px;
+        font-weight: 500;
+        transition: all 0.3s;
+      }
+      .categoria-link.active,
+      .categoria-link:hover {
+        background-color: var(--primary-blue);
+        color: white;
+      }
+
+      .produto-card {
+        transition: transform 0.2s;
+        border: none !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+      .produto-card:hover {
+        transform: translateY(-2px);
+      }
+
+      .barra-sacola {
+        position: fixed;
+        bottom: 80px; /* Acima da nav */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 500px;
+        background-color: var(--accent-orange);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 4px 15px rgba(244, 124, 44, 0.4);
+        z-index: 1030;
+        cursor: pointer;
+        display: none; /* JS controla */
+      }
+
+      .barra-inferior {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: white;
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        z-index: 1040;
+      }
+      .nav-item {
+        text-align: center;
+        color: #999;
+        text-decoration: none;
+        font-size: 0.8rem;
+      }
+      .nav-item.active {
+        color: var(--accent-orange);
+      }
+      .nav-item i {
+        display: block;
+        font-size: 1.2rem;
+        margin-bottom: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Capa e Topo -->
+    <div class="topo-capa-ifood"></div>
+
+    <div class="card-topo-ifood">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png"
+        class="logo-circular-ifood"
+        alt="Logo Demo"
+      />
+      <h5 class="mt-4 mb-1 fw-bold">CoraEats Demo</h5>
+      <p class="text-muted small mb-2">Hamburgueria • Lanches • Bebidas</p>
+
+      <div
+        class="d-flex align-items-center justify-content-center gap-2 mt-2 p-2 rounded"
+        style="background: #f8f9fa"
+      >
+        <div
+          class="text-truncate"
+          style="max-width: 250px; font-size: 0.9rem; color: #333"
+        >
+          <span class="text-danger me-1"
+            ><i class="fas fa-map-marker-alt"></i
+          ></span>
+          Rua de Exemplo, 123 - Centro
+        </div>
+      </div>
+      <div class="text-muted mt-1" style="font-size: 0.85rem">
+        🛵 Entrega: 30-45 min • <strong>Grátis</strong>
+      </div>
+      <div class="mt-2 status-aberta">Loja Aberta</div>
+    </div>
+
+    <!-- Categorias -->
+    <div class="categoria-scroll" id="categoria-container">
+      <!-- Inserido via JS -->
+    </div>
+
+    <!-- Lista de Produtos -->
+    <main class="container py-2" id="cardapio-content">
+      <!-- Inserido via JS -->
+    </main>
+
+    <!-- Barra da Sacola -->
+    <div
+      class="barra-sacola"
+      id="barraSacola"
+      onclick="
+        alert(
+          'Esta é uma loja de demonstração. O checkout não será processado.',
+        )
+      "
+    >
+      <div class="d-flex align-items-center gap-3">
+        <div
+          class="bg-white text-danger rounded-circle d-flex align-items-center justify-content-center"
+          style="width: 30px; height: 30px; font-weight: bold"
+          id="qtd-sacola"
+        >
+          0
+        </div>
+        <div class="d-flex flex-col" style="line-height: 1.1">
+          <span style="font-size: 0.8rem; opacity: 0.9">Total</span>
+          <strong id="total-sacola">R$ 0,00</strong>
+        </div>
+      </div>
+      <span style="font-weight: 600; font-size: 0.9rem"
+        >Ver Sacola <i class="fas fa-chevron-right ms-1"></i
+      ></span>
+    </div>
+
+    <!-- Navegação Inferior -->
+    <nav class="barra-inferior">
+      <a href="#" class="nav-item active">
+        <i class="fas fa-home"></i>
+        <span>Início</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-search"></i>
+        <span>Busca</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-receipt"></i>
+        <span>Pedidos</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-user"></i>
+        <span>Perfil</span>
+      </a>
+    </nav>
+
+    <!-- Modal de Complementos (Mock) -->
+    <div id="modalComplementos" class="modal fade" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title fw-bold" id="modal-titulo">Produto</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p class="text-muted mb-3" id="modal-desc">
+              Descrição do produto...
+            </p>
+
+            <h6 class="fw-bold mb-3 bg-light p-2 rounded">
+              Adicionais (Opcional)
+            </h6>
+            <div class="form-check mb-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="3.00"
+                id="add-bacon"
+              />
+              <label
+                class="form-check-label d-flex justify-content-between"
+                for="add-bacon"
+              >
+                <span>Bacon Extra</span>
+                <span>+ R$ 3,00</span>
+              </label>
+            </div>
+            <div class="form-check mb-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value="2.00"
+                id="add-queijo"
+              />
+              <label
+                class="form-check-label d-flex justify-content-between"
+                for="add-queijo"
+              >
+                <span>Queijo Extra</span>
+                <span>+ R$ 2,00</span>
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer border-0 d-flex justify-content-between">
+            <div
+              class="d-flex align-items-center gap-3 border rounded px-2 py-1"
+            >
+              <button
+                class="btn btn-link text-danger text-decoration-none p-0"
+                onclick="mudarQtd(-1)"
+              >
+                <i class="fas fa-minus"></i>
+              </button>
+              <span id="modal-qtd" class="fw-bold">1</span>
+              <button
+                class="btn btn-link text-success text-decoration-none p-0"
+                onclick="mudarQtd(1)"
+              >
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+            <button class="btn btn-danger px-4" onclick="confirmarAdicao()">
+              Adicionar • <span id="modal-btn-total">R$ 0,00</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+      // --- DADOS MOCKADOS (Simulando Banco de Dados) ---
+      const dadosLoja = {
+        categorias: [
+          { id: "destaques", nome: "🔥 Destaques" },
+          { id: "burgers", nome: "🍔 Hambúrgueres" },
+          { id: "combos", nome: "🍟 Combos" },
+          { id: "bebidas", nome: "🥤 Bebidas" },
+        ],
+        produtos: [
+          {
+            id: 1,
+            cat: "destaques",
+            nome: "Cora Bacon Master",
+            desc: "Pão brioche, 2 blends de 150g, muito bacon crocante e cheddar.",
+            preco: 32.9,
+            img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80",
+          },
+          {
+            id: 2,
+            cat: "burgers",
+            nome: "Classic Salad",
+            desc: "Pão australiano, blend 150g, alface, tomate e maionese da casa.",
+            preco: 24.9,
+            img: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=500&q=80",
+          },
+          {
+            id: 3,
+            cat: "burgers",
+            nome: "Smash Duplo",
+            desc: "Dois smash burgers de 80g, queijo prato e cebola caramelizada.",
+            preco: 28.0,
+            img: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=500&q=80",
+          },
+          {
+            id: 4,
+            cat: "combos",
+            nome: "Combo Casal",
+            desc: "2 Burgers Classic + 2 Batatas P + 1 Refri 1.5L",
+            preco: 65.0,
+            img: "https://images.unsplash.com/photo-1610614819513-58e34989848b?w=500&q=80",
+          },
+          {
+            id: 5,
+            cat: "bebidas",
+            nome: "Coca-Cola Lata",
+            desc: "350ml geladinha.",
+            preco: 6.0,
+            img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&q=80",
+          },
+        ],
+      };
+
+      // --- ESTADO DO CARRINHO ---
+      let carrinho = [];
+      let produtoSelecionado = null;
+      let qtdAtual = 1;
+
+      // --- INICIALIZAÇÃO ---
+      document.addEventListener("DOMContentLoaded", () => {
+        renderizarCategorias();
+        renderizarProdutos();
+        atualizarBarraSacola();
+
+        // Scroll Spy simples
+        window.addEventListener("scroll", () => {
+          // Lógica simplificada para demo
+        });
+      });
+
+      function renderizarCategorias() {
+        const container = document.getElementById("categoria-container");
+        let html = "";
+        dadosLoja.categorias.forEach((cat, index) => {
+          const active = index === 0 ? "active" : "";
+          html += `<a href="#${cat.id}" class="categoria-link ${active}">${cat.nome}</a>`;
+        });
+        container.innerHTML = html;
+      }
+
+      function renderizarProdutos() {
+        const container = document.getElementById("cardapio-content");
+        let html = "";
+
+        dadosLoja.categorias.forEach((cat) => {
+          const prods = dadosLoja.produtos.filter((p) => p.cat === cat.id);
+          if (prods.length === 0) return;
+
+          html += `
+                    <div id="${cat.id}" class="mb-4 pt-3">
+                        <h4 class="fw-bold mb-3 text-dark">${cat.nome}</h4>
+                        <div class="row g-3">
+                `;
+
+          prods.forEach((p) => {
+            html += `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="produto-card card h-100 p-2 bg-white rounded-3" onclick="abrirModal(${p.id})" style="cursor: pointer;">
+                                <div class="d-flex">
+                                    <div class="flex-grow-1 pe-2 py-1">
+                                        <h6 class="fw-bold mb-1 text-dark">${p.nome}</h6>
+                                        <p class="small text-muted mb-2" style="line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${p.desc}</p>
+                                        <div class="fw-bold text-success">R$ ${p.preco.toFixed(2).replace(".", ",")}</div>
+                                    </div>
+                                    <div style="width: 100px; height: 100px; flex-shrink: 0;">
+                                        <img src="${p.img}" class="w-100 h-100 rounded-3" style="object-fit: cover;" alt="${p.nome}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+          });
+
+          html += `</div></div>`;
+        });
+
+        container.innerHTML = html;
+      }
+
+      // --- LÓGICA DO MODAL ---
+      const modalEl = document.getElementById("modalComplementos");
+      const modal = new bootstrap.Modal(modalEl);
+
+      function abrirModal(id) {
+        produtoSelecionado = dadosLoja.produtos.find((p) => p.id === id);
+        qtdAtual = 1;
+
+        document.getElementById("modal-titulo").innerText =
+          produtoSelecionado.nome;
+        document.getElementById("modal-desc").innerText =
+          produtoSelecionado.desc;
+        document.getElementById("modal-qtd").innerText = qtdAtual;
+
+        // Resetar checkboxes
+        document
+          .querySelectorAll(".form-check-input")
+          .forEach((c) => (c.checked = false));
+
+        atualizarTotalModal();
+        modal.show();
+      }
+
+      function mudarQtd(delta) {
+        qtdAtual += delta;
+        if (qtdAtual < 1) qtdAtual = 1;
+        document.getElementById("modal-qtd").innerText = qtdAtual;
+        atualizarTotalModal();
+      }
+
+      function atualizarTotalModal() {
+        let total = produtoSelecionado.preco;
+
+        // Somar adicionais
+        document.querySelectorAll(".form-check-input:checked").forEach((c) => {
+          total += parseFloat(c.value);
+        });
+
+        total = total * qtdAtual;
+        document.getElementById("modal-btn-total").innerText =
+          "R$ " + total.toFixed(2).replace(".", ",");
+      }
+
+      function confirmarAdicao() {
+        let precoUnitario = produtoSelecionado.preco;
+        let adicionais = [];
+
+        document.querySelectorAll(".form-check-input:checked").forEach((c) => {
+          precoUnitario += parseFloat(c.value);
+          adicionais.push(c.nextElementSibling.firstElementChild.innerText);
+        });
+
+        const item = {
+          id: produtoSelecionado.id,
+          nome: produtoSelecionado.nome,
+          desc: adicionais.length > 0 ? "+ " + adicionais.join(", ") : "",
+          qtd: qtdAtual,
+          precoTotal: precoUnitario * qtdAtual,
+        };
+
+        carrinho.push(item);
+        atualizarBarraSacola();
+        modal.hide();
+
+        // Feedback visual
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Adicionado à sacola",
+        });
+      }
+
+      function atualizarBarraSacola() {
+        const barra = document.getElementById("barraSacola");
+
+        if (carrinho.length === 0) {
+          barra.style.display = "none";
+          return;
+        }
+
+        let qtdTotal = 0;
+        let valorTotal = 0;
+
+        carrinho.forEach((item) => {
+          qtdTotal += item.qtd;
+          valorTotal += item.precoTotal;
+        });
+
+        document.getElementById("qtd-sacola").innerText = qtdTotal;
+        document.getElementById("total-sacola").innerText =
+          "R$ " + valorTotal.toFixed(2).replace(".", ",");
+        barra.style.display = "flex";
+      }
+    </script>
+  </body>
+</html>

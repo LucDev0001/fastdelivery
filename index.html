@@ -85,6 +85,34 @@
         "description": "Sistema de gestão completo para delivery, restaurantes e lanchonetes."
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [{
+          "@type": "Question",
+          "name": "Como funcionam os pagamentos dos pedidos?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nossa plataforma não intermedia pagamentos. O pedido chega para você no painel e no WhatsApp, e você finaliza o pagamento diretamente com o cliente usando seus próprios meios. O dinheiro vai direto para sua conta."
+          }
+        }, {
+          "@type": "Question",
+          "name": "Preciso pagar comissão sobre as vendas?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Não! Diferente de outros marketplaces, nosso sistema funciona com uma mensalidade fixa. Todo o faturamento da sua loja é 100% seu."
+          }
+        }, {
+          "@type": "Question",
+          "name": "O que preciso ter para o sistema funcionar?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nós fornecemos a hospedagem inclusa no seu plano. Você não precisa configurar servidores. Sobre o domínio, se você assinar o plano anual, o primeiro ano é por nossa conta!"
+          }
+        }]
+      }
+    </script>
 
     <style>
       body {
@@ -213,13 +241,21 @@
           Licença de software completa para o seu negócio. Tenha seu cardápio
           online, receba pedidos no WhatsApp e fidelize seus clientes.
         </p>
-        <a
-          href="#contato"
-          class="bg-[#F47C2C] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#e06b20] transition transform hover:scale-105 fade-in-up shadow-xl shadow-orange-500/40"
-          style="transition-delay: 300ms"
-        >
-          Peça uma Demonstração
-        </a>
+        
+        <div class="flex flex-col md:flex-row gap-4 justify-center items-center fade-in-up" style="transition-delay: 300ms">
+          <a
+            href="#contato"
+            class="bg-[#F47C2C] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#e06b20] transition transform hover:scale-105 shadow-xl shadow-orange-500/40 w-full md:w-auto"
+          >
+            Peça uma Demonstração
+          </a>
+          <a
+            href="cliente/index.html" target="_blank"
+            class="bg-transparent border-2 border-gray-500 text-gray-300 hover:text-white hover:border-white px-8 py-4 rounded-full font-bold text-lg transition transform hover:scale-105 w-full md:w-auto flex items-center justify-center gap-2"
+          >
+            <i class="fas fa-store"></i> Ver Loja de Exemplo
+          </a>
+        </div>
       </div>
     </section>
 
@@ -543,108 +579,6 @@
       </div>
     </section>
 
-    <!-- Depoimentos -->
-    <section id="depoimentos" class="py-20 bg-[#0F1C2E]">
-      <div class="container mx-auto px-6">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-white fade-in-up">
-            Quem usa, recomenda ⭐
-          </h2>
-          <p
-            class="text-gray-400 mt-2 fade-in-up"
-            style="transition-delay: 100ms"
-          >
-            Junte-se a centenas de estabelecimentos que cresceram com o
-            CoraEats.
-          </p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- Depoimento 1 -->
-          <div
-            class="bg-[#1A2436] p-8 rounded-xl shadow-sm border border-gray-700 fade-in-up"
-            style="transition-delay: 200ms"
-          >
-            <div class="flex items-center mb-4">
-              <img
-                src="https://randomuser.me/api/portraits/men/32.jpg"
-                alt="Cliente"
-                class="w-12 h-12 rounded-full mr-4 border-2 border-[#F47C2C]"
-              />
-              <div>
-                <h5 class="font-bold text-white">Carlos Silva</h5>
-                <p class="text-sm text-gray-500">Hamburgueria Top</p>
-              </div>
-            </div>
-            <p class="text-gray-300 italic">
-              "O sistema mudou a forma como organizamos os pedidos. Antes era
-              uma bagunça no WhatsApp, agora tudo flui perfeitamente. O suporte
-              é nota 10!"
-            </p>
-            <div class="text-yellow-400 mt-4 text-sm">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i
-              ><i class="fas fa-star"></i><i class="fas fa-star"></i
-              ><i class="fas fa-star"></i>
-            </div>
-          </div>
-
-          <!-- Depoimento 2 -->
-          <div
-            class="bg-[#1A2436] p-8 rounded-xl shadow-sm border border-gray-700 fade-in-up"
-            style="transition-delay: 300ms"
-          >
-            <div class="flex items-center mb-4">
-              <img
-                src="https://randomuser.me/api/portraits/women/44.jpg"
-                alt="Cliente"
-                class="w-12 h-12 rounded-full mr-4 border-2 border-[#F47C2C]"
-              />
-              <div>
-                <h5 class="font-bold text-white">Mariana Souza</h5>
-                <p class="text-sm text-gray-500">Pizzaria da Mari</p>
-              </div>
-            </div>
-            <p class="text-gray-300 italic">
-              "O melhor investimento que fiz. O app do cliente é lindo e meus
-              clientes adoraram não precisar baixar nada. As vendas aumentaram
-              30%."
-            </p>
-            <div class="text-yellow-400 mt-4 text-sm">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i
-              ><i class="fas fa-star"></i><i class="fas fa-star"></i
-              ><i class="fas fa-star"></i>
-            </div>
-          </div>
-
-          <!-- Depoimento 3 -->
-          <div
-            class="bg-[#1A2436] p-8 rounded-xl shadow-sm border border-gray-700 fade-in-up"
-            style="transition-delay: 400ms"
-          >
-            <div class="flex items-center mb-4">
-              <img
-                src="https://randomuser.me/api/portraits/men/85.jpg"
-                alt="Cliente"
-                class="w-12 h-12 rounded-full mr-4 border-2 border-[#F47C2C]"
-              />
-              <div>
-                <h5 class="font-bold text-white">Roberto Junior</h5>
-                <p class="text-sm text-gray-500">Açaí do Beto</p>
-              </div>
-            </div>
-            <p class="text-gray-300 italic">
-              "Simples, direto e funcional. O controle financeiro me ajudou a
-              ver onde eu estava gastando muito. Recomendo demais!"
-            </p>
-            <div class="text-yellow-400 mt-4 text-sm">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i
-              ><i class="fas fa-star"></i><i class="fas fa-star"></i
-              ><i class="fas fa-star"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Infraestrutura (Hostgator) -->
     <section class="bg-[#0B1421] py-20 border-t border-gray-800">
       <div class="container mx-auto px-6">
@@ -826,17 +760,6 @@
             >
               Quero o Desconto Anual
             </button>
-          </div>
-        </div>
-
-        <!-- Garantia -->
-        <div class="mt-16 fade-in-up" style="transition-delay: 400ms">
-          <div class="inline-flex items-center gap-4 bg-[#1A2436] px-6 py-4 rounded-full border border-gray-700">
-            <i class="fas fa-shield-alt text-3xl text-green-500"></i>
-            <div class="text-left">
-              <p class="text-white font-bold">Garantia de 7 Dias</p>
-              <p class="text-xs text-gray-400">Teste sem riscos. Se não gostar, devolvemos seu dinheiro.</p>
-            </div>
           </div>
         </div>
       </div>
