@@ -12,7 +12,7 @@ if (!admin.apps.length) {
 const db = admin.firestore();
 
 export default async function handler(req, res) {
-  // Configuração de CORS (Permite acesso de qualquer origem para testes)
+  // Configuração de CORS (Permite acesso de qualquer origem)
   res.setHeader("Access-Control-Allow-Credentials", true);
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -37,28 +37,30 @@ export default async function handler(req, res) {
     // Verifica se a chave da API está configurada
     if (!process.env.ABACATE_PAY_TOKEN) {
       throw new Error(
-        "A chave ABACATE_PAY_TOKEN não está configurada nas Variáveis de Ambiente do Vercel.",
+        "A chave ABACATE_PAY_TOKEN não está configurada nas Variáveis de Ambiente da Vercel.",
       );
     }
 
     const { plan, name, email, cpf, phone, key, domain } = req.body || {};
 
-    // Sanitização (remove caracteres não numéricos para evitar erro na API)
+    // Sanitização (remove caracteres não numéricos)
     const cleanCpf = cpf ? cpf.replace(/\D/g, "") : "";
     const cleanPhone = phone ? phone.replace(/\D/g, "") : "";
 
     // Busca preços do Firestore
-    let monthlyPrice = 9900;
-    let annualPrice = 99000;
+    let monthlyPrice = 9900; // Valor padrão em centavos (R$ 99,00)
+    let annualPrice = 99000; // Valor padrão em centavos (R$ 990,00)
+
     try {
       const priceDoc = await db.collection("config").doc("pricing").get();
       if (priceDoc.exists) {
         const data = priceDoc.data();
+        // Garante que o valor seja inteiro (centavos)
         monthlyPrice = Math.round(data.monthly * 100);
         annualPrice = Math.round(data.annual * 100);
       }
     } catch (e) {
-      console.error("Erro ao buscar preços, usando padrão", e);
+      console.error("Erro ao buscar preços, usando padrão:", e);
     }
 
     const amount = plan === "anual" ? annualPrice : monthlyPrice;
@@ -67,41 +69,42 @@ export default async function handler(req, res) {
 
     if (domain) title += ` (${domain})`;
 
-    // URL base do seu site (Vercel preenche isso automaticamente)
+    // URL base do seu site
     const baseUrl = `https://${req.headers.host}`;
 
+    // Lógica da URL de retorno
     // Se vier uma chave (fluxo do Dashboard), retorna para o contrato
     // Se não (fluxo do site), retorna para a página de sucesso genérica
     let returnUrl = `${baseUrl}/sucesso.html?email=${encodeURIComponent(
-      email,
+      email || "",
     )}`;
     if (key) {
       returnUrl = `${baseUrl}/contrato.html?key=${key}`;
     }
 
     // CHAMADA PARA O ABACATE PAY
-    // Consulte a documentação oficial do Abacate Pay para confirmar os campos exatos
     const response = await axios.post(
       "https://api.abacatepay.com/v1/billing/create",
       {
-        frequency: plan === "anual" ? "YEARLY" : "MONTHLY",
-        methods: ["PIX"], // Métodos aceitos (CREDIT_CARD removido para corrigir erro de validação da API)
+        // CORREÇÃO: A API exige "ONE_TIME" para cobranças avulsas.
+        frequency: "ONE_TIME",
+        methods: ["PIX"],
         products: [
           {
-            externalId: plan,
+            externalId: plan || "default",
             name: title,
             description: title,
             quantity: 1,
             price: amount,
           },
         ],
-        returnUrl: returnUrl, // Página de retorno dinâmica
+        returnUrl: returnUrl,
         completionUrl: returnUrl,
-        webhookUrl: `${baseUrl}/api/webhook`, // Onde o Abacate avisa que pagou
+        webhookUrl: `${baseUrl}/api/webhook`,
         customer: {
-          name: name,
+          name: name || "Cliente",
           email: email,
-          taxId: cleanCpf, // CPF/CNPJ
+          taxId: cleanCpf,
           phone: cleanPhone,
         },
       },
@@ -117,11 +120,14 @@ export default async function handler(req, res) {
       .status(200)
       .json({ url: response.data.url, id: response.data.id });
   } catch (error) {
-    console.error("Erro API:", error.response?.data || error.message);
+    // Log detalhado para facilitar debug no painel da Vercel
+    console.error("Erro API Checkout:", error.response?.data || error.message);
+
     const errorMessage =
       error.response?.data?.error ||
       error.message ||
       "Erro ao gerar pagamento.";
+
     return res.status(500).json({ error: errorMessage });
   }
 }
