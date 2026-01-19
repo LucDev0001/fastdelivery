@@ -1285,7 +1285,12 @@
         });
 
         if (formValues) {
-          if (!formValues.name || !formValues.email || !formValues.cpf) {
+          if (
+            !formValues.name ||
+            !formValues.email ||
+            !formValues.cpf ||
+            !formValues.phone
+          ) {
             return Swal.fire(
               "Erro",
               "Por favor preencha todos os campos.",
