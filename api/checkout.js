@@ -115,13 +115,13 @@ export default async function handler(req, res) {
      * =========================== */
     const baseUrl = `https://${req.headers.host}`;
 
-    let returnUrl = `${baseUrl}/sucesso.html?email=${encodeURIComponent(
-      email,
-    )}`;
+    // 1. Gera a chave AGORA (se não vier do dashboard)
+    const licenseKey =
+      key ||
+      `VOU-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
 
-    if (key) {
-      returnUrl += `&key=${key}`;
-    }
+    // 2. Passa a chave na URL de retorno para a página de sucesso pegar
+    const returnUrl = `${baseUrl}/sucesso.html?email=${encodeURIComponent(email)}&key=${licenseKey}`;
 
     /* ===========================
      * Payload Abacate Pay
@@ -179,6 +179,37 @@ export default async function handler(req, res) {
     if (!responseData?.url) {
       throw new Error("URL de pagamento não retornada.");
     }
+
+    /* ===========================
+     * CRIAÇÃO DA LICENÇA (SEGURANÇA)
+     * =========================== */
+    // Cria a licença imediatamente como "Aguardando Pagamento"
+    // Assim ela existe mesmo se o webhook falhar.
+    let daysToAdd = 30;
+    if (plan === "anual") daysToAdd = 365;
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + daysToAdd);
+
+    await db.collection("licenses").add({
+      storeName: name || "Cliente Site",
+      companyName: "",
+      cnpj: cleanCpf,
+      address: "",
+      storeUrl: "",
+      clientContact: email,
+      clientPhone: cleanPhone,
+      planType: plan || "mensal",
+      expiresAt: admin.firestore.Timestamp.fromDate(expiresAt),
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      key: licenseKey,
+      paymentId: responseData.id,
+      paymentLink: responseData.url,
+      active: false,
+      status: "aguardando_pagamento",
+      contractAccepted: false,
+      setupStatus: "pending",
+      autoCreated: true,
+    });
 
     return res.status(200).json({
       url: responseData.url,

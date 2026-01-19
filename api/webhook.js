@@ -158,7 +158,9 @@ export default async function handler(req, res) {
      * NOTIFICAÇÃO SE NÃO HOUVER LICENÇA
      * ===================================================== */
     if (snapshot.empty) {
-      console.log("Nenhuma licença encontrada. Criando automaticamente...");
+      console.log(
+        "⚠️ Licença não encontrada pelo Checkout. Criando fallback pelo Webhook...",
+      );
 
       // 1. Gerar chave
       const key = `VOU-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
