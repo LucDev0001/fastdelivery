@@ -570,6 +570,52 @@
       </div>
     </section>
 
+    <!-- Infraestrutura (Hostgator) -->
+    <section class="bg-[#0B1421] py-20 border-t border-gray-800">
+      <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row items-center gap-12">
+          <div class="md:w-1/2 fade-in-up">
+            <span class="text-[#F47C2C] font-bold uppercase text-sm tracking-wider">Infraestrutura Premium</span>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mt-2 mb-6">
+              Esqueça a parte técnica.<br>Nós cuidamos de tudo.
+            </h2>
+            <p class="text-gray-400 mb-6 text-lg">
+              Muitos sistemas exigem que você contrate servidores complicados. Aqui não. 
+              Seu delivery será hospedado em nossa infraestrutura de alta performance gerenciada pela <strong>Hostgator</strong>, líder mundial em hospedagem.
+            </p>
+            <ul class="space-y-4 text-gray-300">
+              <li class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#2E3B55] flex items-center justify-center text-[#F47C2C]">
+                  <i class="fas fa-globe"></i>
+                </div>
+                <div>
+                  <strong class="text-white block">Domínio Grátis por 1 Ano*</strong>
+                  <span class="text-sm text-gray-500">Registramos o nome da sua loja (ex: sualoja.com.br).</span>
+                </div>
+              </li>
+              <li class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#2E3B55] flex items-center justify-center text-[#F47C2C]">
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div>
+                  <strong class="text-white block">E-mails Profissionais</strong>
+                  <span class="text-sm text-gray-500">Passe credibilidade com contato@sualoja.com.br.</span>
+                </div>
+              </li>
+            </ul>
+            <p class="mt-6 text-xs text-gray-600">*A renovação do domínio e hospedagem após 1 ano segue a tabela vigente do provedor.</p>
+          </div>
+          <div class="md:w-1/2 fade-in-up text-center">
+             <div class="bg-white/5 p-8 rounded-2xl border border-gray-700">
+                <i class="fas fa-server text-6xl text-blue-500 mb-4"></i>
+                <h3 class="text-xl font-bold text-white">Powered by Hostgator</h3>
+                <p class="text-gray-400 mt-2">Segurança SSL, Backups Diários e Alta Disponibilidade garantidos.</p>
+             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Seção de Preço -->
     <section id="preco" class="bg-[#0F1C2E] py-20">
       <div class="container mx-auto px-6 text-center">
@@ -608,9 +654,9 @@
                 <i class="fas fa-check-circle text-green-500"></i> Sem taxa de
                 cancelamento
               </li>
-              <li class="flex items-center gap-3 text-sm text-gray-400 border-t border-gray-700 pt-3">
+              <li class="flex items-center gap-3 text-sm text-white border-t border-gray-700 pt-3">
                 <i class="fas fa-server text-[#F47C2C]"></i>
-                <span>Requer <strong>Hospedagem e Domínio</strong><br>(Contratados pelo cliente)</span>
+                <span><strong>Hospedagem Inclusa</strong><br>(Gerenciada por nós)</span>
               </li>
             </ul>
             <button
@@ -653,9 +699,9 @@
                 <i class="fas fa-check-circle text-green-500"></i>
                 <strong>12 meses pelo preço de 10</strong>
               </li>
-              <li class="flex items-center gap-3 text-sm text-gray-400 border-t border-gray-700 pt-3">
+              <li class="flex items-center gap-3 text-sm text-white border-t border-gray-700 pt-3">
                 <i class="fas fa-server text-white"></i>
-                <span>Requer <strong>Hospedagem e Domínio</strong><br>(Contratados pelo cliente)</span>
+                <span><strong>Hospedagem Inclusa</strong><br>(Gerenciada por nós)</span>
               </li>
             </ul>
             <button
@@ -787,11 +833,9 @@
                 class="text-gray-400 border-t border-gray-700 p-5 bg-[#1A2436]"
               >
                 <p>
-                  O valor da assinatura refere-se exclusivamente à <strong>licença de uso do software</strong> e ao serviço de instalação.
-                  <strong
-                    >Você precisa contratar um serviço de hospedagem (ex: Hostgator, Hostinger) e um domínio (ex:
-                    www.sualoja.com.br)</strong
-                  >. Nossa equipe realiza a instalação técnica no servidor que você contratar.
+                  Para facilitar sua vida, <strong>nós fornecemos a hospedagem</strong> (via Hostgator) inclusa no seu plano.
+                  Você não precisa configurar servidores. Sobre o domínio (www.sualoja.com.br), se você assinar o plano anual, 
+                  o primeiro ano é por nossa conta! Caso já tenha um domínio, nós configuramos para você.
                 </p>
               </div>
             </details>
@@ -1137,6 +1181,7 @@
             <input id="swal-email" class="swal2-input" placeholder="E-mail">
             <input id="swal-cpf" class="swal2-input" placeholder="CPF ou CNPJ">
             <input id="swal-phone" class="swal2-input" placeholder="Telefone (WhatsApp)">
+            <input id="swal-domain" class="swal2-input" placeholder="Domínio desejado (ex: sualoja.com.br)">
           `,
           focusConfirm: false,
           showCancelButton: true,
@@ -1149,6 +1194,7 @@
               email: document.getElementById("swal-email").value,
               cpf: document.getElementById("swal-cpf").value,
               phone: document.getElementById("swal-phone").value,
+              domain: document.getElementById("swal-domain").value,
               plan: plano,
             };
           },

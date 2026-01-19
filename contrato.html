@@ -237,18 +237,18 @@ CONTRATADA: Luciano Severino dos Santos, com sede em Rua Dois de Maio, 413 - Sam
 CONTRATANTE: {{COMPANY_NAME}}, com sede em {{ADDRESS}}, inscrita no CNPJ sob o nº {{CNPJ}}.
 
 CLÁUSULA 1ª - DO OBJETO
-1.1. O presente contrato tem como objeto a concessão de licença de uso, não exclusiva e intransferível, do software web denominado "CoraEats" (o "SOFTWARE"), para instalação em servidor de hospedagem de titularidade da CONTRATANTE.
-1.2. O SOFTWARE é um sistema web que requer instalação em servidor (hospedagem) e domínio próprios.
+1.1. O presente contrato tem como objeto a concessão de licença de uso do software "CoraEats" (SaaS) e a prestação de serviços de hospedagem gerenciada pela CONTRATADA.
+1.2. O sistema ficará hospedado em infraestrutura provida pela CONTRATADA (Hostgator), acessível através do domínio: {{DOMAIN}}.
 
-CLÁUSULA 2ª - DAS OBRIGAÇÕES DA CONTRATANTE
-2.1. Contratar e manter ativo, às suas expensas, um serviço de hospedagem web (ex: Hostgator, Hostinger, cPanel) e um registro de domínio (ex: www.sualoja.com.br) compatíveis com os requisitos do sistema.
-2.2. Fornecer à CONTRATADA os dados de acesso ao servidor de hospedagem exclusivamente para fins de instalação e manutenção do sistema.
-2.3. Efetuar o pagamento recorrente da licença conforme o plano escolhido.
+CLÁUSULA 2ª - DA INFRAESTRUTURA E DOMÍNIO
+2.1. A CONTRATADA fornecerá a hospedagem do sistema.
+2.2. O domínio (endereço web) é de propriedade da CONTRATANTE. Custos de renovação anual de domínio e hospedagem poderão ser repassados à CONTRATANTE mediante aviso prévio, conforme reajustes do provedor de infraestrutura.
+2.3. A CONTRATANTE reconhece que não terá acesso ao código-fonte ou ao painel de controle do servidor (cPanel), apenas ao painel administrativo do sistema.
 
-CLÁUSULA 3ª - DAS OBRIGAÇÕES DA CONTRATADA
-3.1. Realizar a instalação e configuração inicial do SOFTWARE no servidor de hospedagem fornecido pela CONTRATANTE.
-3.2. Garantir o funcionamento do código-fonte do SOFTWARE e corrigir eventuais erros de programação (bugs).
-3.3. A CONTRATADA não se responsabiliza por falhas, lentidão ou indisponibilidade causadas pelo provedor de hospedagem contratado pela CONTRATANTE.
+CLÁUSULA 3ª - DO SUPORTE E MANUTENÇÃO
+3.1. A CONTRATADA garante a disponibilidade do sistema (SLA) de acordo com os padrões do provedor Hostgator (99.9% uptime).
+3.2. O suporte técnico inclui correções de bugs, atualizações de segurança e auxílio no uso da plataforma.
+3.3. Backups diários dos dados são realizados automaticamente pela infraestrutura.
 
 CLÁUSULA 4ª - DO PREÇO E VIGÊNCIA
 4.1. A CONTRATANTE pagará o valor de {{PRICE}} referente ao plano {{PLAN_TYPE}}.
@@ -335,6 +335,7 @@ Rio de Janeiro, {{CURRENT_DATE}}.
             "{{ADDRESS}}",
             licenseData.address || "Endereço não informado",
           )
+          .replace("{{DOMAIN}}", licenseData.storeUrl || "A definir")
           .replace("{{CNPJ}}", licenseData.cnpj || "Não informado")
           .replace("{{PRICE}}", price)
           .replace("{{PLAN_TYPE}}", licenseData.planType)

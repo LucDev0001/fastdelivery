@@ -41,7 +41,7 @@ export default async function handler(req, res) {
       );
     }
 
-    const { plan, name, email, cpf, phone, key } = req.body || {};
+    const { plan, name, email, cpf, phone, key, domain } = req.body || {};
 
     // Sanitização (remove caracteres não numéricos para evitar erro na API)
     const cleanCpf = cpf ? cpf.replace(/\D/g, "") : "";
@@ -62,8 +62,10 @@ export default async function handler(req, res) {
     }
 
     const amount = plan === "anual" ? annualPrice : monthlyPrice;
-    const title =
+    let title =
       plan === "anual" ? "CoraEats - Plano Anual" : "CoraEats - Plano Mensal";
+
+    if (domain) title += ` (${domain})`;
 
     // URL base do seu site (Vercel preenche isso automaticamente)
     const baseUrl = `https://${req.headers.host}`;
