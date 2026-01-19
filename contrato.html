@@ -171,16 +171,22 @@
       <!-- Sucesso -->
       <div id="success-screen" class="hidden p-12 text-center">
         <div
-          class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"
+          class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4"
         >
-          <i class="fas fa-check text-4xl text-green-600"></i>
+          <i class="fas fa-check text-2xl text-green-600"></i>
         </div>
-        <h2 class="text-2xl font-bold text-gray-800 mb-2">
-          Contrato Assinado!
-        </h2>
-        <p class="text-gray-600 mb-8">
-          Sua licença foi ativada com sucesso. Você já pode utilizar o sistema.
+        <h2 class="text-xl font-bold text-gray-800 mb-2">Licença Ativa</h2>
+        <p class="text-gray-600 mb-6">
+          Acompanhe abaixo o status da configuração da sua loja.
         </p>
+
+        <a
+          id="status-link-btn"
+          href="#"
+          class="inline-block bg-[#F47C2C] text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition mb-8 shadow-lg"
+        >
+          <i class="fas fa-tasks mr-2"></i> Acompanhar Instalação
+        </a>
 
         <div class="bg-gray-100 p-4 rounded-lg mb-8 max-w-md mx-auto">
           <p class="text-xs text-gray-500 uppercase font-bold mb-1">
@@ -193,7 +199,7 @@
         </div>
 
         <p class="text-sm text-gray-500">
-          Uma cópia deste contrato foi registrada em nosso sistema.
+          Veja abaixo a cópia do seu contrato assinado.
         </p>
       </div>
     </div>
@@ -302,7 +308,7 @@ Rio de Janeiro, {{CURRENT_DATE}}.
 
           // Se já assinou
           if (licenseData.contractAccepted) {
-            showSuccess();
+            renderSignedContract();
             return;
           }
 
@@ -354,6 +360,37 @@ Rio de Janeiro, {{CURRENT_DATE}}.
         );
       }
 
+      function renderSignedContract() {
+        renderContract();
+        // Esconde formulário de assinatura
+        document
+          .getElementById("sign-form")
+          .parentElement.classList.add("hidden");
+
+        // Mostra tela de sucesso (Status + Chave) no topo
+        document.getElementById("success-screen").classList.remove("hidden");
+        document.getElementById("status-link-btn").href =
+          `status.html?key=${licenseData.key}`;
+        document.getElementById("final-key").innerText = licenseData.key;
+
+        // Adiciona rodapé de assinatura no texto do contrato
+        const signedInfo = licenseData.signedBy || {};
+        const signDate = licenseData.signedAt
+          ? new Date(licenseData.signedAt.toDate()).toLocaleString()
+          : "Data desconhecida";
+
+        const signatureHtml = `
+          <br><br>
+          <div style="border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px;">
+            <p><strong>ASSINADO DIGITALMENTE</strong></p>
+            <p>Responsável: ${signedInfo.name} (CPF: ${signedInfo.cpf})</p>
+            <p>Data/Hora: ${signDate}</p>
+            <p>IP: ${signedInfo.ip} | User-Agent: ${signedInfo.userAgent}</p>
+          </div>`;
+
+        document.getElementById("contract-body").innerHTML += signatureHtml;
+      }
+
       document
         .getElementById("sign-form")
         .addEventListener("submit", async (e) => {
@@ -389,6 +426,7 @@ Rio de Janeiro, {{CURRENT_DATE}}.
             await updateDoc(licenseDoc.ref, {
               contractAccepted: true,
               active: true, // AQUI A CHAVE É ATIVADA
+              setupStatus: "waiting_materials", // Define status inicial pós-assinatura
               signedAt: serverTimestamp(),
               signedBy: {
                 name: signerName,
@@ -399,7 +437,7 @@ Rio de Janeiro, {{CURRENT_DATE}}.
               },
             });
 
-            showSuccess();
+            location.reload(); // Recarrega para mostrar a visão de assinado
           } catch (error) {
             console.error(error);
             Swal.fire(

@@ -318,6 +318,16 @@
               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
             />
           </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Status da Instalação</label>
+            <select id="edit-setup-status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
+              <option value="pending">Aguardando Início</option>
+              <option value="waiting_materials">Aguardando Materiais</option>
+              <option value="configuring">Configurando DNS/Servidor</option>
+              <option value="ready">Pronto para Uso</option>
+            </select>
+            <p class="text-xs text-gray-500 mt-1">Atualize para o cliente acompanhar no link de status.</p>
+          </div>
           <div class="flex justify-end gap-3 mt-6">
             <button
               type="button"
@@ -885,6 +895,7 @@ entB        .addEventListener("input", (e) => {
         document.getElementById("edit-client-contact").value =
           license.clientContact;
         document.getElementById("edit-address").value = license.address || "";
+        document.getElementById("edit-setup-status").value = license.setupStatus || "pending";
         // Formata data para input date (YYYY-MM-DD)
         const date = license.expiresAt.toDate();
         const yyyy = date.getFullYear();
@@ -911,6 +922,7 @@ entB        .addEventListener("input", (e) => {
             storeUrl: document.getElementById("edit-store-url").value,
             clientContact: document.getElementById("edit-client-contact").value,
             address: document.getElementById("edit-address").value,
+            setupStatus: document.getElementById("edit-setup-status").value,
             expiresAt: new Date(
               document.getElementById("edit-expires-at").value + "T23:59:59"
             ),
