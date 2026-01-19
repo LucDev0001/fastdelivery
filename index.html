@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CoraEats - Sistema de Delivery e Cardápio Digital para Restaurantes</title>
+    <title>
+      CoraEats - Sistema de Delivery e Cardápio Digital para Restaurantes
+    </title>
     <meta
       name="description"
       content="CoraEats: O sistema ágil para quem não quer perder tempo. Tenha seu cardápio online, receba pedidos no WhatsApp e fidelize seus clientes."
@@ -18,10 +20,7 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta
-      property="og:url"
-      content="https://coraeats.vercel.app/"
-    />
+    <meta property="og:url" content="https://coraeats.vercel.app/" />
     <meta
       property="og:title"
       content="CoraEats - O Delivery que pede passagem."
@@ -37,10 +36,7 @@
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
-    <meta
-      property="twitter:url"
-      content="https://coraeats.vercel.app/"
-    />
+    <meta property="twitter:url" content="https://coraeats.vercel.app/" />
     <meta
       property="twitter:title"
       content="CoraEats - O Delivery que pede passagem."
@@ -89,28 +85,32 @@
       {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        "mainEntity": [{
-          "@type": "Question",
-          "name": "Como funcionam os pagamentos dos pedidos?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Nossa plataforma não intermedia pagamentos. O pedido chega para você no painel e no WhatsApp, e você finaliza o pagamento diretamente com o cliente usando seus próprios meios. O dinheiro vai direto para sua conta."
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Como funcionam os pagamentos dos pedidos?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nossa plataforma não intermedia pagamentos. O pedido chega para você no painel e no WhatsApp, e você finaliza o pagamento diretamente com o cliente usando seus próprios meios. O dinheiro vai direto para sua conta."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Preciso pagar comissão sobre as vendas?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Não! Diferente de outros marketplaces, nosso sistema funciona com uma mensalidade fixa. Todo o faturamento da sua loja é 100% seu."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "O que preciso ter para o sistema funcionar?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Nós fornecemos a hospedagem inclusa no seu plano. Você não precisa configurar servidores. Sobre o domínio, se você assinar o plano anual, o primeiro ano é por nossa conta!"
+            }
           }
-        }, {
-          "@type": "Question",
-          "name": "Preciso pagar comissão sobre as vendas?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Não! Diferente de outros marketplaces, nosso sistema funciona com uma mensalidade fixa. Todo o faturamento da sua loja é 100% seu."
-          }
-        }, {
-          "@type": "Question",
-          "name": "O que preciso ter para o sistema funcionar?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Nós fornecemos a hospedagem inclusa no seu plano. Você não precisa configurar servidores. Sobre o domínio, se você assinar o plano anual, o primeiro ano é por nossa conta!"
-          }
-        }]
+        ]
       }
     </script>
 
@@ -190,7 +190,9 @@
           <img
             src="images/logocora.png"
             alt="CoraEats"
-            class="h-10 rounded-lg" width="40" height="40"
+            class="h-10 rounded-lg"
+            width="40"
+            height="40"
           />
         </a>
         <div class="hidden md:flex items-center space-x-6">
@@ -241,8 +243,11 @@
           Licença de software completa para o seu negócio. Tenha seu cardápio
           online, receba pedidos no WhatsApp e fidelize seus clientes.
         </p>
-        
-        <div class="flex flex-col md:flex-row gap-4 justify-center items-center fade-in-up" style="transition-delay: 300ms">
+
+        <div
+          class="flex flex-col md:flex-row gap-4 justify-center items-center fade-in-up"
+          style="transition-delay: 300ms"
+        >
           <a
             href="#contato"
             class="bg-[#F47C2C] text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-[#e06b20] transition transform hover:scale-105 shadow-xl shadow-orange-500/40 w-full md:w-auto"
@@ -250,7 +255,8 @@
             Peça uma Demonstração
           </a>
           <a
-            href="cliente/index.html" target="_blank"
+            href="cliente/index.html"
+            target="_blank"
             class="bg-transparent border-2 border-gray-500 text-gray-300 hover:text-white hover:border-white px-8 py-4 rounded-full font-bold text-lg transition transform hover:scale-105 w-full md:w-auto flex items-center justify-center gap-2"
           >
             <i class="fas fa-store"></i> Ver Loja de Exemplo
@@ -264,7 +270,13 @@
       <!-- Gradient Background -->
       <div
         class="absolute inset-0 pointer-events-none"
-        style="background: linear-gradient(to top, rgba(244, 124, 44, 0.2) 0%, rgba(15, 28, 46, 0) 50%);"
+        style="
+          background: linear-gradient(
+            to top,
+            rgba(244, 124, 44, 0.2) 0%,
+            rgba(15, 28, 46, 0) 50%
+          );
+        "
       ></div>
 
       <div class="container mx-auto px-6 relative z-10">
@@ -273,58 +285,103 @@
             Performance em todas as telas
           </h2>
           <p class="text-gray-400 max-w-2xl mx-auto">
-            Gerencie pelo computador com conforto e ofereça um cardápio incrível no celular do seu cliente.
+            Gerencie pelo computador com conforto e ofereça um cardápio incrível
+            no celular do seu cliente.
           </p>
         </div>
 
         <!-- Mockups -->
-        <div class="flex flex-col lg:flex-row items-center justify-center gap-8 mb-20 fade-in-up" style="transition-delay: 100ms">
+        <div
+          class="flex flex-col lg:flex-row items-center justify-center gap-8 mb-20 fade-in-up"
+          style="transition-delay: 100ms"
+        >
           <!-- PC Mockup -->
           <div class="relative w-full max-w-2xl">
-            <div class="bg-gray-800 rounded-t-xl border-[6px] border-gray-800 shadow-2xl overflow-hidden">
+            <div
+              class="bg-gray-800 rounded-t-xl border-[6px] border-gray-800 shadow-2xl overflow-hidden"
+            >
               <div class="bg-black h-6 flex items-center px-4 space-x-2">
                 <div class="w-2 h-2 rounded-full bg-red-500"></div>
                 <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
                 <div class="w-2 h-2 rounded-full bg-green-500"></div>
               </div>
-              <img src="images/screenshotpc.png" alt="Sistema no PC" class="w-full h-auto block" />
+              <img
+                src="images/screenshotpc.png"
+                alt="Sistema no PC"
+                class="w-full h-auto block"
+              />
             </div>
-            <div class="mx-auto w-1/3 h-4 bg-gray-700 rounded-b-lg shadow-lg"></div>
+            <div
+              class="mx-auto w-1/3 h-4 bg-gray-700 rounded-b-lg shadow-lg"
+            ></div>
           </div>
 
           <!-- Mobile Mockup -->
-          <div class="relative w-64 lg:-ml-24 lg:mt-20 transform lg:rotate-6 hover:rotate-0 transition duration-500 z-20">
-            <div class="bg-gray-900 rounded-[2.5rem] border-[8px] border-gray-900 shadow-2xl overflow-hidden ring-1 ring-gray-700">
-              <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-5 bg-gray-900 rounded-b-xl z-10"></div>
-              <img src="images/screenshotcelular.png" alt="Sistema no Celular" class="w-full h-auto block bg-white" />
+          <div
+            class="relative w-64 lg:-ml-24 lg:mt-20 transform lg:rotate-6 hover:rotate-0 transition duration-500 z-20"
+          >
+            <div
+              class="bg-gray-900 rounded-[2.5rem] border-[8px] border-gray-900 shadow-2xl overflow-hidden ring-1 ring-gray-700"
+            >
+              <div
+                class="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-5 bg-gray-900 rounded-b-xl z-10"
+              ></div>
+              <img
+                src="images/screenshotcelular.png"
+                alt="Sistema no Celular"
+                class="w-full h-auto block bg-white"
+              />
             </div>
           </div>
         </div>
 
         <!-- Features -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="bg-[#1A2436]/60 backdrop-blur p-6 rounded-xl border border-gray-700 hover:border-[#F47C2C] transition fade-in-up" style="transition-delay: 200ms">
-            <div class="w-14 h-14 bg-[#F47C2C]/10 rounded-full flex items-center justify-center mb-4 text-[#F47C2C]">
+          <div
+            class="bg-[#1A2436]/60 backdrop-blur p-6 rounded-xl border border-gray-700 hover:border-[#F47C2C] transition fade-in-up"
+            style="transition-delay: 200ms"
+          >
+            <div
+              class="w-14 h-14 bg-[#F47C2C]/10 rounded-full flex items-center justify-center mb-4 text-[#F47C2C]"
+            >
               <i class="fas fa-bolt text-2xl"></i>
             </div>
             <h3 class="text-xl font-bold text-white mb-2">Sistema Rápido</h3>
-            <p class="text-gray-400 text-sm">Otimizado para velocidade máxima, garantindo agilidade no atendimento.</p>
+            <p class="text-gray-400 text-sm">
+              Otimizado para velocidade máxima, garantindo agilidade no
+              atendimento.
+            </p>
           </div>
 
-          <div class="bg-[#1A2436]/60 backdrop-blur p-6 rounded-xl border border-gray-700 hover:border-[#F47C2C] transition fade-in-up" style="transition-delay: 300ms">
-            <div class="w-14 h-14 bg-[#F47C2C]/10 rounded-full flex items-center justify-center mb-4 text-[#F47C2C]">
+          <div
+            class="bg-[#1A2436]/60 backdrop-blur p-6 rounded-xl border border-gray-700 hover:border-[#F47C2C] transition fade-in-up"
+            style="transition-delay: 300ms"
+          >
+            <div
+              class="w-14 h-14 bg-[#F47C2C]/10 rounded-full flex items-center justify-center mb-4 text-[#F47C2C]"
+            >
               <i class="fas fa-feather-alt text-2xl"></i>
             </div>
             <h3 class="text-xl font-bold text-white mb-2">Super Leve</h3>
-            <p class="text-gray-400 text-sm">Não pesa no dispositivo e funciona mesmo com internet instável.</p>
+            <p class="text-gray-400 text-sm">
+              Não pesa no dispositivo e funciona mesmo com internet instável.
+            </p>
           </div>
 
-          <div class="bg-[#1A2436]/60 backdrop-blur p-6 rounded-xl border border-gray-700 hover:border-[#F47C2C] transition fade-in-up" style="transition-delay: 400ms">
-            <div class="w-14 h-14 bg-[#F47C2C]/10 rounded-full flex items-center justify-center mb-4 text-[#F47C2C]">
+          <div
+            class="bg-[#1A2436]/60 backdrop-blur p-6 rounded-xl border border-gray-700 hover:border-[#F47C2C] transition fade-in-up"
+            style="transition-delay: 400ms"
+          >
+            <div
+              class="w-14 h-14 bg-[#F47C2C]/10 rounded-full flex items-center justify-center mb-4 text-[#F47C2C]"
+            >
               <i class="fas fa-shield-alt text-2xl"></i>
             </div>
             <h3 class="text-xl font-bold text-white mb-2">100% Seguro</h3>
-            <p class="text-gray-400 text-sm">Seus dados e de seus clientes protegidos com criptografia de ponta.</p>
+            <p class="text-gray-400 text-sm">
+              Seus dados e de seus clientes protegidos com criptografia de
+              ponta.
+            </p>
           </div>
         </div>
       </div>
@@ -1294,7 +1351,9 @@
             const termsAccepted = document.getElementById("swal-terms").checked;
 
             if (!name || !email || !cpfRaw || !phoneRaw || !termsAccepted) {
-              Swal.showValidationMessage("Preencha todos os campos obrigatórios.");
+              Swal.showValidationMessage(
+                "Preencha todos os campos obrigatórios.",
+              );
               return false;
             }
 
@@ -1302,7 +1361,9 @@
             const phone = phoneRaw.replace(/\D/g, "");
 
             if (cpf.length !== 11 && cpf.length !== 14) {
-              Swal.showValidationMessage("CPF ou CNPJ inválido (digite apenas números).");
+              Swal.showValidationMessage(
+                "CPF ou CNPJ inválido (digite apenas números).",
+              );
               return false;
             }
 
@@ -1411,10 +1472,6 @@
           console.error("Erro ao carregar preços", e);
         }
       }
-      loadPrices();
-    </script>
-  </body>
-</html>
       loadPrices();
     </script>
   </body>
