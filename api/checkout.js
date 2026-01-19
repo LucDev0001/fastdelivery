@@ -94,8 +94,7 @@ export default async function handler(req, res) {
     const response = await axios.post(
       "https://api.abacatepay.com/v1/billing/create",
       {
-        // CORREÇÃO: A API exige "ONE_TIME" para cobranças avulsas.
-        frequency: "ONE_TIME",
+        frequency: plan === "anual" ? "YEARLY" : "MONTHLY",
         methods: ["PIX"],
         products: [
           {
@@ -129,6 +128,10 @@ export default async function handler(req, res) {
 
     // A API do Abacate Pay retorna os dados dentro de uma propriedade 'data'
     const responseData = response.data.data || response.data;
+
+    if (response.data.error) {
+      throw new Error(`Erro do Gateway: ${response.data.error}`);
+    }
 
     if (!responseData || !responseData.url) {
       throw new Error(
