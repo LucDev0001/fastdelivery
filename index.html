@@ -1266,6 +1266,10 @@
             <input id="swal-cpf" class="swal2-input" placeholder="CPF ou CNPJ">
             <input id="swal-phone" class="swal2-input" placeholder="Telefone (WhatsApp)">
             <input id="swal-domain" class="swal2-input" placeholder="Domínio desejado (ex: sualoja.com.br)">
+            <div class="flex items-center justify-center mt-4 gap-2">
+              <input type="checkbox" id="swal-terms" class="w-4 h-4 text-[#F47C2C] border-gray-300 rounded focus:ring-[#F47C2C]">
+              <label for="swal-terms" class="text-sm text-gray-600">Li e concordo com os <a href="termos.html" target="_blank" class="text-[#F47C2C] underline">Termos de Uso</a></label>
+            </div>
           `,
           focusConfirm: false,
           showCancelButton: true,
@@ -1278,8 +1282,9 @@
             const cpfRaw = document.getElementById("swal-cpf").value;
             const phoneRaw = document.getElementById("swal-phone").value;
             const domain = document.getElementById("swal-domain").value;
+            const termsAccepted = document.getElementById("swal-terms").checked;
 
-            if (!name || !email || !cpfRaw || !phoneRaw) {
+            if (!name || !email || !cpfRaw || !phoneRaw || !termsAccepted) {
               Swal.showValidationMessage("Preencha todos os campos obrigatórios.");
               return false;
             }

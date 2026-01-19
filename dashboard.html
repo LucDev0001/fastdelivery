@@ -229,6 +229,11 @@
                 <th
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
                 >
+                  Status Instalação
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                >
                   Ações
                 </th>
               </tr>
@@ -577,6 +582,17 @@
         });
       }
 
+      // Função rápida para mudar status da instalação na tabela
+      window.changeSetupStatus = async (id, newStatus) => {
+        const select = document.getElementById(`status-select-${id}`);
+        select.disabled = true;
+        await updateDoc(doc(db, "licenses", id), { setupStatus: newStatus });
+        select.disabled = false;
+        // O listener onSnapshot ou reload manual cuidaria da UI, mas aqui damos feedback visual
+        select.classList.add("ring-2", "ring-green-500");
+        setTimeout(() => select.classList.remove("ring-2", "ring-green-500"), 1000);
+      };
+
       window.markNotificationRead = async (id) => {
         await updateDoc(doc(db, "notifications", id), { read: true });
       };
@@ -922,6 +938,20 @@ entB        .addEventListener("input", (e) => {
             ? `https://wa.me/${data.clientPhone.replace(/\D/g, '')}?text=${encodeURIComponent("Olá! Segue o link do seu contrato para ativação do sistema: " + contractUrl)}`
             : '#';
 
+          // Seletor de Status da Instalação
+          const setupOptions = {
+            pending: "Aguardando Início",
+            waiting_materials: "Aguardando Materiais",
+            configuring: "Configurando",
+            ready: "Pronto para Uso"
+          };
+          
+          const setupSelect = `
+            <select id="status-select-${data.id}" onchange="window.changeSetupStatus('${data.id}', this.value)" class="text-xs border-gray-300 rounded shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                ${Object.entries(setupOptions).map(([key, label]) => `<option value="${key}" ${data.setupStatus === key ? 'selected' : ''}>${label}</option>`).join('')}
+            </select>
+          `;
+
           const row = `
                     <tr class="${isExpired ? "bg-red-50" : ""}">
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -945,6 +975,7 @@ entB        .addEventListener("input", (e) => {
                             ${expiresDate}<br>${paymentStatus}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">${contractStatus}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">${setupSelect}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <button onclick="window.copiarChave('${contractUrl}')" class="text-purple-600 hover:text-purple-900 mr-3" title="Copiar Link Contrato"><i class="fas fa-file-contract"></i> Link</button>
                             ${data.clientPhone ? `<a href="${whatsappLink}" target="_blank" class="text-green-600 hover:text-green-900 mr-3" title="Enviar no WhatsApp"><i class="fab fa-whatsapp"></i> Enviar</a>` : ''}
