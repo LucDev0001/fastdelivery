@@ -3,126 +3,244 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pagamento Confirmado - CoraEats</title>
+    <title>Pedido Recebido! - CoraEats</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .fade-in {
+        animation: fadeIn 1s ease-out;
+      }
+      .slide-up {
+        animation: slideUp 0.8s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideUp {
+        from {
+          transform: translateY(30px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+    </style>
   </head>
-  <body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
-    <div
-      class="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden text-center p-8"
+  <body class="bg-[#0F1C2E] text-gray-100 min-h-screen flex flex-col">
+    <!-- Header Simples -->
+    <nav
+      class="w-full py-6 px-8 flex justify-center border-b border-gray-800 bg-[#0B1421]"
     >
-      <div
-        class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6"
-      >
-        <i class="fas fa-check text-4xl text-green-600"></i>
-      </div>
+      <img
+        src="images/logocora.jpeg"
+        alt="CoraEats"
+        class="h-12 rounded-lg shadow-lg"
+      />
+    </nav>
 
-      <h1 class="text-2xl font-bold text-gray-800 mb-2">
-        Pagamento Confirmado!
-      </h1>
-      <p class="text-gray-600 mb-8">
-        Obrigado por assinar o CoraEats. Seu pagamento foi processado com
-        sucesso.
-      </p>
-
-      <!-- Explicação do Processo de Ativação -->
-      <div
-        class="bg-yellow-50 border border-yellow-100 rounded-lg p-4 mb-6 text-left"
-      >
-        <h3 class="font-bold text-yellow-800 mb-2 text-sm">
-          <i class="fas fa-clock"></i> O que acontece agora?
-        </h3>
-        <ol class="text-sm text-yellow-900 list-decimal pl-5 space-y-2">
-          <li>
-            <strong>Validação:</strong> Nosso sistema financeiro confirma o
-            recebimento (Instantâneo no Pix).
-          </li>
-          <li>
-            <strong>Geração da Licença:</strong> Nossa equipe técnica gera sua
-            chave de acesso única e prepara seu contrato.
-          </li>
-          <li>
-            <strong>Ativação:</strong> Você recebe o link para assinar o
-            contrato digitalmente e liberar o sistema.
-          </li>
-        </ol>
-        <p class="text-xs text-yellow-700 mt-3 font-semibold">
-          Todo esse processo é feito através do nosso Suporte no WhatsApp.
+    <main class="flex-grow container mx-auto px-4 py-12 max-w-5xl">
+      <!-- Seção de Agradecimento -->
+      <div class="text-center mb-16 fade-in">
+        <div
+          class="inline-flex items-center justify-center w-24 h-24 bg-green-500/20 rounded-full mb-6 ring-4 ring-green-500/30"
+        >
+          <i class="fas fa-check text-5xl text-green-500"></i>
+        </div>
+        <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4">
+          Obrigado pela confiança!
+        </h1>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto">
+          Seu pedido foi recebido com sucesso. Você acaba de dar o primeiro
+          passo para transformar o seu delivery.
         </p>
       </div>
 
-      <div
-        class="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-8 text-left"
-      >
-        <h3 class="font-bold text-blue-800 mb-2">
-          <i class="fas fa-info-circle"></i> Próximos Passos:
-        </h3>
-        <p class="text-sm text-blue-700 mb-2">
-          Para agilizar a configuração da sua loja, por favor, separe os
-          seguintes materiais para enviar ao nosso suporte:
-        </p>
-        <ul class="text-sm text-blue-800 list-disc pl-5 mb-4 space-y-1">
-          <li><strong>Logotipo</strong> da sua loja;</li>
-          <li><strong>Imagem de Capa</strong> (Banner);</li>
-          <li>Informações de contato (Endereço, Telefone);</li>
-          <li>Cardápio inicial (se tiver).</li>
-        </ul>
-        <p class="text-xs text-blue-600 italic">
-          O prazo de entrega (até 5 dias úteis) começa a contar após o envio
-          desses materiais.
-        </p>
-      </div>
-
-      <!-- Área de Acompanhamento -->
-      <div class="mb-8 pt-6 border-t border-gray-100">
-        <h4 class="text-sm font-bold text-gray-700 mb-2">
-          Já recebeu sua chave?
-        </h4>
-        <div class="flex gap-2">
-          <input
-            type="text"
-            id="key-input"
-            placeholder="Cole sua chave aqui..."
-            class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-green-500"
-          />
-          <button
-            onclick="goToStatus()"
-            class="bg-gray-800 text-white px-4 py-2 rounded text-sm hover:bg-gray-900"
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <!-- Coluna Esquerda: Vídeo e Link -->
+        <div class="space-y-8 slide-up">
+          <div
+            class="bg-[#1A2436] p-1 rounded-2xl shadow-2xl border border-gray-700"
           >
-            Acompanhar
+            <div class="relative pb-[56.25%] h-0 overflow-hidden rounded-xl">
+              <iframe
+                class="absolute top-0 left-0 w-full h-full"
+                src="https://www.youtube.com/embed/QKCM-10y5bY?si=pYETIIN9tioBwXAe"
+                title="Bem-vindo ao CoraEats"
+                frameborder="0"
+                allow="
+                  accelerometer;
+                  autoplay;
+                  clipboard-write;
+                  encrypted-media;
+                  gyroscope;
+                  picture-in-picture;
+                "
+                allowfullscreen
+              >
+              </iframe>
+            </div>
+          </div>
+
+          <div
+            class="bg-[#1A2436] p-6 rounded-xl border border-gray-700 text-center"
+          >
+            <p class="text-gray-400 mb-4 text-sm">
+              Salve este link para acompanhar sua instalação:
+            </p>
+            <div
+              class="flex items-center gap-2 bg-[#0B1421] p-3 rounded-lg border border-gray-800"
+            >
+              <input
+                type="text"
+                id="status-url-display"
+                value="https://coraeats.vercel.app/status.html"
+                readonly
+                class="bg-transparent text-gray-300 text-sm flex-1 outline-none font-mono"
+              />
+              <button
+                onclick="copiarLink()"
+                class="text-[#F47C2C] hover:text-white font-bold text-sm"
+              >
+                COPIAR
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna Direita: Passos e Ação -->
+        <div class="space-y-8 slide-up" style="animation-delay: 0.2s">
+          <div class="bg-[#1A2436] p-8 rounded-2xl border border-gray-700">
+            <h3 class="text-2xl font-bold text-white mb-6">Próximos Passos</h3>
+
+            <div class="space-y-6 relative">
+              <!-- Linha conectora -->
+              <div
+                class="absolute left-4 top-2 bottom-2 w-0.5 bg-gray-700"
+              ></div>
+
+              <div class="relative flex gap-4">
+                <div
+                  class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center z-10 shadow-lg shadow-green-500/50"
+                >
+                  <i class="fas fa-check text-white text-xs"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white">Pagamento Realizado</h4>
+                  <p class="text-sm text-gray-400">
+                    Estamos validando sua transação.
+                  </p>
+                </div>
+              </div>
+
+              <div class="relative flex gap-4">
+                <div
+                  class="w-8 h-8 bg-[#F47C2C] rounded-full flex items-center justify-center z-10 shadow-lg shadow-orange-500/50"
+                >
+                  <i class="fas fa-key text-white text-xs"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-white">Ativação da Licença</h4>
+                  <p class="text-sm text-gray-400">
+                    Nossa equipe irá gerar sua chave única e enviar o contrato
+                    digital.
+                  </p>
+                </div>
+              </div>
+
+              <div class="relative flex gap-4">
+                <div
+                  class="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center z-10 border-2 border-gray-600"
+                >
+                  <i class="fas fa-rocket text-gray-400 text-xs"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-300">Configuração da Loja</h4>
+                  <p class="text-sm text-gray-500">
+                    Após assinar, configuramos seu domínio e cardápio em até 5
+                    dias.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-blue-900/20 border border-blue-800 p-6 rounded-xl">
+            <h4 class="font-bold text-blue-400 mb-2">
+              <i class="fas fa-info-circle mr-2"></i>Para agilizar:
+            </h4>
+            <p class="text-sm text-gray-300 mb-2">
+              Já separe os seguintes materiais para nos enviar:
+            </p>
+            <ul class="text-sm text-gray-400 list-disc pl-5 space-y-1">
+              <li>Logotipo da Loja</li>
+              <li>Cardápio (PDF ou Foto)</li>
+              <li>Endereço e Telefone</li>
+            </ul>
+          </div>
+
+          <button
+            onclick="contatarWhatsApp()"
+            class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-xl transition transform hover:scale-105 shadow-xl shadow-green-500/20 flex items-center justify-center gap-3"
+          >
+            <i class="fab fa-whatsapp text-2xl"></i>
+            <span>Falar com Suporte e Ativar</span>
           </button>
+
+          <div class="text-center">
+            <a
+              href="index.html"
+              class="text-gray-500 hover:text-white text-sm transition"
+              >Voltar para o site</a
+            >
+          </div>
         </div>
       </div>
-
-      <button
-        onclick="contatarWhatsApp()"
-        class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg transition flex items-center justify-center gap-2 mb-4 shadow-lg shadow-green-500/30"
-      >
-        <i class="fab fa-whatsapp text-xl"></i> Falar com Suporte
-      </button>
-
-      <a
-        href="index.html"
-        class="text-gray-500 hover:text-gray-700 text-sm font-medium"
-      >
-        Voltar para o site
-      </a>
-    </div>
+    </main>
 
     <script>
-      function goToStatus() {
-        const key = document.getElementById("key-input").value.trim();
-        if (key) window.location.href = `status.html?key=${key}`;
+      // Define a URL base para a página de status
+      const baseUrl = window.location.origin;
+      const statusUrl = `${baseUrl}/status.html`;
+      document.getElementById("status-url-display").value = statusUrl;
+
+      function copiarLink() {
+        const copyText = document.getElementById("status-url-display");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyText.value);
+
+        const btn = document.querySelector('button[onclick="copiarLink()"]');
+        const originalText = btn.innerText;
+        btn.innerText = "COPIADO!";
+        setTimeout(() => (btn.innerText = originalText), 2000);
       }
 
       function contatarWhatsApp() {
         const urlParams = new URLSearchParams(window.location.search);
         const email = urlParams.get("email") || "";
         const numero = "5521983856779";
-        const mensagem = `Olá! Realizei o pagamento da assinatura do CoraEats no site.\n\n📧 *E-mail:* ${email}\n\nGostaria de receber minha licença e iniciar a configuração.`;
+
+        // Mensagem formatada com o link de status para o admin saber
+        const mensagem = `Olá! Acabei de realizar o pagamento no site.\n\n📧 *Meu E-mail:* ${email}\n🔗 *Link de Status:* ${statusUrl}\n\nAguardo a geração da minha chave de licença!`;
+
         window.open(
           `https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`,
           "_blank",
