@@ -1273,31 +1273,37 @@
           confirmButtonColor: "#F47C2C",
           cancelButtonText: "Cancelar",
           preConfirm: () => {
+            const name = document.getElementById("swal-name").value;
+            const email = document.getElementById("swal-email").value;
+            const cpfRaw = document.getElementById("swal-cpf").value;
+            const phoneRaw = document.getElementById("swal-phone").value;
+            const domain = document.getElementById("swal-domain").value;
+
+            if (!name || !email || !cpfRaw || !phoneRaw) {
+              Swal.showValidationMessage("Preencha todos os campos obrigatórios.");
+              return false;
+            }
+
+            const cpf = cpfRaw.replace(/\D/g, "");
+            const phone = phoneRaw.replace(/\D/g, "");
+
+            if (cpf.length !== 11 && cpf.length !== 14) {
+              Swal.showValidationMessage("CPF ou CNPJ inválido (digite apenas números).");
+              return false;
+            }
+
             return {
-              name: document.getElementById("swal-name").value,
-              email: document.getElementById("swal-email").value,
-              cpf: document.getElementById("swal-cpf").value,
-              phone: document.getElementById("swal-phone").value,
-              domain: document.getElementById("swal-domain").value,
+              name,
+              email,
+              cpf,
+              phone,
+              domain,
               plan: plano,
             };
           },
         });
 
         if (formValues) {
-          if (
-            !formValues.name ||
-            !formValues.email ||
-            !formValues.cpf ||
-            !formValues.phone
-          ) {
-            return Swal.fire(
-              "Erro",
-              "Por favor preencha todos os campos.",
-              "error",
-            );
-          }
-
           Swal.fire({
             title: "Gerando Pagamento...",
             text: "Aguarde enquanto criamos seu link seguro...",
@@ -1391,6 +1397,10 @@
           console.error("Erro ao carregar preços", e);
         }
       }
+      loadPrices();
+    </script>
+  </body>
+</html>
       loadPrices();
     </script>
   </body>
