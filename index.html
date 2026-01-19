@@ -8,7 +8,7 @@
     </title>
     <meta
       name="description"
-      content="CoraEats: O sistema ágil para quem não quer perder tempo. Tenha seu cardápio online, receba pedidos no WhatsApp e fidelize seus clientes."
+      content="Sistema de Delivery e Cardápio Digital sem comissões. Receba pedidos no WhatsApp, imprima comandas automaticamente e tenha seu App próprio. Comece agora!"
     />
     <meta
       name="keywords"
@@ -27,7 +27,7 @@
     />
     <meta
       property="og:description"
-      content="CoraEats: O sistema ágil para quem não quer perder tempo. Tenha seu cardápio online, receba pedidos no WhatsApp e fidelize seus clientes."
+      content="Sistema de Delivery e Cardápio Digital sem comissões. Receba pedidos no WhatsApp, imprima comandas automaticamente e tenha seu App próprio."
     />
     <meta
       property="og:image"
@@ -43,7 +43,7 @@
     />
     <meta
       property="twitter:description"
-      content="CoraEats: O sistema ágil para quem não quer perder tempo. Tenha seu cardápio online, receba pedidos no WhatsApp e fidelize seus clientes."
+      content="Sistema de Delivery e Cardápio Digital sem comissões. Receba pedidos no WhatsApp, imprima comandas automaticamente e tenha seu App próprio."
     />
     <meta
       property="twitter:image"
@@ -79,6 +79,25 @@
           "priceCurrency": "BRL"
         },
         "description": "Sistema de gestão completo para delivery, restaurantes e lanchonetes."
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "CoraEats",
+        "url": "https://coraeats.vercel.app/",
+        "logo": "https://coraeats.vercel.app/images/logocora.png",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+55-21-98385-6779",
+          "contactType": "sales",
+          "areaServed": "BR"
+        },
+        "sameAs": [
+          "https://www.instagram.com/cora.eatsfood",
+          "https://www.youtube.com/@coraeats-y2f"
+        ]
       }
     </script>
     <script type="application/ld+json">
@@ -305,11 +324,7 @@
                 <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
                 <div class="w-2 h-2 rounded-full bg-green-500"></div>
               </div>
-              <img
-                src="images/screenshotpc.png"
-                alt="Sistema no PC"
-                class="w-full h-auto block"
-              />
+              <img src="images/screenshotpc.png" alt="Painel Administrativo CoraEats no Desktop" class="w-full h-auto block" width="800" height="450" loading="lazy" />
             </div>
             <div
               class="mx-auto w-1/3 h-4 bg-gray-700 rounded-b-lg shadow-lg"
@@ -326,11 +341,7 @@
               <div
                 class="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-5 bg-gray-900 rounded-b-xl z-10"
               ></div>
-              <img
-                src="images/screenshotcelular.png"
-                alt="Sistema no Celular"
-                class="w-full h-auto block bg-white"
-              />
+              <img src="images/screenshotcelular.png" alt="Cardápio Digital CoraEats no Celular" class="w-full h-auto block bg-white" width="300" height="600" loading="lazy" />
             </div>
           </div>
         </div>
@@ -566,7 +577,7 @@
                 <img
                   src="images/screenshot1.png"
                   alt="Interface do Cardápio Digital CoraEats no celular"
-                  class="w-24 md:w-40 rounded-[1.5rem] border-4 border-gray-800 shadow-xl transform -rotate-12 hover:scale-105 transition duration-500"
+                  class="w-24 md:w-40 rounded-[1.5rem] border-4 border-gray-800 shadow-xl transform -rotate-12 hover:scale-105 transition duration-500" width="160" height="320" loading="lazy"
                 />
               </div>
 
@@ -575,7 +586,7 @@
                 <img
                   src="images/screenshot3.png"
                   alt="Painel de Pedidos do Sistema Delivery"
-                  class="w-32 md:w-52 rounded-[2rem] border-8 border-gray-800 shadow-2xl hover:scale-105 transition duration-500"
+                  class="w-32 md:w-52 rounded-[2rem] border-8 border-gray-800 shadow-2xl hover:scale-105 transition duration-500" width="208" height="416" loading="lazy"
                 />
               </div>
 
@@ -587,7 +598,7 @@
                 <img
                   src="images/screenshot2.png"
                   alt="Acompanhamento de pedido em tempo real"
-                  class="w-24 md:w-40 rounded-[1.5rem] border-4 border-gray-800 shadow-xl transform rotate-12 hover:scale-105 transition duration-500"
+                  class="w-24 md:w-40 rounded-[1.5rem] border-4 border-gray-800 shadow-xl transform rotate-12 hover:scale-105 transition duration-500" width="160" height="320" loading="lazy"
                 />
               </div>
             </div>
@@ -1141,6 +1152,7 @@
                 target="_blank"
                 class="text-gray-400 hover:text-[#E1306C] transition"
                 title="Instagram"
+                aria-label="Siga-nos no Instagram"
               >
                 <i class="fab fa-instagram text-xl"></i>
               </a>
@@ -1149,6 +1161,7 @@
                 target="_blank"
                 class="text-gray-400 hover:text-[#FF0000] transition"
                 title="YouTube"
+                aria-label="Inscreva-se no nosso canal do YouTube"
               >
                 <i class="fab fa-youtube text-xl"></i>
               </a>
@@ -1157,6 +1170,7 @@
                 target="_blank"
                 class="text-gray-400 hover:text-[#25D366] transition"
                 title="WhatsApp"
+                aria-label="Fale conosco no WhatsApp"
               >
                 <i class="fab fa-whatsapp text-xl"></i>
               </a>
@@ -1230,6 +1244,7 @@
       target="_blank"
       class="whatsapp-float bg-green-500 text-white w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-lg hover:bg-green-600 transition duration-300"
       title="Fale conosco no WhatsApp"
+      aria-label="Botão flutuante para contato via WhatsApp"
     >
       <i class="fab fa-whatsapp"></i>
     </a>
