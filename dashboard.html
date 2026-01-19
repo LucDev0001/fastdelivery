@@ -925,6 +925,7 @@ entB        .addEventListener("input", (e) => {
           const expiresDate = expiresDateObj.toLocaleDateString("pt-BR");
           const isExpired = expiresDateObj < new Date();
           const contractUrl = `${baseUrl}?key=${data.key}`;
+          const statusUrl = `${baseUrl.replace("contrato.html", "status.html")}?key=${data.key}`;
 
           const contractStatus = data.contractAccepted
             ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Assinado</span>'
@@ -934,8 +935,10 @@ entB        .addEventListener("input", (e) => {
             ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Ativa</span>'
             : '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
 
+          const whatsappMessage = `Olá! Segue os links para o seu sistema CoraEats:\n\n📄 *Contrato/Ativação:* ${contractUrl}\n📊 *Acompanhar Instalação:* ${statusUrl}`;
+
           const whatsappLink = data.clientPhone 
-            ? `https://wa.me/${data.clientPhone.replace(/\D/g, '')}?text=${encodeURIComponent("Olá! Segue o link do seu contrato para ativação do sistema: " + contractUrl)}`
+            ? `https://wa.me/${data.clientPhone.replace(/\D/g, '')}?text=${encodeURIComponent(whatsappMessage)}`
             : '#';
 
           // Seletor de Status da Instalação
@@ -977,7 +980,8 @@ entB        .addEventListener("input", (e) => {
                         <td class="px-6 py-4 whitespace-nowrap">${contractStatus}</td>
                         <td class="px-6 py-4 whitespace-nowrap">${setupSelect}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button onclick="window.copiarChave('${contractUrl}')" class="text-purple-600 hover:text-purple-900 mr-3" title="Copiar Link Contrato"><i class="fas fa-file-contract"></i> Link</button>
+                            <button onclick="window.copiarChave('${contractUrl}')" class="text-purple-600 hover:text-purple-900 mr-3" title="Copiar Link Contrato"><i class="fas fa-file-contract"></i> Contrato</button>
+                            <button onclick="window.copiarChave('${statusUrl}')" class="text-orange-600 hover:text-orange-900 mr-3" title="Copiar Link Status"><i class="fas fa-tasks"></i> Status</button>
                             ${data.clientPhone ? `<a href="${whatsappLink}" target="_blank" class="text-green-600 hover:text-green-900 mr-3" title="Enviar no WhatsApp"><i class="fab fa-whatsapp"></i> Enviar</a>` : ''}
                             <button onclick="window.editLicense('${
                               data.id
