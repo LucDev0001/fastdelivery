@@ -788,6 +788,9 @@
                             <button onclick="window.renewLicense('${
                               data.id
                             }')" class="text-green-600 hover:text-green-900 mr-3" title="Renovar +30 dias"><i class="fas fa-calendar-plus"></i></button>
+                            <button onclick="window.revokeLicense('${
+                              data.id
+                            }')" class="text-orange-600 hover:text-orange-900 mr-3" title="Revogar Acesso"><i class="fas fa-ban"></i></button>
                             <button data-id="${
                               data.id
                             }" class="delete-btn text-red-600 hover:text-red-900" title="Excluir Licença"><i class="fas fa-trash"></i></button>
@@ -870,6 +873,27 @@
           currentExpire.setDate(currentExpire.getDate() + 30);
           await updateDoc(doc(db, "licenses", id), {
             expiresAt: currentExpire,
+          });
+          loadLicenses();
+        }
+      };
+
+      window.revokeLicense = async (id) => {
+        const license = allLicensesData.find((l) => l.id === id);
+        if (!license) return;
+
+        if (!license.active) {
+          alert("Esta licença já está inativa.");
+          return;
+        }
+
+        if (
+          confirm(
+            `Tem certeza que deseja REVOGAR o acesso de ${license.storeName}? O cliente perderá o acesso imediatamente.`
+          )
+        ) {
+          await updateDoc(doc(db, "licenses", id), {
+            active: false,
           });
           loadLicenses();
         }
