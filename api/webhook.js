@@ -1,10 +1,11 @@
 import admin from "firebase-admin";
+import nodemailer from "nodemailer";
 
 // Inicializa o Firebase Admin (necessário para escrever no banco pelo backend)
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(
-      JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT)
+      JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT),
     ),
   });
 }
@@ -20,6 +21,35 @@ export default async function handler(req, res) {
     // Verifique na documentação do Abacate Pay qual o status de sucesso (ex: "PAID", "COMPLETED")
     if (event.status === "PAID" || event.event === "billing.paid") {
       const paymentId = event.data.id;
+      const customer = event.data.customer || {};
+      const products = event.data.products || [];
+      const productName =
+        products.length > 0 ? products[0].name : "Produto Desconhecido";
+
+      // Envio de E-mail para o Admin (Automação)
+      // Requer variáveis de ambiente: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS
+      if (process.env.SMTP_HOST) {
+        try {
+          const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: process.env.SMTP_PORT,
+            secure: process.env.SMTP_PORT == 465, // true para 465, false para outros
+            auth: {
+              user: process.env.SMTP_USER,
+              pass: process.env.SMTP_PASS,
+            },
+          });
+
+          await transporter.sendMail({
+            from: `"CoraEats Bot" <${process.env.SMTP_USER}>`,
+            to: "coraeatssuporte@gmail.com", // Seu e-mail de admin
+            subject: `💰 Nova Venda: ${customer.name || "Cliente"}`,
+            text: `Nova venda confirmada!\n\n👤 Cliente: ${customer.name}\n📧 Email: ${customer.email}\n📱 Telefone: ${customer.phone}\n📦 Produto/Domínio: ${productName}\n🆔 ID Pagamento: ${paymentId}\n\nAcesse o Dashboard para gerar a licença e o contrato.`,
+          });
+        } catch (emailErr) {
+          console.error("Erro ao enviar e-mail de notificação:", emailErr);
+        }
+      }
 
       // Busca a licença que tem esse ID de pagamento
       const licensesRef = db.collection("licenses");

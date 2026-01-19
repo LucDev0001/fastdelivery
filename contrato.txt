@@ -18,34 +18,46 @@ CLÁUSULA 2ª - DAS OBRIGAÇÕES DA CONTRATADA
 
 2.1. Manter o sistema online e funcional, utilizando infraestrutura de hospedagem profissional.
 2.2. Realizar backups periódicos e atualizações de segurança.
-2.3
+2.3. Prestar suporte técnico para uso do sistema e eventuais falhas.
+
+
 CLÁUSULA 3ª - DAS OBRIGAÇÕES DA CONTRATANTE
 
 3.1. Efetuar o pagamento da mensalidade na data de vencimento acordada.
 3.2. Utilizar o sistema de acordo com as leis vigentes e não realizar engenharia reversa.
 3.3. Arcar com os custos de renovação de domínio anual, caso aplicável.
 3.4. A CONTRATANTE é a controladora dos dados de seus clientes finais (LGPD), cabendo à CONTRATADA o papel de operadora da infraestrutura.
-
-4.1. Pela licença de uso do SOFTWARE, a CONTRATANTE pagará à CONTRATADA o valor mensal de R$ [VALOR MENSAL] ([VALOR POR EXTENSO]), a ser pago todo dia [DIA DO VENCIMENTO] de cada mês, via [MÉTODO DE PAGAMENTO, EX: PIX, BOLETO].
-4.2. O não pagamento na data de vencimento acarretará multa de 2% (dois por cento) e juros de 1% (um por cento) ao mês.
-4.3. O atraso superior a 15 (quinze) dias poderá acarretar na suspensão do acesso ao SOFTWARE até a regularização dos débitos.
+3.5. Fornecer os materiais necessários para configuração inicial (Logo, Capa, Cardápio) para viabilizar a entrega no prazo.
 
 
-CLÁUSULA 5ª - DA VIGÊNCIA E RESCISÃO
+CLÁUSULA 4ª - DA ENTREGA E PRAZOS
 
-5.1. O presente contrato terá vigência de 12 (doze) meses, renovando-se automaticamente por iguais períodos, caso não haja manifestação contrária de nenhuma das partes com 30 (trinta) dias de antecedência.
-5.2. O contrato poderá ser rescindido por qualquer uma das partes, sem ônus, mediante aviso prévio de 30 (trinta) dias.
-5.3. A violação de qualquer cláusula deste contrato pela CONTRATANTE poderá levar à rescisão imediata e suspensão do serviço.
-
-
-CLÁUSULA 6ª - DA CONFIDENCIALIDADE
-
-6.1. As partes se comprometem a manter sigilo sobre todas as informações comerciais e técnicas a que tiverem acesso em virtude deste contrato. A CONTRATADA, em especial, compromete-se a não acessar ou utilizar os dados operacionais da CONTRATANTE para qualquer fim que não seja a prestação de suporte técnico solicitado.
+4.1. O prazo para entrega do sistema configurado é de até 5 (cinco) dias úteis, contados a partir do recebimento de todas as informações necessárias (Logo, Capa, Cardápio).
+4.2. Este prazo contempla a propagação de DNS (até 72h).
 
 
-CLÁUSULA 7ª - DO FORO
+CLÁUSULA 5ª - DO PREÇO E PAGAMENTO
 
-7.1. Para dirimir quaisquer controvérsias oriundas do CONTRATO, as partes elegem o foro da comarca de Rio de Janeiro/RJ.
+5.1. Pela licença de uso do SOFTWARE, a CONTRATANTE pagará à CONTRATADA o valor acordado no plano escolhido.
+5.2. O não pagamento na data de vencimento acarretará multa de 2% (dois por cento) e juros de 1% (um por cento) ao mês.
+5.3. O atraso superior a 15 (quinze) dias poderá acarretar na suspensão do acesso ao SOFTWARE até a regularização dos débitos.
+
+
+CLÁUSULA 6ª - DA VIGÊNCIA E RESCISÃO
+
+6.1. O presente contrato terá vigência de 12 (doze) meses, renovando-se automaticamente por iguais períodos, caso não haja manifestação contrária de nenhuma das partes com 30 (trinta) dias de antecedência.
+6.2. O contrato poderá ser rescindido por qualquer uma das partes, sem ônus, mediante aviso prévio de 30 (trinta) dias.
+6.3. A violação de qualquer cláusula deste contrato pela CONTRATANTE poderá levar à rescisão imediata e suspensão do serviço.
+
+
+CLÁUSULA 7ª - DA CONFIDENCIALIDADE
+
+7.1. As partes se comprometem a manter sigilo sobre todas as informações comerciais e técnicas a que tiverem acesso em virtude deste contrato. A CONTRATADA, em especial, compromete-se a não acessar ou utilizar os dados operacionais da CONTRATANTE para qualquer fim que não seja a prestação de suporte técnico solicitado.
+
+
+CLÁUSULA 8ª - DO FORO
+
+8.1. Para dirimir quaisquer controvérsias oriundas do CONTRATO, as partes elegem o foro da comarca de Rio de Janeiro/RJ.
 
 
 E por estarem assim justos e contratados, firmam o presente instrumento.
