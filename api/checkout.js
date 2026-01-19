@@ -85,7 +85,7 @@ export default async function handler(req, res) {
       "https://api.abacatepay.com/v1/billing/create",
       {
         frequency: plan === "anual" ? "YEARLY" : "MONTHLY", // Se for assinatura recorrente
-        methods: ["PIX", "CREDIT_CARD"], // Métodos aceitos
+        methods: ["PIX"], // Métodos aceitos (CREDIT_CARD removido para corrigir erro de validação da API)
         products: [
           {
             externalId: plan,
