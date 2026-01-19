@@ -43,6 +43,18 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://coraeats.vercel.app/blog/fidelizar-clientes.html</loc>
+    <lastmod>2024-10-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://coraeats.vercel.app/blog/embalagem-delivery.html</loc>
+    <lastmod>2024-10-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://coraeats.vercel.app/cliente/index.html</loc>
     <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
