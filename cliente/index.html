@@ -271,6 +271,15 @@
       </a>
     </nav>
 
+    <!-- Botão Toggle Mobile -->
+    <div
+      id="btn-mobile-toggle"
+      onclick="toggleMobileMode()"
+      title="Simular Celular"
+    >
+      <i class="fas fa-mobile-alt"></i>
+    </div>
+
     <!-- Modal de Complementos (Mock) -->
     <div id="modalComplementos" class="modal fade" tabindex="-1">
       <div class="modal-dialog modal-dialog-centered">
@@ -569,6 +578,22 @@
         document.getElementById("total-sacola").innerText =
           "R$ " + valorTotal.toFixed(2).replace(".", ",");
         barra.style.display = "flex";
+      }
+
+      function toggleMobileMode() {
+        document.body.classList.toggle("mobile-mode");
+        const btn = document.getElementById("btn-mobile-toggle");
+        const icon = btn.querySelector("i");
+
+        if (document.body.classList.contains("mobile-mode")) {
+          icon.classList.remove("fa-mobile-alt");
+          icon.classList.add("fa-desktop");
+          btn.title = "Voltar para Desktop";
+        } else {
+          icon.classList.remove("fa-desktop");
+          icon.classList.add("fa-mobile-alt");
+          btn.title = "Simular Celular";
+        }
       }
     </script>
   </body>
