@@ -1,4 +1,4 @@
-CONTRATO DE LICENCIAMENTO DE USO DE SOFTWARE E PRESTAÇÃO DE SERVIÇOS
+CONTRATO DE LICENCIAMENTO DE USO DE SOFTWARE WEB (SAAS) E PRESTAÇÃO DE SERVIÇOS
 
 IDENTIFICAÇÃO DAS PARTES
 
@@ -11,23 +11,22 @@ As partes acima identificadas têm, entre si, justo e acertado o presente Contra
 
 CLÁUSULA 1ª - DO OBJETO DO CONTRATO
 
-1.1. O presente contrato tem como objeto a licença de uso, não exclusiva e intransferível, do software "VouFood" (doravante "SOFTWARE"), de propriedade da CONTRATADA, a ser instalado e utilizado pela CONTRATANTE para gestão de seu serviço de delivery de alimentos.
+1.1. O presente contrato tem como objeto a licença de uso, não exclusiva e intransferível, do software "CoraEats" (doravante "SOFTWARE"), de propriedade da CONTRATADA, a ser instalado e utilizado pela CONTRATANTE para gestão de seu serviço de delivery de alimentos.
 
-1.2. A licença inclui o acesso a todas as funcionalidades descritas na proposta comercial, como gestão de pedidos, cardápio, estoque, entregadores, financeiro, relatórios e o aplicativo web (PWA) para os clientes finais.
+1.2. O SOFTWARE é uma aplicação web que deve ser instalada em infraestrutura de hospedagem contratada pela CONTRATANTE. A licença não transfere a propriedade do código-fonte, apenas o direito de uso.
 
 
 CLÁUSULA 2ª - DAS OBRIGAÇÕES DA CONTRATADA
 
 2.1. Realizar a instalação inicial do SOFTWARE no ambiente de hospedagem fornecido ou indicado pela CONTRATANTE.
-2.2. Prestar suporte técnico para correção de falhas e bugs do SOFTWARE, em horário comercial (Segunda a Sexta, 9h-18h), via WhatsApp e e-mail.
-2.3. Manter o SOFTWARE atualizado com correções e melhorias, a seu critério.
+2.2. Prestar suporte técnico relacionado exclusivamente ao funcionamento do SOFTWARE. Problemas relacionados ao servidor de hospedagem (e-mails caindo em spam, servidor fora do ar, lentidão do servidor) são de responsabilidade da empresa de hospedagem contratada.
 
 
 CLÁUSULA 3ª - DAS OBRIGAÇÕES DA CONTRATANTE
 
 3.1. Efetuar o pagamento da mensalidade na data de vencimento acordada.
-3.2. Utilizar o SOFTWARE de acordo com suas finalidades, não tentando realizar engenharia reversa, copiar ou distribuir o código-fonte.
-3.3. Manter a segurança do ambiente de hospedagem e das credenciais de acesso ao painel administrativo.
+3.2. Contratar e manter ativo um serviço de hospedagem (Hostgator, Hostinger, etc.) e um domínio web.
+3.3. Não realizar engenharia reversa, copiar, revender ou distribuir o código-fonte do SOFTWARE.
 3.4. A CONTRATANTE é a única e exclusiva responsável por todos os dados inseridos no sistema, incluindo dados de seus clientes, produtos e informações financeiras, devendo cumprir a Lei Geral de Proteção de Dados (LGPD).
 
 

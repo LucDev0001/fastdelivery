@@ -228,7 +228,7 @@
       let licenseData = null;
 
       // Template do Contrato (Texto Puro)
-      const contractTemplate = `CONTRATO DE LICENCIAMENTO DE USO DE SOFTWARE E PRESTAÇÃO DE SERVIÇOS
+      const contractTemplate = `CONTRATO DE LICENCIAMENTO DE USO DE SOFTWARE WEB (SAAS) E PRESTAÇÃO DE SERVIÇOS
 
 IDENTIFICAÇÃO DAS PARTES
 
@@ -236,14 +236,23 @@ CONTRATADA: Luciano Severino dos Santos, com sede em Rua Dois de Maio, 413 - Sam
 
 CONTRATANTE: {{COMPANY_NAME}}, com sede em {{ADDRESS}}, inscrita no CNPJ sob o nº {{CNPJ}}.
 
-CLÁUSULA 1ª - DO OBJETO DO CONTRATO
-1.1. O presente contrato tem como objeto a licença de uso do software "VouFood".
+CLÁUSULA 1ª - DO OBJETO
+1.1. O presente contrato tem como objeto a concessão de licença de uso, não exclusiva e intransferível, do software web denominado "CoraEats" (o "SOFTWARE"), para instalação em servidor de hospedagem de titularidade da CONTRATANTE.
+1.2. O SOFTWARE é um sistema web que requer instalação em servidor (hospedagem) e domínio próprios.
 
-CLÁUSULA 2ª - DO PREÇO
-2.1. A CONTRATANTE pagará o valor de {{PRICE}} referente ao plano {{PLAN_TYPE}}.
+CLÁUSULA 2ª - DAS OBRIGAÇÕES DA CONTRATANTE
+2.1. Contratar e manter ativo, às suas expensas, um serviço de hospedagem web (ex: Hostgator, Hostinger, cPanel) e um registro de domínio (ex: www.sualoja.com.br) compatíveis com os requisitos do sistema.
+2.2. Fornecer à CONTRATADA os dados de acesso ao servidor de hospedagem exclusivamente para fins de instalação e manutenção do sistema.
+2.3. Efetuar o pagamento recorrente da licença conforme o plano escolhido.
 
-CLÁUSULA 3ª - DA VIGÊNCIA
-3.1. O contrato é válido até {{EXPIRES_AT}}, renovável automaticamente mediante pagamento.
+CLÁUSULA 3ª - DAS OBRIGAÇÕES DA CONTRATADA
+3.1. Realizar a instalação e configuração inicial do SOFTWARE no servidor de hospedagem fornecido pela CONTRATANTE.
+3.2. Garantir o funcionamento do código-fonte do SOFTWARE e corrigir eventuais erros de programação (bugs).
+3.3. A CONTRATADA não se responsabiliza por falhas, lentidão ou indisponibilidade causadas pelo provedor de hospedagem contratado pela CONTRATANTE.
+
+CLÁUSULA 4ª - DO PREÇO E VIGÊNCIA
+4.1. A CONTRATANTE pagará o valor de {{PRICE}} referente ao plano {{PLAN_TYPE}}.
+4.2. O contrato é válido até {{EXPIRES_AT}}, renovável automaticamente mediante pagamento. O não pagamento implica na suspensão da licença de uso.
 
 Rio de Janeiro, {{CURRENT_DATE}}.
 `;

@@ -63,7 +63,7 @@ export default async function handler(req, res) {
 
     const amount = plan === "anual" ? annualPrice : monthlyPrice;
     const title =
-      plan === "anual" ? "VouFood - Plano Anual" : "VouFood - Plano Mensal";
+      plan === "anual" ? "CoraEats - Plano Anual" : "CoraEats - Plano Mensal";
 
     // URL base do seu site (Vercel preenche isso automaticamente)
     const baseUrl = `https://${req.headers.host}`;
