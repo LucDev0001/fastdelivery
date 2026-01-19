@@ -127,7 +127,6 @@ export default async function handler(req, res) {
      * Payload Abacate Pay
      * =========================== */
     const payload = {
-      frequency: "ONE_TIME",
       frequency: plan === "anual" ? "YEARLY" : "MONTHLY",
       methods: ["PIX"],
       products: [
