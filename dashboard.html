@@ -112,6 +112,10 @@
               required
               class="p-2 border rounded"
             />
+            <div class="md:col-span-3 flex items-center gap-2 py-2">
+              <input type="checkbox" id="already-paid" class="w-4 h-4 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500">
+              <label for="already-paid" class="text-sm text-gray-700 font-medium">Cliente já pagou pelo site (Gerar apenas chave e contrato)</label>
+            </div>
             <div class="md:col-span-3 flex flex-col md:flex-row gap-4">
               <button
                 type="submit"
@@ -570,6 +574,7 @@
           e.preventDefault();
 
           const btn = e.target.querySelector("button[type=submit]");
+          const alreadyPaid = document.getElementById("already-paid").checked;
           const originalText = btn.innerText;
           btn.innerText = "Gerando Link de Pagamento...";
           btn.disabled = true;
@@ -595,35 +600,15 @@
             const phone = document.getElementById("client-phone").value;
             const planType = document.getElementById("plan-type").value;
 
-            // 3. Chama a API para gerar o Link de Pagamento
-            const checkoutResponse = await fetch("/api/checkout", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                name: companyName || storeName,
-                email: email,
-                cpf: cnpj,
-                plan: planType,
-                phone: phone,
-                key: key, // Envia a chave para vincular ao redirecionamento
-              }),
-            });
+            Le:cpkey, // Envia a chave para vincular ao redireciona 
 
-            if (!checkoutResponse.ok) {
-              const errorText = await checkoutResponse.text(); // Lê o corpo como texto primeiro
-              let errorMsg = "Erro ao gerar pagamento";
-              
-              try {
-                const errorData = JSON.parse(errorText); // Tenta converter para JSON
-                errorMsg = errorData.error || errorMsg;
-              } catch (e) {
-                // Se falhar, é HTML ou texto puro (erro crítico do Vercel/Node)
-                console.error("Erro Crítico do Servidor:", errorText);
-                errorMsg = `Erro no Servidor (${checkoutResponse.status}). Verifique o console para ver o erro detalhado.`;
+                  console.error("Erro Crítico do Servidor:", errorText);
+                  errorMsg = `Erro no Servidor (${checkoutResponse.status}). Verifique o console para ver o erro detalhado.`;
+                }
+                throw new Error(errorMsg);
               }
-              throw new Error(errorMsg);
+              paymentData = await checkoutResponse.json();
             }
-            const paymentData = await checkoutResponse.json();
 
             // 4. Salva no Firestore (Inativa / Aguardando Pagamento)
             const licenseData = {
@@ -642,25 +627,23 @@
               paymentId: paymentData.id, // ID do Abacate Pay para vincular
               paymentLink: paymentData.url,
               active: false, // Começa inativa
-              status: "aguardando_pagamento",
+              status: alreadyPaid ? "paid" : "aguardando_pagamento",
             };
 
             await addDoc(collection(db, "licenses"), licenseData);
-
-            const keyContainer = document.getElementById("generated-key");
-            keyContainer.innerHTML = `
-            <div class="flex flex-col gap-4 text-left">
+   nst keyContainer = document.getElementById("generated-key");
+            k
                 <div class="bg-yellow-50 p-3 rounded border border-yellow-200">
-                    <p class="font-bold text-yellow-800"><i class="fas fa-exclamation-triangle"></i> Licença criada (Inativa)</p>
-                    <p class="text-sm text-yellow-700">Envie o link abaixo para o cliente pagar e ativar a chave.</p>
+                    <p class="font-bold text-yellow-800"><i class="fas fa-exclamation-triangle"></i> Licença criada (${alreadyPaid ? 'Paga / Aguardando Contrato' : 'Aguardando Pagamento'})</p>
+                    <p class="text-sm text-yellow-700">Envie o ${alreadyPaid ? 'link do contrato' : 'link de pagamento'} para o cliente ativar a chave.</p>
                 </div>
-                <div>
+                ${!alreadyPaid ? `<div>
                     <span class="text-sm font-bold text-gray-600">Link de Pagamento:</span>
                     <div class="flex gap-2 mt-1">
                         <input type="text" value="${paymentData.url}" class="flex-1 p-2 border rounded text-sm bg-gray-50" readonly>
                         <button onclick="window.copiarChave('${paymentData.url}')" class="bg-blue-600 text-white px-3 rounded hover:bg-blue-700">Copiar</button>
                     </div>
-                </div>
+                </div>` : ''}
                 <div>
                     <span class="text-sm font-bold text-gray-600">Chave da Licença:</span>
                     <div class="flex gap-2 mt-1">
@@ -669,7 +652,6 @@
                     </div>
                 </div>
             </div>
-          `;
             keyContainer.classList.remove("hidden");
 
             e.target.reset();
@@ -678,19 +660,15 @@
             console.error(error);
             let msg = error.message;
             if (msg === "Failed to fetch") {
-                msg = "Não foi possível conectar ao servidor. Verifique se o backend (Vercel) está rodando (use 'vercel dev').";
-            }
-            alert("Erro ao gerar licença: " + msg);
+                msg = "Não foi possível conectar ao servidor. Verifique se o backend (Vercel) está rodando (use 'verc
           } finally {
-            btn.innerText = originalText;
-            btn.disabled = false;
+            btn.inisabled = false;
           }
         });
 
       // Listener de Busca
       document
-        .getElementById("search-license")
-        .addEventListener("input", (e) => {
+entB        .addEventListener("input", (e) => {
           const term = e.target.value.toLowerCase();
           const filtered = allLicensesData.filter(
             (l) =>
