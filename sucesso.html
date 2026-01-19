@@ -50,7 +50,7 @@
       class="w-full py-6 px-8 flex justify-center border-b border-gray-800 bg-[#0B1421]"
     >
       <img
-        src="images/logocora.jpeg"
+        src="images/logocora.png"
         alt="CoraEats"
         class="h-12 rounded-lg shadow-lg"
       />
@@ -243,8 +243,10 @@
       const email = urlParams.get("email");
 
       // URL inicial (pode ser sem chave)
-      window.currentStatusUrl = `${baseUrl}/status.html` + (key ? `?key=${key}` : "");
-      document.getElementById("status-url-display").value = window.currentStatusUrl;
+      window.currentStatusUrl =
+        `${baseUrl}/status.html` + (key ? `?key=${key}` : "");
+      document.getElementById("status-url-display").value =
+        window.currentStatusUrl;
 
       // Se não tiver chave mas tiver email, busca no Firestore (polling)
       async function findLicenseKey(attempts = 0) {
@@ -253,17 +255,24 @@
         if (attempts > 10) return; // Para após ~20s
 
         try {
-          const q = query(collection(db, "licenses"), where("clientContact", "==", email));
+          const q = query(
+            collection(db, "licenses"),
+            where("clientContact", "==", email),
+          );
           const snapshot = await getDocs(q);
-          
+
           if (!snapshot.empty) {
             // Pega a mais recente
-            const licenses = snapshot.docs.map(d => d.data());
-            licenses.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-            
+            const licenses = snapshot.docs.map((d) => d.data());
+            licenses.sort(
+              (a, b) =>
+                (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0),
+            );
+
             key = licenses[0].key;
             window.currentStatusUrl = `${baseUrl}/status.html?key=${key}`;
-            document.getElementById("status-url-display").value = window.currentStatusUrl;
+            document.getElementById("status-url-display").value =
+              window.currentStatusUrl;
           } else {
             setTimeout(() => findLicenseKey(attempts + 1), 2000);
           }
@@ -277,7 +286,7 @@
       }
 
       // Funções Globais
-      window.copiarLink = function() {
+      window.copiarLink = function () {
         const copyText = document.getElementById("status-url-display");
         copyText.select();
         copyText.setSelectionRange(0, 99999);
@@ -289,7 +298,7 @@
         setTimeout(() => (btn.innerText = originalText), 2000);
       };
 
-      window.contatarWhatsApp = function() {
+      window.contatarWhatsApp = function () {
         const email = urlParams.get("email") || "";
         const numero = "5521983856779";
 
