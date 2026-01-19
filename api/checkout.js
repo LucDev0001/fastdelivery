@@ -84,7 +84,6 @@ export default async function handler(req, res) {
     const response = await axios.post(
       "https://api.abacatepay.com/v1/billing/create",
       {
-        frequency: "ONE_TIME", // Alterado para ONE_TIME para corrigir erro de validação (o controle de tempo é feito pela licença)
         methods: ["PIX"], // Métodos aceitos (CREDIT_CARD removido para corrigir erro de validação da API)
         products: [
           {
