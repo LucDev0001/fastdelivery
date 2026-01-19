@@ -124,9 +124,19 @@ export default async function handler(req, res) {
       },
     );
 
-    return res
-      .status(200)
-      .json({ url: response.data.url, id: response.data.id });
+    // Log para debug da resposta do Abacate Pay
+    console.log("Resposta Abacate Pay:", JSON.stringify(response.data));
+
+    // A API do Abacate Pay retorna os dados dentro de uma propriedade 'data'
+    const responseData = response.data.data || response.data;
+
+    if (!responseData || !responseData.url) {
+      throw new Error(
+        "URL de pagamento não encontrada na resposta do gateway.",
+      );
+    }
+
+    return res.status(200).json({ url: responseData.url, id: responseData.id });
   } catch (error) {
     // Log detalhado para facilitar debug no painel da Vercel
     console.error("Erro API Checkout:", error.response?.data || error.message);
