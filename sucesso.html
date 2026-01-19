@@ -218,7 +218,14 @@
     <script>
       // Define a URL base para a página de status
       const baseUrl = window.location.origin;
-      const statusUrl = `${baseUrl}/status.html`;
+      const urlParams = new URLSearchParams(window.location.search);
+      const key = urlParams.get("key");
+
+      let statusUrl = `${baseUrl}/status.html`;
+      if (key) {
+        statusUrl += `?key=${key}`;
+      }
+
       document.getElementById("status-url-display").value = statusUrl;
 
       function copiarLink() {
@@ -234,7 +241,6 @@
       }
 
       function contatarWhatsApp() {
-        const urlParams = new URLSearchParams(window.location.search);
         const email = urlParams.get("email") || "";
         const numero = "5521983856779";
 

@@ -120,7 +120,7 @@ export default async function handler(req, res) {
     )}`;
 
     if (key) {
-      returnUrl = `${baseUrl}/contrato.html?key=${key}`;
+      returnUrl += `&key=${key}`;
     }
 
     /* ===========================
