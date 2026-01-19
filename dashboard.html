@@ -326,6 +326,19 @@
             />
           </div>
           <div>
+            <label class="block text-sm font-medium text-gray-700">Status do Pagamento</label>
+            <select id="edit-payment-status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
+              <option value="aguardando_pagamento">Aguardando Pagamento</option>
+              <option value="paid">Pago (Liberar Contrato)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Status da Instalação</label>
+            <select id="edit-setup-status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+            />
+          </div>
+          <div>
             <label class="block text-sm font-medium text-gray-700">Status da Instalação</label>
             <select id="edit-setup-status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
               <option value="pending">Aguardando Início</option>
@@ -1105,6 +1118,7 @@
         document.getElementById("edit-client-contact").value =
           license.clientContact;
         document.getElementById("edit-address").value = license.address || "";
+        document.getElementById("edit-payment-status").value = license.status || "aguardando_pagamento";
         document.getElementById("edit-setup-status").value = license.setupStatus || "pending";
         document.getElementById("edit-internal-notes").value = license.internalNotes || "";
         // Formata data para input date (YYYY-MM-DD)
@@ -1133,6 +1147,7 @@
             storeUrl: document.getElementById("edit-store-url").value,
             clientContact: document.getElementById("edit-client-contact").value,
             address: document.getElementById("edit-address").value,
+            status: document.getElementById("edit-payment-status").value,
             setupStatus: document.getElementById("edit-setup-status").value,
             internalNotes: document.getElementById("edit-internal-notes").value,
             expiresAt: new Date(

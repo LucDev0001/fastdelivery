@@ -71,6 +71,27 @@ export default async function handler(req, res) {
     const baseUrl = `https://${req.headers.host}`;
 
     /* =====================================================
+     * ATUALIZAÇÃO NO FIRESTORE (PRIORIDADE MÁXIMA)
+     * ===================================================== */
+    const licensesRef = db.collection("licenses");
+    const snapshot = await licensesRef
+      .where("paymentId", "==", paymentId)
+      .get();
+
+    if (!snapshot.empty) {
+      const batch = db.batch();
+      snapshot.forEach((doc) => {
+        batch.update(doc.ref, {
+          status: "paid",
+          active: false,
+          paidAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+      });
+      await batch.commit();
+      console.log("Licença atualizada para PAID no Firestore.");
+    }
+
+    /* =====================================================
      * ENVIO DE EMAIL PARA ADMIN
      * ===================================================== */
     // Debug SMTP: Verifique nos logs da Vercel se as variáveis estão presentes
@@ -134,14 +155,8 @@ export default async function handler(req, res) {
     }
 
     /* =====================================================
-     * ATUALIZAÇÃO / CRIAÇÃO NO FIRESTORE
+     * NOTIFICAÇÃO SE NÃO HOUVER LICENÇA
      * ===================================================== */
-    const licensesRef = db.collection("licenses");
-
-    const snapshot = await licensesRef
-      .where("paymentId", "==", paymentId)
-      .get();
-
     if (snapshot.empty) {
       // Nenhuma licença encontrada → notificação
       await db.collection("notifications").add({
@@ -161,23 +176,6 @@ export default async function handler(req, res) {
         status: "notification_created",
       });
     }
-
-    /**
-     * Atualiza licenças encontradas
-     */
-    const batch = db.batch();
-
-    snapshot.forEach((doc) => {
-      batch.update(doc.ref, {
-        status: "paid",
-        active: false, // ativa somente após contrato
-        paidAt: admin.firestore.FieldValue.serverTimestamp(),
-      });
-    });
-
-    await batch.commit();
-
-    console.log("Licença(s) atualizada(s) com sucesso.");
 
     return res.status(200).json({ received: true, status: "processed" });
   } catch (error) {
