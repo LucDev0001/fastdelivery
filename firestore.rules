@@ -2,13 +2,26 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // Função para verificar se o usuário é o Admin específico
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == "DGfO0ZsoU0W7CXbDdbYPRSmweKx2";
+    }
+
     // Regras para a coleção de licenças
     match /licenses/{document=**} {
+      // Leitura pública necessária para o contrato.html validar a chave
       allow read: if true;
-      // Admin cria e deleta
-      allow create, delete: if request.auth != null;
-      // Admin edita OU Cliente assina (envia contractAccepted=true)
-      allow update: if request.auth != null || (request.resource.data.contractAccepted == true) || (resource.data.storeUrl == "" || resource.data.storeUrl == "*");
+      
+      // Apenas o Admin pode criar ou deletar
+      allow create, delete: if isAdmin();
+      
+      // Atualização: Admin OU Cliente assinando o contrato (transição estrita)
+      allow update: if isAdmin() || (
+        resource.data.status == 'paid' && 
+        resource.data.active == false &&
+        request.resource.data.contractAccepted == true &&
+        request.resource.data.active == true
+      );
     }
 
     // Regras para a coleção de tickets
@@ -19,7 +32,7 @@ service cloud.firestore {
       allow update: if true;
       
       // Apenas admin deleta
-      allow delete: if request.auth != null;
+      allow delete: if isAdmin();
     }
   }
 }

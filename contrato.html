@@ -353,7 +353,13 @@ Rio de Janeiro, {{CURRENT_DATE}}.
           // Captura de IP para auditoria
           let clientIp = "IP_NAO_DETECTADO";
           try {
-            const ipRes = await fetch("https://api.ipify.org?format=json");
+            // Adiciona timeout de 5s para evitar travamento na assinatura
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+            const ipRes = await fetch("https://api.ipify.org?format=json", {
+              signal: controller.signal,
+            });
+            clearTimeout(timeoutId);
             const ipData = await ipRes.json();
             clientIp = ipData.ip;
           } catch (err) {
