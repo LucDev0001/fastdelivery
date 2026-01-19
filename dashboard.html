@@ -49,6 +49,24 @@
           </div>
         </div>
 
+        <!-- Configuração de Preços -->
+        <div class="bg-white p-6 rounded-lg shadow mb-8">
+          <h2 class="text-lg font-semibold mb-4">Configuração de Preços</h2>
+          <form id="pricing-form" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Plano Mensal (R$)</label>
+              <input type="number" id="price-monthly" step="0.01" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" required>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Plano Anual (R$)</label>
+              <input type="number" id="price-annual" step="0.01" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" required>
+            </div>
+            <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 h-10">
+              Salvar Preços
+            </button>
+          </form>
+        </div>
+
         <!-- Gerenciamento de Licenças -->
         <div class="bg-white p-6 rounded-lg shadow mb-8">
           <h2 class="text-lg font-semibold mb-4">Adicionar Nova Licença</h2>
@@ -385,6 +403,8 @@
         updateDoc,
         arrayUnion,
         onSnapshot,
+        setDoc,
+        getDoc,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -468,6 +488,7 @@
           document.getElementById("app").classList.remove("hidden");
           loadLicenses();
           loadTickets();
+          loadPricing();
         } else {
           // Redireciona imediatamente se não for o admin
           window.location.replace("login.html");
@@ -505,6 +526,31 @@
           document.getElementById("reply-input").value = "";
           closeReplyModal();
         });
+
+      // Carregar e Salvar Preços
+      async function loadPricing() {
+        try {
+          const docSnap = await getDoc(doc(db, "config", "pricing"));
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            document.getElementById("price-monthly").value = data.monthly;
+            document.getElementById("price-annual").value = data.annual;
+          }
+        } catch (e) {
+          console.error("Erro ao carregar preços", e);
+        }
+      }
+
+      document.getElementById("pricing-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const monthly = parseFloat(document.getElementById("price-monthly").value);
+        const annual = parseFloat(document.getElementById("price-annual").value);
+        
+        await setDoc(doc(db, "config", "pricing"), {
+          monthly, annual
+        });
+        alert("Preços atualizados com sucesso!");
+      });
 
       // Gerar Licença de Teste
       document.getElementById("btn-generate-test").addEventListener("click", async (e) => {
@@ -600,8 +646,32 @@
             const phone = document.getElementById("client-phone").value;
             const planType = document.getElementById("plan-type").value;
 
-            Le:cpkey, // Envia a chave para vincular ao redireciona 
+            let paymentData = { id: "MANUAL_SITE_" + Date.now(), url: "#" };
 
+            if (!alreadyPaid) {
+              // 3. Chama a API para gerar o Link de Pagamento (apenas se não pagou)
+              const checkoutResponse = await fetch("/api/checkout", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  name: companyName || storeName,
+                  email: email,
+                  cpf: cnpj,
+                  plan: planType,
+                  phone: phone,
+                  key: key, // Envia a chave para vincular ao redirecionamento
+                }),
+              });
+
+              if (!checkoutResponse.ok) {
+                const errorText = await checkoutResponse.text(); // Lê o corpo como texto primeiro
+                let errorMsg = "Erro ao gerar pagamento";
+                
+                try {
+                  const errorData = JSON.parse(errorText); // Tenta converter para JSON
+                  errorMsg = errorData.error || errorMsg;
+                } catch (e) {
+                  // Se falhar, é HTML ou texto puro (erro crítico do Vercel/Node)
                   console.error("Erro Crítico do Servidor:", errorText);
                   errorMsg = `Erro no Servidor (${checkoutResponse.status}). Verifique o console para ver o erro detalhado.`;
                 }
@@ -618,6 +688,7 @@
               address: document.getElementById("address").value,
               storeUrl: document.getElementById("store-url").value,
               clientContact: email,
+              clientPhone: phone, // Salva o telefone
               planType: planType,
               expiresAt: new Date(
                 document.getElementById("expires-at").value + "T23:59:59"
@@ -631,8 +702,10 @@
             };
 
             await addDoc(collection(db, "licenses"), licenseData);
-   nst keyContainer = document.getElementById("generated-key");
-            k
+
+            const keyContainer = document.getElementById("generated-key");
+            keyContainer.innerHTML = `
+            <div class="flex flex-col gap-4 text-left">
                 <div class="bg-yellow-50 p-3 rounded border border-yellow-200">
                     <p class="font-bold text-yellow-800"><i class="fas fa-exclamation-triangle"></i> Licença criada (${alreadyPaid ? 'Paga / Aguardando Contrato' : 'Aguardando Pagamento'})</p>
                     <p class="text-sm text-yellow-700">Envie o ${alreadyPaid ? 'link do contrato' : 'link de pagamento'} para o cliente ativar a chave.</p>
@@ -651,7 +724,7 @@
                         <button onclick="window.copiarChave('${key}')" class="bg-gray-600 text-white px-3 rounded hover:bg-gray-700">Copiar</button>
                     </div>
                 </div>
-            </div>
+            </div>`;
             keyContainer.classList.remove("hidden");
 
             e.target.reset();
@@ -660,9 +733,12 @@
             console.error(error);
             let msg = error.message;
             if (msg === "Failed to fetch") {
-                msg = "Não foi possível conectar ao servidor. Verifique se o backend (Vercel) está rodando (use 'verc
+                msg = "Não foi possível conectar ao servidor. Verifique se o backend (Vercel) está rodando.";
+            }
+            alert(msg);
           } finally {
-            btn.inisabled = false;
+            btn.innerText = originalText;
+            btn.disabled = false;
           }
         });
 
@@ -735,6 +811,10 @@ entB        .addEventListener("input", (e) => {
             ? '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Ativa</span>'
             : '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
 
+          const whatsappLink = data.clientPhone 
+            ? `https://wa.me/${data.clientPhone.replace(/\D/g, '')}?text=${encodeURIComponent("Olá! Segue o link do seu contrato para ativação do sistema: " + contractUrl)}`
+            : '#';
+
           const row = `
                     <tr class="${isExpired ? "bg-red-50" : ""}">
                         <td class="px-6 py-4 whitespace-nowrap">
@@ -760,6 +840,7 @@ entB        .addEventListener("input", (e) => {
                         <td class="px-6 py-4 whitespace-nowrap">${contractStatus}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <button onclick="window.copiarChave('${contractUrl}')" class="text-purple-600 hover:text-purple-900 mr-3" title="Copiar Link Contrato"><i class="fas fa-file-contract"></i> Link</button>
+                            ${data.clientPhone ? `<a href="${whatsappLink}" target="_blank" class="text-green-600 hover:text-green-900 mr-3" title="Enviar no WhatsApp"><i class="fab fa-whatsapp"></i> Enviar</a>` : ''}
                             <button onclick="window.editLicense('${
                               data.id
                             }')" class="text-blue-600 hover:text-blue-900 mr-3" title="Editar"><i class="fas fa-edit"></i></button>

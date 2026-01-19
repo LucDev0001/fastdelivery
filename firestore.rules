@@ -34,5 +34,11 @@ service cloud.firestore {
       // Apenas admin deleta
       allow delete: if isAdmin();
     }
+
+    // Regras para configuração (Preços)
+    match /config/{document} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
   }
 }

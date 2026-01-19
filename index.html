@@ -592,7 +592,7 @@
           >
             <h3 class="text-2xl font-bold text-white">Plano Mensal</h3>
             <div class="my-6">
-              <span class="text-5xl font-extrabold text-[#F47C2C]">R$ 99</span>
+              <span id="display-price-monthly" class="text-5xl font-extrabold text-[#F47C2C]">R$ 99</span>
               <span class="text-gray-400 font-medium">/mês</span>
             </div>
             <ul class="space-y-3 text-gray-300 text-left mb-8">
@@ -633,7 +633,7 @@
             <h3 class="text-2xl font-bold">Plano Anual</h3>
             <p class="text-gray-400 mt-1">Economize 2 meses!</p>
             <div class="my-6">
-              <span class="text-5xl font-extrabold text-[#F47C2C]">R$ 990</span>
+              <span id="display-price-annual" class="text-5xl font-extrabold text-[#F47C2C]">R$ 990</span>
               <span class="text-gray-400 font-medium">/ano</span>
             </div>
             <ul class="space-y-3 text-gray-300 text-left mb-8">
@@ -1116,8 +1116,10 @@
         });
       }
 
+      let currentPrices = { monthly: 99, annual: 990 };
+
       async function iniciarCheckout(plano) {
-        const valor = plano === "anual" ? "R$ 990,00" : "R$ 99,00";
+        const valor = plano === "anual" ? `R$ ${currentPrices.annual.toFixed(2).replace('.', ',')}` : `R$ ${currentPrices.monthly.toFixed(2).replace('.', ',')}`;
 
         const { value: formValues } = await Swal.fire({
           title: `Assinar Plano ${
@@ -1192,6 +1194,7 @@
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
+      import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyBJspCFmB7IQQdLdxLYQrZZ-TFAiDPXrXk",
@@ -1205,6 +1208,20 @@
 
       const app = initializeApp(firebaseConfig);
       const analytics = getAnalytics(app);
+      const db = getFirestore(app);
+
+      // Carregar Preços Dinâmicos
+      async function loadPrices() {
+        try {
+          const docSnap = await getDoc(doc(db, "config", "pricing"));
+          if (docSnap.exists()) {
+            currentPrices = docSnap.data();
+            document.getElementById("display-price-monthly").innerText = `R$ ${currentPrices.monthly.toFixed(0)}`;
+            document.getElementById("display-price-annual").innerText = `R$ ${currentPrices.annual.toFixed(0)}`;
+          }
+        } catch (e) { console.error("Erro ao carregar preços", e); }
+      }
+      loadPrices();
     </script>
   </body>
 </html>

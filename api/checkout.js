@@ -1,4 +1,15 @@
 import axios from "axios";
+import admin from "firebase-admin";
+
+// Inicializa o Firebase Admin se necessário
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(
+      JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT),
+    ),
+  });
+}
+const db = admin.firestore();
 
 export default async function handler(req, res) {
   // Configuração de CORS (Permite acesso de qualquer origem para testes)
@@ -36,8 +47,21 @@ export default async function handler(req, res) {
     const cleanCpf = cpf ? cpf.replace(/\D/g, "") : "";
     const cleanPhone = phone ? phone.replace(/\D/g, "") : "";
 
-    // Defina os valores em centavos (R$ 99,00 = 9900)
-    const amount = plan === "anual" ? 99000 : 9900;
+    // Busca preços do Firestore
+    let monthlyPrice = 9900;
+    let annualPrice = 99000;
+    try {
+      const priceDoc = await db.collection("config").doc("pricing").get();
+      if (priceDoc.exists) {
+        const data = priceDoc.data();
+        monthlyPrice = Math.round(data.monthly * 100);
+        annualPrice = Math.round(data.annual * 100);
+      }
+    } catch (e) {
+      console.error("Erro ao buscar preços, usando padrão", e);
+    }
+
+    const amount = plan === "anual" ? annualPrice : monthlyPrice;
     const title =
       plan === "anual" ? "VouFood - Plano Anual" : "VouFood - Plano Mensal";
 
