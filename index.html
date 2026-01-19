@@ -1260,7 +1260,27 @@
             }
           } catch (error) {
             console.error(error);
-            Swal.fire("Erro", error.message, "error");
+            Swal.fire({
+              icon: "error",
+              title: "Ops! Algo deu errado",
+              text: "Não foi possível gerar o pagamento automaticamente. Mas não se preocupe, nossa equipe pode gerar para você agora mesmo!",
+              showCancelButton: true,
+              confirmButtonText: '<i class="fab fa-whatsapp"></i> Falar no WhatsApp',
+              cancelButtonText: "Fechar",
+              confirmButtonColor: "#25D366",
+              cancelButtonColor: "#6b7280",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                const numeroWhatsApp = "5521983856779";
+                const mensagem = `Olá! Tentei assinar o plano ${plano} pelo site mas deu erro. Poderia gerar o link para mim?`;
+                window.open(
+                  `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(
+                    mensagem,
+                  )}`,
+                  "_blank",
+                );
+              }
+            });
           }
         }
       }
