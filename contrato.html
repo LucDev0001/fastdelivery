@@ -350,6 +350,16 @@ Rio de Janeiro, {{CURRENT_DATE}}.
             '<i class="fas fa-circle-notch fa-spin"></i> Processando...';
           btn.disabled = true;
 
+          // Captura de IP para auditoria
+          let clientIp = "IP_NAO_DETECTADO";
+          try {
+            const ipRes = await fetch("https://api.ipify.org?format=json");
+            const ipData = await ipRes.json();
+            clientIp = ipData.ip;
+          } catch (err) {
+            console.warn("Não foi possível capturar o IP", err);
+          }
+
           const signerName = document.getElementById("signer-name").value;
           const signerCpf = document.getElementById("signer-cpf").value;
 
@@ -362,7 +372,9 @@ Rio de Janeiro, {{CURRENT_DATE}}.
               signedBy: {
                 name: signerName,
                 cpf: signerCpf,
-                ip: "IP_CLIENTE", // Em produção idealmente pega via Cloud Function
+                ip: clientIp,
+                userAgent: navigator.userAgent,
+                timestamp: new Date().toISOString(),
               },
             });
 
