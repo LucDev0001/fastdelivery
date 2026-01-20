@@ -1468,7 +1468,15 @@
               body: JSON.stringify(formValues),
             });
 
-            const data = await response.json();
+            const responseText = await response.text();
+            let data;
+            try {
+              data = JSON.parse(responseText);
+            } catch (e) {
+              throw new Error(
+                `Erro do servidor (${response.status}): ${responseText}`,
+              );
+            }
 
             if (response.ok && data.url) {
               window.location.href = data.url;
