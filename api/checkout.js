@@ -1,5 +1,5 @@
-import axios from "axios";
-import admin from "firebase-admin";
+const axios = require("axios");
+const admin = require("firebase-admin");
 
 /**
  * Inicializa Firebase Admin
@@ -18,7 +18,7 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   /* ===========================
    * CORS
    * =========================== */
@@ -225,4 +225,4 @@ export default async function handler(req, res) {
         "Erro interno no checkout.",
     });
   }
-}
+};
