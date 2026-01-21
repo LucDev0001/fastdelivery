@@ -146,6 +146,37 @@ export default async function handler(req, res) {
           html,
         });
 
+        // --- NOVO: Envio de E-mail de Boas-vindas para o Cliente ---
+        if (customer.email) {
+          console.log(`Enviando e-mail de boas-vindas para: ${customer.email}`);
+
+          const clientHtml = `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
+              <h2 style="color:#F47C2C;">Bem-vindo ao CoraEats! 🚀</h2>
+              <p>Olá, <strong>${customer.name || "Parceiro"}</strong>!</p>
+              <p>Recebemos a confirmação do seu pagamento referente ao <strong>${productName}</strong>.</p>
+              <p>Seu sistema já está sendo preparado. Para acompanhar o status da instalação ou acessar seu contrato, clique no botão abaixo:</p>
+              <br />
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${baseUrl}/status.html?email=${encodeURIComponent(customer.email)}"
+                  style="display:inline-block;padding:15px 25px;background:#10B981;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;font-size:16px;">
+                  Acompanhar Meu Pedido
+                </a>
+              </div>
+              <p>Se tiver qualquer dúvida, basta responder a este e-mail.</p>
+              <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
+              <p style="font-size: 12px; color: #999;">Atenciosamente,<br/>Equipe CoraEats</p>
+            </div>
+          `;
+
+          await transporter.sendMail({
+            from: `"Equipe CoraEats" <${process.env.SMTP_USER}>`,
+            to: customer.email,
+            subject: `🎉 Bem-vindo ao CoraEats! Tudo pronto para começar.`,
+            html: clientHtml,
+          });
+        }
+
         console.log("E-mail enviado com sucesso.");
       } catch (emailError) {
         console.error("Erro ao enviar e-mail:", emailError);
