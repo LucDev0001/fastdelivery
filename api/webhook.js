@@ -39,7 +39,7 @@ export default async function handler(req, res) {
   try {
     // DELAY DE SEGURANÇA: Aguarda 2 segundos para garantir que o Firestore
     // já indexou a licença criada pelo checkout (evita Race Condition)
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 4000));
 
     /**
      * Normalização do evento Abacate Pay
@@ -105,7 +105,8 @@ export default async function handler(req, res) {
     if (!snapshot.empty) {
       const batch = db.batch();
       snapshot.forEach((doc) => {
-        licenseKeyForEmail = doc.data().key; // Captura a chave existente
+        licenseKeyForEmail =
+          doc.data().key || (data.metadata && data.metadata.licenseKey); // Garante a chave mesmo se o campo estiver vazio
         batch.update(doc.ref, {
           status: "paid",
           active: false,
@@ -220,7 +221,7 @@ export default async function handler(req, res) {
 
         await transporter.sendMail({
           from: `"CoraEats Bot" <${process.env.SMTP_USER}>`,
-          to: "coraeatssetup@gmail.com", // E-mail do Admin Atualizado
+          to: "lucianosantosseverino@gmail.com", // E-mail do Admin Atualizado
           subject: `💰 Nova Venda Confirmada`,
           html,
         });
