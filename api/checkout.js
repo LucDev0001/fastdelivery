@@ -128,7 +128,7 @@ module.exports = async function handler(req, res) {
     // 1. Gera a chave AGORA (se não vier do dashboard)
     const licenseKey =
       key ||
-      `VOU-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
+      `CORA-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
 
     // 2. Passa a chave na URL de retorno para a página de sucesso pegar
     const completionUrl = `${baseUrl}/sucesso.html?email=${encodeURIComponent(email)}&key=${licenseKey}`;

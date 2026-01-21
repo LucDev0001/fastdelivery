@@ -65,12 +65,12 @@ export default async function handler(req, res) {
     const html = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 8px; background-color: #f9fafb;">
         <div style="text-align: center; margin-bottom: 24px;">
-          <h1 style="color: #10b981; margin: 0; font-size: 24px;">Bem-vindo ao CoraEats! 🚀</h1>
+          <h1 style="color: #2563eb; margin: 0; font-size: 24px;">Seus Links de Acesso 🔑</h1>
         </div>
         
         <div style="background-color: #ffffff; padding: 24px; border-radius: 8px; border: 1px solid #e5e7eb;">
           <p style="color: #374151; font-size: 16px;">Olá, <strong>${storeName}</strong>!</p>
-          <p style="color: #374151; font-size: 16px;">Sua licença foi gerada com sucesso. Abaixo estão os links para ativar e acompanhar sua loja:</p>
+          <p style="color: #374151; font-size: 16px;">Conforme solicitado, aqui estão os links para gerenciar sua licença e acompanhar o status:</p>
           
           <div style="margin-top: 24px;">
             <p style="margin-bottom: 8px; font-weight: bold;">1. Assinar Contrato e Ativar:</p>
@@ -92,7 +92,7 @@ export default async function handler(req, res) {
     await transporter.sendMail({
       from: `"CoraEats Suporte" <${process.env.SMTP_USER}>`,
       to: clientContact,
-      subject: "Bem-vindo ao CoraEats - Seus Links de Acesso",
+      subject: "Acesso ao Painel - CoraEats",
       html,
     });
 
