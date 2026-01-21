@@ -46,7 +46,8 @@ export default async function handler(req, res) {
      */
     const eventType = event.event || event.type || null;
     const data = event.data || {};
-    const status = data.status || event.status || null;
+    // Força maiúsculo para evitar erros de case (ex: "paid" vs "PAID")
+    const status = (data.status || event.status || "").toUpperCase();
 
     const isPaid =
       status === "PAID" ||
@@ -54,7 +55,7 @@ export default async function handler(req, res) {
       eventType === "billing.paid";
 
     if (!isPaid) {
-      console.log("Evento ignorado:", eventType || status);
+      console.log(`Evento ignorado. Status: ${status}, Tipo: ${eventType}`);
       return res.status(200).json({ received: true, ignored: true });
     }
 
@@ -78,6 +79,8 @@ export default async function handler(req, res) {
      * ATUALIZAÇÃO NO FIRESTORE (PRIORIDADE MÁXIMA)
      * ===================================================== */
     const licensesRef = db.collection("licenses");
+
+    console.log(`Buscando licença com paymentId: ${paymentId}`);
     const snapshot = await licensesRef
       .where("paymentId", "==", paymentId)
       .get();
@@ -92,7 +95,9 @@ export default async function handler(req, res) {
         });
       });
       await batch.commit();
-      console.log("Licença atualizada para PAID no Firestore.");
+      console.log(
+        `Licença(s) atualizada(s) para PAID. Total: ${snapshot.size}`,
+      );
     }
 
     /* =====================================================
