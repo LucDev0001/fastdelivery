@@ -233,9 +233,7 @@ export default async function handler(req, res) {
           // Usa a chave capturada ou tenta usar a do metadata se a variável estiver vazia
           const finalKey =
             licenseKeyForEmail || (data.metadata && data.metadata.licenseKey);
-          const linkParams = finalKey
-            ? `key=${finalKey}`
-            : `email=${encodeURIComponent(customer.email)}`;
+          const linkParams = `key=${finalKey}`;
 
           const clientHtml = `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">

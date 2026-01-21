@@ -60,7 +60,7 @@ export default async function handler(req, res) {
       });
 
       const baseUrl = `https://${req.headers.host}`;
-      const statusUrl = `${baseUrl}/status.html?email=${encodeURIComponent(data.clientContact)}`;
+      const statusUrl = `${baseUrl}/status.html?key=${data.key}`;
 
       const clientHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
