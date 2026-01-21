@@ -429,14 +429,11 @@
     </div>
 
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
       import {
-        getAuth,
         onAuthStateChanged,
         signOut,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
       import {
-        getFirestore,
         collection,
         addDoc,
         getDocs,
@@ -452,21 +449,11 @@
         getDoc,
         writeBatch,
         where,
+        limit
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+      
+      import { db, auth, adminUID } from "./js/firebase-config.js";
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyBJspCFmB7IQQdLdxLYQrZZ-TFAiDPXrXk",
-        authDomain: "fastdelivery-46457.firebaseapp.com",
-        projectId: "fastdelivery-46457",
-        storageBucket: "fastdelivery-46457.appspot.com",
-        messagingSenderId: "889884008498",
-        appId: "1:889884008498:web:418e00c16326df6d4e1c2b",
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const db = getFirestore(app);
-      const adminUID = "DGfO0ZsoU0W7CXbDdbYPRSmweKx2";
 
       // Variáveis globais para gráficos
       let chartClientesInstance = null;
@@ -753,8 +740,10 @@
 
       // Carregar Licenças
       function loadLicenses() {
-        // Listener em tempo real para a coleção de licenças
-        onSnapshot(collection(db, "licenses"), (querySnapshot) => {
+        // Listener em tempo real para a coleção de licenças (Limitado às últimas 100 para performance)
+        // Idealmente, usar paginação real no futuro.
+        const q = query(collection(db, "licenses"), orderBy("createdAt", "desc"), limit(100));
+        onSnapshot(q, (querySnapshot) => {
             allLicensesData = [];
             const stats = {}; 
 
@@ -777,12 +766,6 @@
               }
             });
             
-            // Ordenar por data de criação (mais recente primeiro)
-            allLicensesData.sort((a, b) => {
-                const tA = a.createdAt ? a.createdAt.seconds : 0;
-                const tB = b.createdAt ? b.createdAt.seconds : 0;
-                return tB - tA;
-            });
 
             renderLicensesTable(allLicensesData);
             renderCharts(stats);

@@ -110,23 +110,8 @@
 
     <!-- Firebase SDKs -->
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-      import {
-        getAuth,
-        signInWithEmailAndPassword,
-      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyBJspCFmB7IQQdLdxLYQrZZ-TFAiDPXrXk",
-        authDomain: "fastdelivery-46457.firebaseapp.com",
-        projectId: "fastdelivery-46457",
-        storageBucket: "fastdelivery-46457.appspot.com",
-        messagingSenderId: "889884008498",
-        appId: "1:889884008498:web:418e00c16326df6d4e1c2b",
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
+      import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+      import { auth } from "./js/firebase-config.js";
 
       document.getElementById("login-form").addEventListener("submit", (e) => {
         e.preventDefault();

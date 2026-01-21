@@ -10,6 +10,8 @@
       rel="stylesheet"
     />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Courier+Prime&display=swap");
       body {
@@ -17,6 +19,10 @@
       }
       .contract-text {
         font-family: "Courier Prime", monospace;
+      }
+      .signature-pad-wrapper {
+        border: 2px dashed #cbd5e1;
+        background-color: #f8fafc;
       }
       @media print {
         .no-print,
@@ -146,6 +152,33 @@
               </div>
             </div>
 
+            <!-- Campo de Assinatura (Canvas) -->
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2"
+                >Assinatura Digital</label
+              >
+              <div
+                class="signature-pad-wrapper rounded-lg overflow-hidden relative h-48"
+              >
+                <canvas
+                  id="signature-canvas"
+                  class="w-full h-full cursor-crosshair"
+                ></canvas>
+                <div class="absolute bottom-2 right-2">
+                  <button
+                    type="button"
+                    id="clear-signature"
+                    class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 px-2 py-1 rounded"
+                  >
+                    Limpar
+                  </button>
+                </div>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">
+                Desenhe sua assinatura no quadro acima.
+              </p>
+            </div>
+
             <div class="flex items-center gap-3">
               <input
                 type="checkbox"
@@ -188,6 +221,13 @@
           <i class="fas fa-tasks mr-2"></i> Acompanhar Instalação
         </a>
 
+        <button
+          onclick="window.downloadPDF()"
+          class="inline-block bg-gray-800 text-white font-bold py-3 px-6 rounded-lg hover:bg-gray-900 transition mb-8 shadow-lg ml-4"
+        >
+          <i class="fas fa-file-pdf mr-2"></i> Baixar PDF
+        </button>
+
         <div class="bg-gray-100 p-4 rounded-lg mb-8 max-w-md mx-auto">
           <p class="text-xs text-gray-500 uppercase font-bold mb-1">
             Sua Chave de Acesso
@@ -205,9 +245,7 @@
     </div>
 
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
       import {
-        getFirestore,
         collection,
         query,
         where,
@@ -215,24 +253,17 @@
         updateDoc,
         serverTimestamp,
         onSnapshot,
+        doc,
+        getDoc,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyBJspCFmB7IQQdLdxLYQrZZ-TFAiDPXrXk",
-        authDomain: "fastdelivery-46457.firebaseapp.com",
-        projectId: "fastdelivery-46457",
-        storageBucket: "fastdelivery-46457.appspot.com",
-        messagingSenderId: "889884008498",
-        appId: "1:889884008498:web:418e00c16326df6d4e1c2b",
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
+      import { db } from "./js/firebase-config.js";
 
       const urlParams = new URLSearchParams(window.location.search);
       const key = urlParams.get("key");
       let licenseDoc = null;
       let licenseData = null;
+      let pricingConfig = { monthly: 99, annual: 990 }; // Valores padrão (fallback)
+      let signaturePad = null;
 
       // Template do Contrato (Texto Puro)
       const contractTemplate = `CONTRATO DE LICENCIAMENTO DE USO DE SOFTWARE WEB (SAAS) E PRESTAÇÃO DE SERVIÇOS
@@ -269,13 +300,23 @@ CLÁUSULA 5ª - DO PREÇO E VIGÊNCIA
 Rio de Janeiro, {{CURRENT_DATE}}.
 `;
 
-      function init() {
+      async function init() {
         if (!key) {
           showError(
             "Chave Inválida",
             "Nenhuma chave de licença foi fornecida.",
           );
           return;
+        }
+
+        // Carregar preços atualizados do Firestore
+        try {
+          const priceSnap = await getDoc(doc(db, "config", "pricing"));
+          if (priceSnap.exists()) {
+            pricingConfig = priceSnap.data();
+          }
+        } catch (e) {
+          console.error("Erro ao carregar preços:", e);
         }
 
         const q = query(collection(db, "licenses"), where("key", "==", key));
@@ -348,15 +389,43 @@ Rio de Janeiro, {{CURRENT_DATE}}.
         );
       }
 
+      function initSignaturePad() {
+        const canvas = document.getElementById("signature-canvas");
+        // Ajusta o tamanho do canvas para a resolução da tela
+        function resizeCanvas() {
+          const ratio = Math.max(window.devicePixelRatio || 1, 1);
+          canvas.width = canvas.offsetWidth * ratio;
+          canvas.height = canvas.offsetHeight * ratio;
+          canvas.getContext("2d").scale(ratio, ratio);
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        signaturePad = new SignaturePad(canvas, {
+          backgroundColor: "rgba(255, 255, 255, 0)",
+        });
+
+        document
+          .getElementById("clear-signature")
+          .addEventListener("click", () => {
+            signaturePad.clear();
+          });
+      }
+
       function renderContract() {
         document.getElementById("loading").classList.add("hidden");
         document.getElementById("contract-content").classList.remove("hidden");
 
         // Formata valores
-        const price =
-          licenseData.planType === "anual"
-            ? "R$ 990,00 (Anual)"
-            : "R$ 99,00 (Mensal)";
+        const isAnual = licenseData.planType === "anual";
+        const priceVal = isAnual ? pricingConfig.annual : pricingConfig.monthly;
+        const priceFormatted = priceVal.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
+
+        const price = `${priceFormatted} (${isAnual ? "Anual" : "Mensal"})`;
+
         const expires = licenseData.expiresAt
           ? new Date(licenseData.expiresAt.toDate()).toLocaleDateString("pt-BR")
           : "N/A";
@@ -384,6 +453,9 @@ Rio de Janeiro, {{CURRENT_DATE}}.
           /\n/g,
           "<br>",
         );
+
+        // Inicializa o pad se ainda não foi
+        if (!signaturePad) setTimeout(initSignaturePad, 100);
       }
 
       function renderSignedContract() {
@@ -405,10 +477,15 @@ Rio de Janeiro, {{CURRENT_DATE}}.
           ? new Date(licenseData.signedAt.toDate()).toLocaleString()
           : "Data desconhecida";
 
+        const signatureImg = licenseData.signatureData
+          ? `<img src="${licenseData.signatureData}" style="max-height: 80px; display: block; margin-bottom: 10px;" />`
+          : "";
+
         const signatureHtml = `
           <br><br>
           <div style="border-top: 1px solid #ccc; padding-top: 20px; margin-top: 40px;">
             <p><strong>ASSINADO DIGITALMENTE</strong></p>
+            ${signatureImg}
             <p>Responsável: ${signedInfo.name} (CPF: ${signedInfo.cpf})</p>
             <p>Data/Hora: ${signDate}</p>
             <p>IP: ${signedInfo.ip} | User-Agent: ${signedInfo.userAgent}</p>
@@ -417,10 +494,46 @@ Rio de Janeiro, {{CURRENT_DATE}}.
         document.getElementById("contract-body").innerHTML += signatureHtml;
       }
 
+      window.downloadPDF = function () {
+        const element = document.getElementById("contract-body");
+        const opt = {
+          margin: 10,
+          filename: `Contrato-CoraEats-${licenseData.key}.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        };
+
+        // Temporariamente remove o scroll para capturar tudo
+        const originalHeight = element.style.height;
+        const originalOverflow = element.style.overflow;
+        element.style.height = "auto";
+        element.style.overflow = "visible";
+
+        html2pdf()
+          .set(opt)
+          .from(element)
+          .save()
+          .then(() => {
+            // Restaura estilos
+            element.style.height = originalHeight;
+            element.style.overflow = originalOverflow;
+          });
+      };
+
       document
         .getElementById("sign-form")
         .addEventListener("submit", async (e) => {
           e.preventDefault();
+
+          if (signaturePad.isEmpty()) {
+            Swal.fire(
+              "Atenção",
+              "Por favor, assine no campo indicado.",
+              "warning",
+            );
+            return;
+          }
 
           const btn = e.target.querySelector("button");
           const originalText = btn.innerHTML;
@@ -446,6 +559,7 @@ Rio de Janeiro, {{CURRENT_DATE}}.
 
           const signerName = document.getElementById("signer-name").value;
           const signerCpf = document.getElementById("signer-cpf").value;
+          const signatureData = signaturePad.toDataURL(); // Base64 da imagem
 
           try {
             // ATIVAÇÃO DA LICENÇA
@@ -454,6 +568,7 @@ Rio de Janeiro, {{CURRENT_DATE}}.
               active: true, // AQUI A CHAVE É ATIVADA
               setupStatus: "waiting_materials", // Define status inicial pós-assinatura
               signedAt: serverTimestamp(),
+              signatureData: signatureData,
               signedBy: {
                 name: signerName,
                 cpf: signerCpf,
