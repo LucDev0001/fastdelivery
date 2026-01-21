@@ -94,8 +94,18 @@ module.exports = async function handler(req, res) {
       const priceDoc = await db.collection("config").doc("pricing").get();
       if (priceDoc.exists) {
         const data = priceDoc.data();
-        monthlyPrice = Math.round(Number(data.monthly) * 100);
-        annualPrice = Math.round(Number(data.annual) * 100);
+
+        // Validação Mensal (Mínimo R$ 1,00 = 100 cents exigido pelo Abacate Pay)
+        if (data.monthly) {
+          const mVal = Math.round(Number(data.monthly) * 100);
+          if (!isNaN(mVal) && mVal >= 100) monthlyPrice = mVal;
+        }
+
+        // Validação Anual
+        if (data.annual) {
+          const aVal = Math.round(Number(data.annual) * 100);
+          if (!isNaN(aVal) && aVal >= 100) annualPrice = aVal;
+        }
       }
     } catch (err) {
       console.error("Erro ao buscar preços, usando padrão:", err);
