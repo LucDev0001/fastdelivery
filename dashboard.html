@@ -815,10 +815,20 @@
               <i class="fas fa-id-card mr-1"></i> Ver Perfil
             </button>`;
 
-          if (!data.storeUrl || data.storeUrl === "") {
+          // Se estiver aguardando pagamento, mostra botão de Aprovar
+          if (!data.active && data.status !== 'paid') {
              actionButton = `
-            <button onclick="window.editLicense('${data.id}')" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition shadow-md animate-pulse">
-              <i class="fas fa-check-circle mr-1"></i> ATIVAR
+            <button onclick="window.approvePayment('${data.id}')" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition shadow-md flex items-center gap-1" title="Confirmar Pagamento e Enviar Email">
+              <i class="fas fa-dollar-sign"></i> APROVAR
+            </button>
+            <button onclick="window.editLicense('${data.id}')" class="text-gray-400 hover:text-blue-600 ml-2">
+                <i class="fas fa-edit"></i>
+            </button>`;
+          } else if (!data.storeUrl || data.storeUrl === "") {
+             // Se já pagou mas não tem URL (Setup pendente)
+             actionButton = `
+            <button onclick="window.editLicense('${data.id}')" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition shadow-md">
+              <i class="fas fa-tools mr-1"></i> SETUP
             </button>`;
           }
 
@@ -921,6 +931,39 @@
         if (confirm("Tem certeza que deseja excluir esta licença permanentemente?")) {
           await deleteDoc(doc(db, "licenses", id));
           closeLicenseDetails();
+        }
+      };
+
+      // Aprovação Manual de Pagamento
+      window.approvePayment = async (id) => {
+        if (!confirm("Confirmar pagamento manualmente? Isso liberará o contrato e enviará o e-mail de boas-vindas.")) return;
+        
+        const btn = document.querySelector(`button[onclick="window.approvePayment('${id}')"]`);
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
+        btn.disabled = true;
+
+        try {
+            const res = await fetch("/api/approve-payment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ licenseId: id })
+            });
+            const data = await res.json();
+            
+            if (res.ok) {
+                alert("Sucesso! Status atualizado e e-mail enviado.");
+                // O listener onSnapshot vai atualizar a tabela automaticamente
+            } else {
+                alert("Erro: " + (data.error || "Falha ao aprovar"));
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Erro de conexão.");
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         }
       };
 
