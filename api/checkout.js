@@ -149,6 +149,9 @@ module.exports = async function handler(req, res) {
           price: amount,
         },
       ],
+      metadata: {
+        licenseKey: licenseKey, // SEGURANÇA: Envia a chave para recuperar no webhook
+      },
       returnUrl: returnUrl,
       completionUrl: completionUrl,
       webhookUrl: `${baseUrl}/api/webhook`,

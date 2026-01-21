@@ -87,9 +87,21 @@ export default async function handler(req, res) {
     console.log(
       `🔎 Buscando licença no Firestore com paymentId: "${paymentId}"`,
     );
-    const snapshot = await licensesRef
-      .where("paymentId", "==", paymentId)
+    lesnapshot = await licensesRef
+    weentId)
+      
       .get();
+
+    // FALLBACK DE SEGURANÇA:
+    // Se não achou pelo ID, tenta achar pela Chave da Licença (metadata)
+    if (snapshot.empty && data.metadata && data.metadata.licenseKey) {
+      console.log(
+        `⚠️ ID não encontrado. Tentando buscar por licenseKey (Metadata): "${data.metadata.licenseKey}"`
+      );
+      snapshot = await licensesRef
+        .where("key", "==", data.metadata.licenseKey)
+        .get();
+    }
 
     if (!snapshot.empty) {
       const batch = db.batch();
