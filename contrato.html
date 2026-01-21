@@ -259,7 +259,7 @@
       import { db } from "./js/firebase-config.js";
 
       const urlParams = new URLSearchParams(window.location.search);
-      const key = urlParams.get("key");
+      const key = urlParams.get("key") ? urlParams.get("key").trim() : null;
       let licenseDoc = null;
       let licenseData = null;
       let pricingConfig = { monthly: 99, annual: 990 }; // Valores padrão (fallback)

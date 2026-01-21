@@ -914,7 +914,8 @@
             <button onclick="window.copiarChave('${contractUrl}')" class="bg-purple-100 text-purple-700 px-4 py-2 rounded hover:bg-purple-200"><i class="fas fa-file-contract mr-2"></i>Copiar Contrato</button>
             <button onclick="window.copiarChave('${statusUrl}')" class="bg-orange-100 text-orange-700 px-4 py-2 rounded hover:bg-orange-200"><i class="fas fa-tasks mr-2"></i>Copiar Status</button>
             ${data.clientPhone ? `<a href="${whatsappLink}" target="_blank" class="bg-green-100 text-green-700 px-4 py-2 rounded hover:bg-green-200 flex items-center"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>` : ''}
-            <button onclick="window.resendWelcomeEmail('${data.id}')" class="bg-blue-100 text-blue-700 px-4 py-2 rounded hover:bg-blue-200"><i class="fas fa-envelope mr-2"></i>Reenviar Email</button>
+            <button onclick="window.resendWelcomeEmail('${data.id}')" class="bg-blue-100 text-blue-700 px-4 py-2 rounded hover:bg-blue-200"><i class="fas fa-key mr-2"></i>Reenviar Acesso</button>
+            <button onclick="window.sendSetupComplete('${data.id}')" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 shadow-md"><i class="fas fa-rocket mr-2"></i>Enviar Boas-Vindas (Loja Pronta)</button>
             <button onclick="window.renewLicense('${data.id}')" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"><i class="fas fa-calendar-plus mr-2"></i>Renovar</button>
             <button onclick="window.revokeLicense('${data.id}')" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700"><i class="fas fa-ban mr-2"></i>Revogar</button>
             <button onclick="window.deleteLicense('${data.id}')" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"><i class="fas fa-trash mr-2"></i>Excluir</button>
@@ -1071,6 +1072,27 @@
             const data = await res.json();
             if (res.ok) {
                 alert("E-mail enviado com sucesso!");
+            } else {
+                alert("Erro: " + (data.error || "Falha ao enviar"));
+            }
+        } catch (e) {
+            console.error(e);
+            alert("Erro de conexão ao enviar e-mail.");
+        }
+      };
+
+      window.sendSetupComplete = async (id) => {
+        if (!confirm("Confirmar que a loja está pronta e enviar o e-mail de boas-vindas finais para o cliente?")) return;
+        
+        try {
+            const res = await fetch("/api/send-setup-complete", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ licenseId: id })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                alert("E-mail de 'Loja Pronta' enviado com sucesso!");
             } else {
                 alert("Erro: " + (data.error || "Falha ao enviar"));
             }

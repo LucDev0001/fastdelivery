@@ -78,6 +78,7 @@ export default async function handler(req, res) {
 
     const amount = data.amount || 0;
     const baseUrl = `https://${req.headers.host}`;
+    let licenseKeyForEmail = null; // Variável para guardar a chave correta
 
     /* =====================================================
      * ATUALIZAÇÃO NO FIRESTORE (PRIORIDADE MÁXIMA)
@@ -104,6 +105,7 @@ export default async function handler(req, res) {
     if (!snapshot.empty) {
       const batch = db.batch();
       snapshot.forEach((doc) => {
+        licenseKeyForEmail = doc.data().key; // Captura a chave existente
         batch.update(doc.ref, {
           status: "paid",
           active: false,
@@ -112,7 +114,7 @@ export default async function handler(req, res) {
       });
       await batch.commit();
       console.log(
-        `✅ SUCESSO: ${snapshot.size} licença(s) atualizada(s) para PAID.`,
+        `✅ SUCESSO: Licença(s) atualizada(s). Chave: ${licenseKeyForEmail}`,
       );
     }
 
@@ -166,7 +168,7 @@ export default async function handler(req, res) {
 
         await transporter.sendMail({
           from: `"CoraEats Bot" <${process.env.SMTP_USER}>`,
-          to: "coraeatssuporte@gmail.com",
+          to: "coraeatssuporte@gmail.com", // E-mail corrigido
           subject: `💰 Nova Venda Confirmada`,
           html,
         });
@@ -175,19 +177,28 @@ export default async function handler(req, res) {
         if (customer.email) {
           console.log(`Enviando e-mail de boas-vindas para: ${customer.email}`);
 
+          // Usa a chave capturada ou tenta usar a do metadata se a variável estiver vazia
+          const finalKey =
+            licenseKeyForEmail || (data.metadata && data.metadata.licenseKey);
+          const linkParams = finalKey
+            ? `key=${finalKey}`
+            : `email=${encodeURIComponent(customer.email)}`;
+
           const clientHtml = `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; color: #333;">
               <h2 style="color:#F47C2C;">Bem-vindo ao CoraEats! 🚀</h2>
               <p>Olá, <strong>${customer.name || "Parceiro"}</strong>!</p>
               <p>Recebemos a confirmação do seu pagamento referente ao <strong>${productName}</strong>.</p>
-              <p>Seu sistema já está sendo preparado. Para acompanhar o status da instalação ou acessar seu contrato, clique no botão abaixo:</p>
+              <p>Seu sistema já está sendo preparado. Clique abaixo para assinar seu contrato e liberar o acesso:</p>
               <br />
               <div style="text-align: center; margin: 30px 0;">
-                <a href="${baseUrl}/status.html?email=${encodeURIComponent(customer.email)}"
+                <!-- Link corrigido para usar a KEY -->
+                <a href="${baseUrl}/contrato.html?${linkParams}"
                   style="display:inline-block;padding:15px 25px;background:#10B981;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;font-size:16px;">
-                  Acompanhar Meu Pedido
+                  Assinar Contrato e Ativar
                 </a>
               </div>
+              <p style="text-align: center; font-size: 14px;"><a href="${baseUrl}/status.html?${linkParams}">Ou acompanhe o status aqui</a></p>
               <p>Se tiver qualquer dúvida, basta responder a este e-mail.</p>
               <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
               <p style="font-size: 12px; color: #999;">Atenciosamente,<br/>Equipe CoraEats</p>
@@ -197,7 +208,7 @@ export default async function handler(req, res) {
           await transporter.sendMail({
             from: `"Equipe CoraEats" <${process.env.SMTP_USER}>`,
             to: customer.email,
-            subject: `🎉 Bem-vindo ao CoraEats! Tudo pronto para começar.`,
+            subject: `✅ Pagamento Confirmado - Próximos Passos`,
             html: clientHtml,
           });
         }
@@ -232,6 +243,7 @@ export default async function handler(req, res) {
 
       const expiresAt = new Date();
       expiresAt.setDate(expiresAt.getDate() + daysToAdd);
+      licenseKeyForEmail = key; // Define a chave para uso no log/email se necessário (embora o email já tenha sido enviado acima, é bom manter a consistência)
 
       // 3. Criar Licença no Firestore
       const newLicense = {
