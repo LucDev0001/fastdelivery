@@ -34,7 +34,7 @@ export default async function handler(req, res) {
 
   const event = req.body;
 
-  console.log("Webhook recebido:", JSON.stringify(event, null, 2));
+  console.log("🔔 WEBHOOK RECEBIDO [FULL]:", JSON.stringify(event, null, 2));
 
   try {
     // DELAY DE SEGURANÇA: Aguarda 2 segundos para garantir que o Firestore
@@ -46,13 +46,14 @@ export default async function handler(req, res) {
      */
     const eventType = event.event || event.type || null;
     const data = event.data || {};
+
     // Força maiúsculo para evitar erros de case (ex: "paid" vs "PAID")
     const status = (data.status || event.status || "").toUpperCase();
 
     const isPaid =
       status === "PAID" ||
       status === "COMPLETED" ||
-      eventType === "billing.paid";
+      eventType === "billing.paid"; // Evento explícito de pagamento
 
     if (!isPaid) {
       console.log(`Evento ignorado. Status: ${status}, Tipo: ${eventType}`);
@@ -62,9 +63,12 @@ export default async function handler(req, res) {
     /**
      * Dados essenciais
      */
-    const paymentId = data.id;
+    // Tenta extrair o ID de diferentes locais possíveis no payload
+    const paymentId = data.id || (data.bill && data.bill.id) || event.id;
+
     if (!paymentId) {
-      throw new Error("paymentId não encontrado no webhook.");
+      console.error("❌ ERRO: paymentId não encontrado no payload do webhook.");
+      return res.status(400).json({ error: "paymentId missing" });
     }
 
     const customer = data.customer || {};
@@ -80,7 +84,9 @@ export default async function handler(req, res) {
      * ===================================================== */
     const licensesRef = db.collection("licenses");
 
-    console.log(`Buscando licença com paymentId: ${paymentId}`);
+    console.log(
+      `🔎 Buscando licença no Firestore com paymentId: "${paymentId}"`,
+    );
     const snapshot = await licensesRef
       .where("paymentId", "==", paymentId)
       .get();
@@ -96,7 +102,7 @@ export default async function handler(req, res) {
       });
       await batch.commit();
       console.log(
-        `Licença(s) atualizada(s) para PAID. Total: ${snapshot.size}`,
+        `✅ SUCESSO: ${snapshot.size} licença(s) atualizada(s) para PAID.`,
       );
     }
 
@@ -199,7 +205,7 @@ export default async function handler(req, res) {
      * ===================================================== */
     if (snapshot.empty) {
       console.log(
-        "⚠️ Licença não encontrada pelo Checkout. Criando fallback pelo Webhook...",
+        `⚠️ AVISO: Nenhuma licença encontrada com paymentId "${paymentId}". Criando licença de fallback...`,
       );
 
       // 1. Gerar chave

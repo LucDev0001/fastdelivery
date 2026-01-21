@@ -191,6 +191,10 @@ module.exports = async function handler(req, res) {
       throw new Error("URL de pagamento não retornada.");
     }
 
+    console.log(
+      `✅ Checkout criado. Salvando licença com paymentId: "${responseData.id}"`,
+    );
+
     /* ===========================
      * CRIAÇÃO DA LICENÇA (SEGURANÇA)
      * =========================== */
