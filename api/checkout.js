@@ -122,7 +122,7 @@ module.exports = async function handler(req, res) {
 
     // 2. Passa a chave na URL de retorno para a página de sucesso pegar
     const completionUrl = `${baseUrl}/sucesso.html?email=${encodeURIComponent(email)}&key=${licenseKey}`;
-    const returnUrl = `${baseUrl}/index.html`; // Se cancelar, volta para a home
+    const returnUrl = `${baseUrl}/cancelado.html`; // Se cancelar, vai para a página personalizada
 
     /* ===========================
      * Payload Abacate Pay
