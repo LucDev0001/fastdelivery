@@ -121,7 +121,8 @@ module.exports = async function handler(req, res) {
       `VOU-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
 
     // 2. Passa a chave na URL de retorno para a página de sucesso pegar
-    const returnUrl = `${baseUrl}/sucesso.html?email=${encodeURIComponent(email)}&key=${licenseKey}`;
+    const completionUrl = `${baseUrl}/sucesso.html?email=${encodeURIComponent(email)}&key=${licenseKey}`;
+    const returnUrl = `${baseUrl}/index.html`; // Se cancelar, volta para a home
 
     /* ===========================
      * Payload Abacate Pay
@@ -138,8 +139,8 @@ module.exports = async function handler(req, res) {
           price: amount,
         },
       ],
-      returnUrl,
-      completionUrl: returnUrl,
+      returnUrl: returnUrl,
+      completionUrl: completionUrl,
       webhookUrl: `${baseUrl}/api/webhook`,
       customer: {
         name: name || "Cliente",

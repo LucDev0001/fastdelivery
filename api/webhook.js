@@ -37,6 +37,10 @@ export default async function handler(req, res) {
   console.log("Webhook recebido:", JSON.stringify(event, null, 2));
 
   try {
+    // DELAY DE SEGURANÇA: Aguarda 2 segundos para garantir que o Firestore
+    // já indexou a licença criada pelo checkout (evita Race Condition)
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     /**
      * Normalização do evento Abacate Pay
      */
