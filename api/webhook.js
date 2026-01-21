@@ -85,28 +85,31 @@ export default async function handler(req, res) {
      * ===================================================== */
     const licensesRef = db.collection("licenses");
 
-    console.log(
-      `🔎 Buscando licença no Firestore com paymentId: "${paymentId}"`,
-    );
+    // Extração robusta de metadados (pode vir em data.metadata ou data.bill.metadata)
+    const metadata = data.metadata || (data.bill && data.bill.metadata) || {};
+    const licenseKeyFromMeta = metadata.licenseKey;
 
-    let snapshot = await licensesRef.where("paymentId", "==", paymentId).get();
+    let snapshot;
 
-    // FALLBACK DE SEGURANÇA:
-    // Se não achou pelo ID, tenta achar pela Chave da Licença (metadata)
-    if (snapshot.empty && data.metadata && data.metadata.licenseKey) {
+    // ESTRATÉGIA 1: Buscar pela CHAVE (Mais confiável e rápido)
+    if (licenseKeyFromMeta) {
       console.log(
-        `⚠️ ID não encontrado. Tentando buscar por licenseKey (Metadata): "${data.metadata.licenseKey}"`,
+        `🔎 Buscando licença por Metadata Key: "${licenseKeyFromMeta}"`,
       );
-      snapshot = await licensesRef
-        .where("key", "==", data.metadata.licenseKey)
-        .get();
+      snapshot = await licensesRef.where("key", "==", licenseKeyFromMeta).get();
     }
 
+    // ESTRATÉGIA 2: Se não achou ou não tem chave, busca pelo ID do pagamento
+    if (!snapshot || snapshot.empty) {
+      console.log(`🔎 Buscando licença por PaymentId: "${paymentId}"`);
+      snapshot = await licensesRef.where("paymentId", "==", paymentId).get();
+    }
+
+    // Se encontrou a licença (por Key ou ID)
     if (!snapshot.empty) {
       const batch = db.batch();
       snapshot.forEach((doc) => {
-        licenseKeyForEmail =
-          doc.data().key || (data.metadata && data.metadata.licenseKey); // Garante a chave mesmo se o campo estiver vazio
+        licenseKeyForEmail = doc.data().key || licenseKeyFromMeta;
         batch.update(doc.ref, {
           status: "paid",
           active: false,
@@ -128,7 +131,7 @@ export default async function handler(req, res) {
       // 1. Tenta usar a chave que veio do Checkout (Metadata) para manter consistência
       // Se não tiver, gera uma nova com prefixo CORA
       const key =
-        (data.metadata && data.metadata.licenseKey) ||
+        licenseKeyFromMeta ||
         `CORA-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
 
       // 2. Definir plano e validade
@@ -231,8 +234,7 @@ export default async function handler(req, res) {
           console.log(`Enviando e-mail de boas-vindas para: ${customer.email}`);
 
           // Usa a chave capturada ou tenta usar a do metadata se a variável estiver vazia
-          const finalKey =
-            licenseKeyForEmail || (data.metadata && data.metadata.licenseKey);
+          const finalKey = licenseKeyForEmail || licenseKeyFromMeta;
           const linkParams = `key=${finalKey}`;
 
           const clientHtml = `
