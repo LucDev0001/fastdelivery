@@ -7,17 +7,25 @@
     <title>Dashboard de Licenças</title>
     <link href="styles.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Preconnect para CDNs -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    <link rel="preconnect" href="https://www.gstatic.com" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
       rel="stylesheet"
     />
   </head>
   <body class="bg-gray-100">
+    <!-- Loader Melhorado -->
     <div
       id="loader"
       class="fixed inset-0 bg-white flex items-center justify-center z-50"
     >
       <p>Carregando...</p>
+      <i class="fas fa-circle-notch fa-spin text-4xl text-blue-600"></i>
     </div>
 
     <div id="app" class="hidden">
@@ -462,8 +470,16 @@
 
       // Função global para copiar
       window.copiarChave = (texto) => {
+        const el = event.currentTarget;
+        const originalText = el.innerHTML;
         navigator.clipboard.writeText(texto).then(() => {
           alert("Copiado com sucesso!");
+          el.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+          el.disabled = true;
+          setTimeout(() => {
+            el.innerHTML = originalText;
+            el.disabled = false;
+          }, 2000);
         });
       };
 
