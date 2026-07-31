@@ -167,7 +167,7 @@
         </div>
 
         <!-- Lista de Licenças -->
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="bg-white shadow sm:rounded-lg">
           <div
             class="p-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center flex-wrap gap-4"
           >
@@ -1155,7 +1155,7 @@
               });
               if (res.ok) {
                 alertMessage +=
-                  "\n\nE-mail de boas-vindas enviado para o cliente.";
+                  " E-mail de boas-vindas enviado para o cliente.";
               } else {
                 const errorData = await res.json();
                 throw new Error(
@@ -1163,9 +1163,7 @@
                 );
               }
             } catch (e) {
-              alertMessage += `
-
-ATENÇÃO: Falha ao enviar o e-mail de boas-vindas: ${e.message}`;
+              alertMessage += ` ATENÇÃO: Falha ao enviar o e-mail de boas-vindas: ${e.message}`;
             }
           }
 
