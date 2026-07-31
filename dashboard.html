@@ -108,6 +108,13 @@
               >
                 <i class="fas fa-flask mr-2"></i>Gerar Teste Grátis (7 dias)
               </button>
+              <button
+                type="button"
+                id="btn-create-manual"
+                class="bg-blue-600 text-white py-2 px-6 rounded hover:bg-blue-700"
+              >
+                <i class="fas fa-plus mr-2"></i>Criar Licença Manual
+              </button>
           </div>
           <div
             id="generated-key"
@@ -178,6 +185,55 @@
         </div>
       </main>
     </div>
+
+    <!-- Modal de Criação de Licença -->
+    <div id="create-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-lg w-full max-w-2xl shadow-xl flex flex-col max-h-[90vh]">
+        <div class="flex justify-between items-center p-6 border-b">
+          <h3 class="text-lg font-bold text-gray-900">Criar Nova Licença Manual</h3>
+          <button onclick="closeCreateModal()" class="text-gray-400 hover:text-gray-600">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <form id="create-form" class="p-6 overflow-y-auto space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Nome da Loja</label>
+              <input type="text" id="create-store-name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">E-mail de Contato</label>
+              <input type="email" id="create-client-contact" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Telefone (WhatsApp)</label>
+              <input type="text" id="create-client-phone" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Plano</label>
+                <select id="create-plan-type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                  <option value="monthly">Mensal</option>
+                  <option value="annual">Anual</option>
+                  <option value="trial">Teste (7 dias)</option>
+                </select>
+            </div>
+             <div>
+              <label class="block text-sm font-medium text-gray-700">URL da Loja (opcional)</label>
+              <input type="text" id="create-store-url" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+            </div>
+          </div>
+           <div class="flex justify-end gap-3 pt-4 border-t">
+            <button type="button" onclick="closeCreateModal()" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+              Cancelar
+            </button>
+            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+              Criar Licença
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
 
     <!-- Modal de Edição de Licença -->
     <div
@@ -483,7 +539,7 @@
         });
       };
 
-      // Funções do Modal de Resposta
+      // --- FUNÇÕES DE MODAIS ---
       window.closeReplyModal = () => {
         document.getElementById("reply-modal").classList.add("hidden");
         document.getElementById("reply-modal").classList.remove("flex");
@@ -493,6 +549,18 @@
         document.getElementById("edit-modal").classList.add("hidden");
         document.getElementById("edit-modal").classList.remove("flex");
       };
+
+      window.closeCreateModal = () => {
+        document.getElementById("create-modal").classList.add("hidden");
+        document.getElementById("create-modal").classList.remove("flex");
+      };
+      
+      document.getElementById("btn-create-manual").addEventListener("click", () => {
+        const modal = document.getElementById("create-modal");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        document.getElementById("create-form").reset();
+      });
 
       window.openReplyModal = (ticketId, subject, messages) => {
         document.getElementById("modal-ticket-id").value = ticketId;
@@ -681,66 +749,91 @@
         alert("Preços atualizados com sucesso!");
       });
 
+       // --- GESTÃO DE LICENÇAS ---
+
       // Gerar Licença de Teste
       document.getElementById("btn-generate-test").addEventListener("click", async (e) => {
         const btn = e.currentTarget;
+        btn.disabled = true;
+        await createLicenseFromData({ planType: 'trial' }, btn);
+        btn.disabled = false;
+      });
+
+      // Criar Licença Manual
+      document.getElementById("create-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        
+        const licenseData = {
+            storeName: document.getElementById("create-store-name").value,
+            clientContact: document.getElementById("create-client-contact").value,
+            clientPhone: document.getElementById("create-client-phone").value,
+            planType: document.getElementById("create-plan-type").value,
+            storeUrl: document.getElementById("create-store-url").value
+        };
+
+        await createLicenseFromData(licenseData, btn);
+
+        btn.disabled = false;
+        closeCreateModal();
+      });
+
+      async function createLicenseFromData(data, btn) {
         const originalText = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i>Gerando...';
-        btn.disabled = true;
 
         try {
-           const key = `TEST-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
-           
-           const expiresAt = new Date();
-           expiresAt.setDate(expiresAt.getDate() + 7); // 7 dias de teste
+            const key = `CORA-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
+            
+            const expiresAt = new Date();
+            let isActive = false;
+            let status = 'aguardando_pagamento';
 
-           const licenseData = {
-              storeName: "Loja de Teste " + Math.floor(Math.random() * 10000),
-              companyName: "Empresa Teste",
-              cnpj: "00.000.000/0000-00",
-              address: "Endereço Virtual",
-              storeUrl: "",
-              clientContact: "teste@coraeats.app",
-              planType: "trial",
-              expiresAt: expiresAt,
-              createdAt: serverTimestamp(),
-              key: key,
-              paymentId: "TRIAL_GENERATED",
-              paymentLink: "#",
-              active: true, 
-              status: "trial",
-              contractAccepted: false 
-           };
+            if (data.planType === 'trial') {
+                expiresAt.setDate(expiresAt.getDate() + 7);
+                isActive = true;
+                status = 'trial';
+            } else if (data.planType === 'monthly') {
+                expiresAt.setMonth(expiresAt.getMonth() + 1);
+            } else if (data.planType === 'annual') {
+                expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+            }
 
-           await addDoc(collection(db, "licenses"), licenseData);
+            const finalData = {
+                storeName: data.storeName || `Loja ${Math.floor(Math.random() * 10000)}`,
+                companyName: data.companyName || "",
+                cnpj: data.cnpj || "",
+                address: data.address || "",
+                storeUrl: data.storeUrl || "",
+                clientContact: data.clientContact || "email@pendente.com",
+                clientPhone: data.clientPhone || "",
+                planType: data.planType,
+                expiresAt: expiresAt,
+                createdAt: serverTimestamp(),
+                key: key,
+                paymentId: "MANUAL_GENERATED",
+                paymentLink: "#",
+                active: isActive, 
+                status: status,
+                setupStatus: "pending",
+                contractAccepted: false,
+                internalNotes: `Licença criada manualmente em ${new Date().toLocaleDateString()}`
+            };
 
-           const keyContainer = document.getElementById("generated-key");
-           keyContainer.innerHTML = `
-            <div class="flex flex-col gap-4 text-left">
-                <div class="bg-blue-50 p-3 rounded border border-blue-200">
-                    <p class="font-bold text-blue-800"><i class="fas fa-check-circle"></i> Licença de Teste Criada!</p>
-                    <p class="text-sm text-blue-700">Esta licença já está ativa e válida por 7 dias.</p>
-                </div>
-                <div>
-                    <span class="text-sm font-bold text-gray-600">Chave da Licença:</span>
-                    <div class="flex gap-2 mt-1">
-                        <input type="text" value="${key}" class="flex-1 p-2 border rounded text-sm bg-gray-50 font-mono" readonly>
-                        <button onclick="window.copiarChave('${key}')" class="bg-gray-600 text-white px-3 rounded hover:bg-gray-700">Copiar</button>
-                    </div>
-                </div>
-            </div>
-          `;
-           keyContainer.classList.remove("hidden");
-           loadLicenses();
+            await addDoc(collection(db, "licenses"), finalData);
+
+            alert(`Licença para ${finalData.storeName} criada com sucesso! Chave: ${key}`);
+            loadLicenses();
 
         } catch (error) {
-            console.error(error);
-            alert("Erro ao gerar licença de teste: " + error.message);
+            console.error("Erro ao criar licença:", error);
+            alert("Erro ao criar licença: " + error.message);
         } finally {
             btn.innerHTML = originalText;
-            btn.disabled = false;
         }
-      });
+      }
+
 
       // Listener de Busca
       document.getElementById("search-license").addEventListener("input", (e) => {
@@ -768,7 +861,7 @@
               allLicensesData.push({ id: doc.id, ...data });
 
               // Processar Estatísticas
-              if (data.createdAt) {
+              if (data.createdAt && data.createdAt.toDate) {
                 const date = data.createdAt.toDate();
                 const key = `${date.getFullYear()}-${String(
                   date.getMonth() + 1
@@ -777,12 +870,14 @@
                 if (!stats[key]) stats[key] = { clientes: 0, faturamento: 0 };
 
                 stats[key].clientes++;
-                const valor = data.planType === "anual" ? 990 : 99;
-                stats[key].faturamento += valor;
+                
+                if(data.status !== 'trial' && data.status !== 'aguardando_pagamento') {
+                    const valor = data.planType === "annual" ? 990 : 99;
+                    stats[key].faturamento += valor;
+                }
               }
             });
             
-
             renderLicensesTable(allLicensesData);
             renderCharts(stats);
         });
@@ -814,7 +909,10 @@
             paymentStatus = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Ativa</span>';
           } else if (data.status === 'paid') {
             paymentStatus = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Pago / Assinar</span>';
+          } else if (data.status === 'trial') {
+            paymentStatus = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Teste</span>';
           }
+
 
           const whatsappMessage = `Olá! Segue os links para o seu sistema CoraEats:\n\n📄 *Contrato/Ativação:* ${contractUrl}\n📊 *Acompanhar Instalação:* ${statusUrl}`;
 
@@ -832,7 +930,7 @@
             </button>`;
 
           // Se estiver aguardando pagamento, mostra botão de Aprovar
-          if (!data.active && data.status !== 'paid') {
+          if (!data.active && data.status !== 'paid' && data.status !== 'trial') {
              actionButton = `
             <button onclick="window.approvePayment('${data.id}')" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition shadow-md flex items-center gap-1" title="Confirmar Pagamento e Enviar Email">
               <i class="fas fa-dollar-sign"></i> APROVAR
@@ -1265,53 +1363,77 @@
             };
 
             const div = document.createElement("div");
-            div.className = "p-6 hover:bg-gray-50 transition cursor-pointer";
+            div.className = "p-6"; // Removido hover e transition para evitar confusão de clique
             div.innerHTML = `
-                      <div class="flex justify-between items-start">
-                          <div>
-                              <div class="flex items-center gap-2 mb-1">
-                                  <span class="px-2 py-0.5 rounded text-xs font-bold ${
-                                    statusColors[t.status] || "bg-gray-100"
-                                  }">${
-              statusLabels[t.status] || t.status
-            }</span>
-                                  <h3 class="text-lg font-medium text-gray-900">${
-                                    t.subject
-                                  }</h3>
-                              </div>
-                              <p class="text-sm text-gray-500">Loja: <strong>${
-                                t.storeName
-                              }</strong></p>
-                              <p class="text-sm text-gray-600 mt-2 line-clamp-1 text-ellipsis overflow-hidden">
-                                  ${
-                                    lastMsg
-                                      ? lastMsg.text
-                                      : "Nenhuma mensagem ainda."
-                                  }
-                              </p>
-                              <button onclick="markTicketAsClosed('${
-                                doc.id
-                              }')" class="mt-2 text-xs text-gray-500 hover:text-gray-700"><i class="fas fa-check-circle"></i> Marcar como Resolvido</button>
-                          </div>
-                          <div class="text-right text-xs text-gray-400">
-                              ${
-                                t.updatedAt
-                                  ? new Date(
-                                      t.updatedAt.toDate()
-                                    ).toLocaleDateString()
-                                  : ""
-                              }
-                          </div>
+              <div class="flex justify-between items-start gap-4">
+                  <div class="flex-1">
+                      <div class="flex items-center gap-3 mb-2">
+                          <span class="px-2 py-0.5 rounded text-xs font-bold ${
+                            statusColors[t.status] || "bg-gray-100"
+                          }">
+                              ${statusLabels[t.status] || t.status}
+                          </span>
+                          <h3 class="text-lg font-medium text-gray-900">${
+                            t.subject
+                          }</h3>
                       </div>
-                  `;
-            div.onclick = () => openReplyModal(doc.id, t.subject, t.messages);
+                      <p class="text-sm text-gray-500">Loja: <strong>${
+                        t.storeName
+                      }</strong></p>
+                      <p class="text-sm text-gray-600 mt-2 line-clamp-1">
+                          <strong>Última msg:</strong> ${
+                            lastMsg ? lastMsg.text : "Nenhuma mensagem."
+                          }
+                      </p>
+                  </div>
+                  <div class="text-right text-xs text-gray-400 flex-shrink-0">
+                      ${
+                        t.updatedAt
+                          ? new Date(t.updatedAt.toDate()).toLocaleString()
+                          : ""
+                      }
+                  </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-gray-200 flex items-center justify-end gap-2">
+                  <button onclick="window.openReplyModal(event, '${
+                    doc.id
+                  }', '${encodeURIComponent(JSON.stringify(t.messages))}', '${
+              t.subject
+            }')" class="text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded">
+                      <i class="fas fa-reply"></i> Responder
+                  </button>
+                  <button onclick="window.markTicketAsClosed(event, '${
+                    doc.id
+                  }')" class="text-sm bg-green-100 text-green-700 hover:bg-green-200 font-bold py-1 px-3 rounded">
+                      <i class="fas fa-check-circle"></i> Marcar como Resolvido
+                  </button>
+                  <button onclick="window.deleteTicket(event, '${
+                    doc.id
+                  }')" class="text-sm bg-red-100 text-red-700 hover:bg-red-200 font-bold py-1 px-3 rounded">
+                      <i class="fas fa-trash"></i> Excluir
+                  </button>
+              </div>
+            `;
             container.appendChild(div);
           });
         });
       }
 
+      window.deleteTicket = async (event, ticketId) => {
+        event.stopPropagation();
+        if (confirm("Tem certeza que deseja EXCLUIR este ticket permanentemente? Esta ação não pode ser desfeita.")) {
+            try {
+                await deleteDoc(doc(db, "tickets", ticketId));
+                alert("Ticket excluído com sucesso.");
+            } catch (error) {
+                console.error("Erro ao excluir ticket:", error);
+                alert("Ocorreu um erro ao excluir o ticket.");
+            }
+        }
+      };
+
       // Marcar Ticket como Resolvido
-      async function markTicketAsClosed(ticketId) {
+      window.markTicketAsClosed = async (ticketId) => {
         if (
           confirm("Tem certeza que deseja marcar este ticket como RESOLVIDO?")
         ) {
@@ -1325,3 +1447,4 @@
   </body>
 </html>
 </html>
+
