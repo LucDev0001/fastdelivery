@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -39,18 +39,40 @@
           <div class="flex items-center gap-6">
             <!-- Notificações -->
             <div class="relative">
-              <button id="btn-notifications" class="relative text-gray-500 hover:text-gray-700 focus:outline-none">
+              <button
+                id="btn-notifications"
+                class="relative text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
                 <i class="fas fa-bell text-xl"></i>
-                <span id="badge-notifications" class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+                <span
+                  id="badge-notifications"
+                  class="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden"
+                  >0</span
+                >
               </button>
-              
+
               <!-- Dropdown de Notificações -->
-              <div id="dropdown-notifications" class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
-                <div class="p-3 border-b border-gray-100 flex justify-between items-center bg-gray-50 rounded-t-lg">
-                  <h3 class="text-sm font-bold text-gray-700">Vendas do Site (Pendentes)</h3>
-                  <button id="btn-clear-notifications" class="text-xs text-blue-600 hover:underline">Marcar todas como lidas</button>
+              <div
+                id="dropdown-notifications"
+                class="hidden absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+              >
+                <div
+                  class="p-3 border-b border-gray-100 flex justify-between items-center bg-gray-50 rounded-t-lg"
+                >
+                  <h3 class="text-sm font-bold text-gray-700">
+                    Vendas do Site (Pendentes)
+                  </h3>
+                  <button
+                    id="btn-clear-notifications"
+                    class="text-xs text-blue-600 hover:underline"
+                  >
+                    Marcar todas como lidas
+                  </button>
                 </div>
-                <div id="list-notifications" class="max-h-64 overflow-y-auto divide-y divide-gray-100">
+                <div
+                  id="list-notifications"
+                  class="max-h-64 overflow-y-auto divide-y divide-gray-100"
+                >
                   <!-- Itens serão inseridos aqui -->
                 </div>
               </div>
@@ -82,16 +104,38 @@
         <!-- Configuração de Preços -->
         <div class="bg-white p-6 rounded-lg shadow mb-8">
           <h2 class="text-lg font-semibold mb-4">Configuração de Preços</h2>
-          <form id="pricing-form" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+          <form
+            id="pricing-form"
+            class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end"
+          >
             <div>
-              <label class="block text-sm font-medium text-gray-700">Plano Mensal (R$)</label>
-              <input type="number" id="price-monthly" step="0.01" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" required>
+              <label class="block text-sm font-medium text-gray-700"
+                >Plano Mensal (R$)</label
+              >
+              <input
+                type="number"
+                id="price-monthly"
+                step="0.01"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2"
+                required
+              />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Plano Anual (R$)</label>
-              <input type="number" id="price-annual" step="0.01" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2" required>
+              <label class="block text-sm font-medium text-gray-700"
+                >Plano Anual (R$)</label
+              >
+              <input
+                type="number"
+                id="price-annual"
+                step="0.01"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2"
+                required
+              />
             </div>
-            <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 h-10">
+            <button
+              type="submit"
+              class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 h-10"
+            >
               Salvar Preços
             </button>
           </form>
@@ -101,20 +145,20 @@
         <div class="bg-white p-6 rounded-lg shadow mb-8">
           <h2 class="text-lg font-semibold mb-4">Ações Rápidas</h2>
           <div class="flex gap-4">
-              <button
-                type="button"
-                id="btn-generate-test"
-                class="bg-gray-800 text-white py-2 px-6 rounded hover:bg-gray-900"
-              >
-                <i class="fas fa-flask mr-2"></i>Gerar Teste Grátis (7 dias)
-              </button>
-              <button
-                type="button"
-                id="btn-create-manual"
-                class="bg-blue-600 text-white py-2 px-6 rounded hover:bg-blue-700"
-              >
-                <i class="fas fa-plus mr-2"></i>Criar Licença Manual
-              </button>
+            <button
+              type="button"
+              id="btn-generate-test"
+              class="bg-gray-800 text-white py-2 px-6 rounded hover:bg-gray-900"
+            >
+              <i class="fas fa-flask mr-2"></i>Gerar Teste Grátis (7 dias)
+            </button>
+            <button
+              type="button"
+              id="btn-create-manual"
+              class="bg-blue-600 text-white py-2 px-6 rounded hover:bg-blue-700"
+            >
+              <i class="fas fa-plus mr-2"></i>Criar Licença Manual
+            </button>
           </div>
           <div
             id="generated-key"
@@ -123,7 +167,7 @@
         </div>
 
         <!-- Lista de Licenças -->
-        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div class="bg-white shadow sm:rounded-lg">
           <div
             class="p-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center flex-wrap gap-4"
           >
@@ -156,9 +200,9 @@
                   Status
                 </th>
                 <th
-                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase"
+                  class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase"
                 >
-                  Perfil
+                  Ações
                 </th>
               </tr>
             </thead>
@@ -187,62 +231,155 @@
     </div>
 
     <!-- Modal de Criação de Licença -->
-    <div id="create-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
-      <div class="bg-white rounded-lg w-full max-w-2xl shadow-xl flex flex-col max-h-[90vh]">
+    <div
+      id="create-modal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4"
+    >
+      <div
+        class="bg-white rounded-lg w-full max-w-2xl shadow-xl flex flex-col max-h-[90vh]"
+      >
         <div class="flex justify-between items-center p-6 border-b">
-          <h3 class="text-lg font-bold text-gray-900">Criar Nova Licença Manual</h3>
-          <button onclick="closeCreateModal()" class="text-gray-400 hover:text-gray-600">
+          <h3 class="text-lg font-bold text-gray-900">
+            Criar Nova Licença Manual
+          </h3>
+          <button
+            onclick="closeCreateModal()"
+            class="text-gray-400 hover:text-gray-600"
+          >
             <i class="fas fa-times"></i>
           </button>
         </div>
         <form id="create-form" class="p-6 overflow-y-auto space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700">Nome da Loja</label>
-              <input type="text" id="create-store-name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required />
+              <label class="block text-sm font-medium text-gray-700"
+                >Nome da Loja</label
+              >
+              <input
+                type="text"
+                id="create-store-name"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                required
+              />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">E-mail de Contato</label>
-              <input type="email" id="create-client-contact" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" required />
+              <label class="block text-sm font-medium text-gray-700"
+                >E-mail de Contato</label
+              >
+              <input
+                type="email"
+                id="create-client-contact"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+                required
+              />
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700">Telefone (WhatsApp)</label>
-              <input type="text" id="create-client-phone" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+              <label class="block text-sm font-medium text-gray-700"
+                >Telefone (WhatsApp)</label
+              >
+              <input
+                type="text"
+                id="create-client-phone"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              />
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700">Plano</label>
-                <select id="create-plan-type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                  <option value="monthly">Mensal</option>
-                  <option value="annual">Anual</option>
-                  <option value="trial">Teste (7 dias)</option>
-                </select>
+              <label class="block text-sm font-medium text-gray-700"
+                >Plano</label
+              >
+              <select
+                id="create-plan-type"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              >
+                <option value="monthly">Mensal</option>
+                <option value="annual">Anual</option>
+                <option value="trial">Teste (7 dias)</option>
+              </select>
             </div>
-             <div>
-              <label class="block text-sm font-medium text-gray-700">URL da Loja (opcional)</label>
-              <input type="text" id="create-store-url" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" />
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Razão Social</label
+              >
+              <input
+                type="text"
+                id="create-company-name"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >CNPJ</label
+              >
+              <input
+                type="text"
+                id="create-cnpj"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              />
             </div>
           </div>
-           <div class="flex justify-end gap-3 pt-4 border-t">
-            <button type="button" onclick="closeCreateModal()" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700"
+              >Endereço</label
+            >
+            <input
+              type="text"
+              id="create-address"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700"
+              >URL da Loja (opcional)</label
+            >
+            <input
+              type="text"
+              id="create-store-url"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700"
+              >Observações Internas</label
+            >
+            <textarea
+              id="create-internal-notes"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
+              rows="2"
+            ></textarea>
+          </div>
+
+          <div class="flex justify-end gap-3 pt-4 border-t">
+            <button
+              type="button"
+              onclick="closeCreateModal()"
+              class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+            >
               Cancelar
             </button>
-            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-              Criar Licença
+            <button
+              type="submit"
+              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Criar Licença e Enviar E-mail
             </button>
           </div>
         </form>
       </div>
     </div>
 
-
     <!-- Modal de Edição de Licença -->
     <div
       id="edit-modal"
       class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4"
     >
-      <div class="bg-white rounded-lg w-full max-w-2xl shadow-xl flex flex-col max-h-[90vh]">
+      <div
+        class="bg-white rounded-lg w-full max-w-2xl shadow-xl flex flex-col max-h-[90vh]"
+      >
         <div class="flex justify-between items-center p-6 border-b">
-          <h3 class="text-lg font-bold text-gray-900" id="edit-modal-title">Editar / Ativar Licença</h3>
+          <h3 class="text-lg font-bold text-gray-900" id="edit-modal-title">
+            Editar / Ativar Licença
+          </h3>
           <button
             onclick="closeEditModal()"
             class="text-gray-400 hover:text-gray-600"
@@ -252,109 +389,133 @@
         </div>
         <form id="edit-form" class="p-6 overflow-y-auto space-y-4">
           <input type="hidden" id="edit-id" />
-          
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700"
-              >Nome da Loja</label
-            >
-            <input
-              type="text"
-              id="edit-store-name"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700"
-              >Razão Social</label
-            >
-            <input
-              type="text"
-              id="edit-company-name"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">CNPJ</label>
-            <input
-              type="text"
-              id="edit-cnpj"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">URL</label>
-            <input
-              type="text"
-              id="edit-store-url"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700"
-              >Contato</label
-            >
-            <input
-              type="text"
-              id="edit-client-contact"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Telefone (WhatsApp)</label>
-            <input
-              type="text"
-              id="edit-client-phone"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700"
-              >Endereço</label
-            >
-            <input
-              type="text"
-              id="edit-address"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700"
-              >Vencimento</label
-            >
-            <input
-              type="date"
-              id="edit-expires-at"
-              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
-            />
-          </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Nome da Loja</label
+              >
+              <input
+                type="text"
+                id="edit-store-name"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Razão Social</label
+              >
+              <input
+                type="text"
+                id="edit-company-name"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >CNPJ</label
+              >
+              <input
+                type="text"
+                id="edit-cnpj"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">URL</label>
+              <input
+                type="text"
+                id="edit-store-url"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Contato</label
+              >
+              <input
+                type="text"
+                id="edit-client-contact"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Telefone (WhatsApp)</label
+              >
+              <input
+                type="text"
+                id="edit-client-phone"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Endereço</label
+              >
+              <input
+                type="text"
+                id="edit-address"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Vencimento</label
+              >
+              <input
+                type="date"
+                id="edit-expires-at"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+              />
+            </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Status do Pagamento</label>
-            <select id="edit-payment-status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
-              <option value="aguardando_pagamento">Aguardando Pagamento</option>
-              <option value="paid">Pago (Liberar Contrato)</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Status da Instalação</label>
-            <select id="edit-setup-status" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500">
-              <option value="pending">Aguardando Início</option>
-              <option value="waiting_materials">Aguardando Materiais</option>
-              <option value="configuring">Configurando DNS/Servidor</option>
-              <option value="ready">Pronto para Uso</option>
-            </select>
-            <p class="text-xs text-gray-500 mt-1">Atualize para o cliente acompanhar no link de status.</p>
-          </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Status do Pagamento</label
+              >
+              <select
+                id="edit-payment-status"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+              >
+                <option value="aguardando_pagamento">
+                  Aguardando Pagamento
+                </option>
+                <option value="paid">Pago (Liberar Contrato)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Status da Instalação</label
+              >
+              <select
+                id="edit-setup-status"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+              >
+                <option value="pending">Aguardando Início</option>
+                <option value="waiting_materials">Aguardando Materiais</option>
+                <option value="configuring">Configurando DNS/Servidor</option>
+                <option value="ready">Pronto para Uso</option>
+              </select>
+              <p class="text-xs text-gray-500 mt-1">
+                Atualize para o cliente acompanhar no link de status.
+              </p>
+            </div>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700">Observações Internas</label>
-            <textarea id="edit-internal-notes" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500" rows="3"></textarea>
+            <label class="block text-sm font-medium text-gray-700"
+              >Observações Internas</label
+            >
+            <textarea
+              id="edit-internal-notes"
+              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-emerald-500 focus:border-emerald-500"
+              rows="3"
+            ></textarea>
           </div>
-          
+
           <div class="flex justify-end gap-3 pt-4 border-t">
             <button
               type="button"
@@ -375,10 +536,16 @@
     </div>
 
     <!-- Modal de Detalhes da Licença (Perfil) -->
-    <div id="license-details-modal" class="fixed inset-0 bg-gray-100 z-50 hidden overflow-y-auto">
+    <div
+      id="license-details-modal"
+      class="fixed inset-0 bg-gray-100 z-50 hidden overflow-y-auto"
+    >
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="flex justify-between items-center mb-6">
-          <button onclick="closeLicenseDetails()" class="flex items-center text-gray-600 hover:text-gray-900 font-medium">
+          <button
+            onclick="closeLicenseDetails()"
+            class="flex items-center text-gray-600 hover:text-gray-900 font-medium"
+          >
             <i class="fas fa-arrow-left mr-2"></i> Voltar para Lista
           </button>
           <h1 class="text-2xl font-bold text-gray-900">Detalhes da Licença</h1>
@@ -386,10 +553,23 @@
 
         <div class="bg-white shadow rounded-lg overflow-hidden">
           <!-- Header do Perfil -->
-          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center flex-wrap gap-4">
+          <div
+            class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex justify-between items-center flex-wrap gap-4"
+          >
             <div>
-              <h2 class="text-xl font-bold text-gray-900" id="detail-store-name">Nome da Loja</h2>
-              <a href="#" target="_blank" id="detail-store-url" class="text-sm text-blue-600 hover:underline">url.com</a>
+              <h2
+                class="text-xl font-bold text-gray-900"
+                id="detail-store-name"
+              >
+                Nome da Loja
+              </h2>
+              <a
+                href="#"
+                target="_blank"
+                id="detail-store-url"
+                class="text-sm text-blue-600 hover:underline"
+                >url.com</a
+              >
             </div>
             <div class="flex gap-2" id="detail-badges">
               <!-- Badges inseridos via JS -->
@@ -400,32 +580,67 @@
           <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Informações Principais -->
             <div class="space-y-4">
-              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">Informações da Empresa</h3>
-              <p class="text-sm"><span class="font-bold text-gray-500 block">Razão Social:</span> <span id="detail-company"></span></p>
-              <p class="text-sm"><span class="font-bold text-gray-500 block">CNPJ:</span> <span id="detail-cnpj"></span></p>
-              <p class="text-sm"><span class="font-bold text-gray-500 block">Endereço:</span> <span id="detail-address"></span></p>
+              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">
+                Informações da Empresa
+              </h3>
+              <p class="text-sm">
+                <span class="font-bold text-gray-500 block">Razão Social:</span>
+                <span id="detail-company"></span>
+              </p>
+              <p class="text-sm">
+                <span class="font-bold text-gray-500 block">CNPJ:</span>
+                <span id="detail-cnpj"></span>
+              </p>
+              <p class="text-sm">
+                <span class="font-bold text-gray-500 block">Endereço:</span>
+                <span id="detail-address"></span>
+              </p>
             </div>
 
             <!-- Contato -->
             <div class="space-y-4">
-              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">Contato</h3>
-              <p class="text-sm"><span class="font-bold text-gray-500 block">Nome/Email:</span> <span id="detail-contact"></span></p>
-              <p class="text-sm"><span class="font-bold text-gray-500 block">Telefone:</span> <span id="detail-phone"></span></p>
+              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">
+                Contato
+              </h3>
+              <p class="text-sm">
+                <span class="font-bold text-gray-500 block">Nome/Email:</span>
+                <span id="detail-contact"></span>
+              </p>
+              <p class="text-sm">
+                <span class="font-bold text-gray-500 block">Telefone:</span>
+                <span id="detail-phone"></span>
+              </p>
             </div>
 
             <!-- Licença e Sistema -->
             <div class="space-y-4 md:col-span-2">
-              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">Dados da Licença</h3>
+              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">
+                Dados da Licença
+              </h3>
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <p class="text-sm"><span class="font-bold text-gray-500 block">Chave:</span> <code id="detail-key" class="bg-gray-100 px-2 py-1 rounded"></code></p>
-                <p class="text-sm"><span class="font-bold text-gray-500 block">Plano:</span> <span id="detail-plan"></span></p>
-                <p class="text-sm"><span class="font-bold text-gray-500 block">Expira em:</span> <span id="detail-expires"></span></p>
+                <p class="text-sm">
+                  <span class="font-bold text-gray-500 block">Chave:</span>
+                  <code
+                    id="detail-key"
+                    class="bg-gray-100 px-2 py-1 rounded"
+                  ></code>
+                </p>
+                <p class="text-sm">
+                  <span class="font-bold text-gray-500 block">Plano:</span>
+                  <span id="detail-plan"></span>
+                </p>
+                <p class="text-sm">
+                  <span class="font-bold text-gray-500 block">Expira em:</span>
+                  <span id="detail-expires"></span>
+                </p>
               </div>
             </div>
 
             <!-- Status Instalação -->
             <div class="space-y-4 md:col-span-2 bg-blue-50 p-4 rounded-lg">
-              <h3 class="text-lg font-medium text-blue-900">Status da Instalação</h3>
+              <h3 class="text-lg font-medium text-blue-900">
+                Status da Instalação
+              </h3>
               <div id="detail-setup-container">
                 <!-- Select inserido via JS -->
               </div>
@@ -433,13 +648,21 @@
 
             <!-- Observações -->
             <div class="space-y-4 md:col-span-2">
-              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">Observações Internas</h3>
-              <p id="detail-notes" class="text-sm text-gray-600 bg-gray-50 p-3 rounded whitespace-pre-wrap"></p>
+              <h3 class="text-lg font-medium text-gray-900 border-b pb-2">
+                Observações Internas
+              </h3>
+              <p
+                id="detail-notes"
+                class="text-sm text-gray-600 bg-gray-50 p-3 rounded whitespace-pre-wrap"
+              ></p>
             </div>
           </div>
 
           <!-- Barra de Ações -->
-          <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex flex-wrap gap-3 justify-end" id="detail-actions">
+          <div
+            class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex flex-wrap gap-3 justify-end"
+            id="detail-actions"
+          >
             <!-- Botões inseridos via JS -->
           </div>
         </div>
@@ -513,11 +736,10 @@
         getDoc,
         writeBatch,
         where,
-        limit
+        limit,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-      
-      import { db, auth, adminUID } from "./js/firebase-config.js";
 
+      import { db, auth, adminUID } from "./js/firebase-config.js";
 
       // Variáveis globais para gráficos
       let chartClientesInstance = null;
@@ -554,15 +776,64 @@
         document.getElementById("create-modal").classList.add("hidden");
         document.getElementById("create-modal").classList.remove("flex");
       };
-      
-      document.getElementById("btn-create-manual").addEventListener("click", () => {
-        const modal = document.getElementById("create-modal");
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-        document.getElementById("create-form").reset();
+
+      document
+        .getElementById("btn-create-manual")
+        .addEventListener("click", () => {
+          const modal = document.getElementById("create-modal");
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+          document.getElementById("create-form").reset();
+        });
+
+      // --- DROPDOWNS ---
+      window.toggleDropdown = (dropdownId) => {
+        // Fecha todos os outros dropdowns de licença
+        document
+          .querySelectorAll('[id^="dropdown-license-"]')
+          .forEach((dropdown) => {
+            if (dropdown.id !== dropdownId) {
+              dropdown.classList.add("hidden");
+            }
+          });
+        // Mostra/esconde o dropdown clicado
+        document.getElementById(dropdownId).classList.toggle("hidden");
+      };
+
+      // Listener global para fechar dropdowns e notificações ao clicar fora
+      document.addEventListener("click", (e) => {
+        // Lógica para fechar dropdowns de licença
+        const isDropdownButton = e.target.closest(
+          'button[onclick^="window.toggleDropdown"]',
+        );
+        if (!isDropdownButton) {
+          document
+            .querySelectorAll('[id^="dropdown-license-"]')
+            .forEach((dropdown) => {
+              if (!dropdown.contains(e.target)) {
+                dropdown.classList.add("hidden");
+              }
+            });
+        }
+
+        // Lógica para fechar notificações
+        const notificationsDropdown = document.getElementById(
+          "dropdown-notifications",
+        );
+        const notificationsBtn = document.getElementById("btn-notifications");
+        if (
+          !notificationsDropdown.classList.contains("hidden") &&
+          !notificationsDropdown.contains(e.target) &&
+          !notificationsBtn.contains(e.target)
+        ) {
+          notificationsDropdown.classList.add("hidden");
+        }
       });
 
-      window.openReplyModal = (ticketId, subject, messages) => {
+      window.openReplyModal = (event, ticketId, encodedMessages, subject) => {
+        event.stopPropagation();
+        const messages = JSON.parse(decodeURIComponent(encodedMessages));
+
         document.getElementById("modal-ticket-id").value = ticketId;
         document.getElementById("modal-ticket-title").textContent = subject;
 
@@ -584,7 +855,7 @@
                       }</p>
                       <p>${msg.text}</p>
                       <p class="text-[10px] opacity-70 mt-1 text-right">${new Date(
-                        msg.timestamp?.toDate()
+                        msg.timestamp?.toDate(),
                       ).toLocaleString()}</p>
                   </div> 
               `;
@@ -621,24 +892,31 @@
 
       // --- SISTEMA DE NOTIFICAÇÕES ---
       function loadNotifications() {
-        const q = query(collection(db, "notifications"), where("read", "==", false), orderBy("createdAt", "desc"));
+        const q = query(
+          collection(db, "notifications"),
+          where("read", "==", false),
+          orderBy("createdAt", "desc"),
+        );
         onSnapshot(q, (snapshot) => {
           const list = document.getElementById("list-notifications");
           const badge = document.getElementById("badge-notifications");
           list.innerHTML = "";
-          
+
           if (snapshot.empty) {
             badge.classList.add("hidden");
-            list.innerHTML = '<p class="p-4 text-sm text-gray-500 text-center">Nenhuma nova venda pendente.</p>';
+            list.innerHTML =
+              '<p class="p-4 text-sm text-gray-500 text-center">Nenhuma nova venda pendente.</p>';
             return;
           }
 
           badge.innerText = snapshot.size;
           badge.classList.remove("hidden");
 
-          snapshot.forEach(doc => {
+          snapshot.forEach((doc) => {
             const n = doc.data();
-            const date = n.createdAt ? new Date(n.createdAt.toDate()).toLocaleString() : "";
+            const date = n.createdAt
+              ? new Date(n.createdAt.toDate()).toLocaleString()
+              : "";
             const div = document.createElement("div");
             div.className = "p-3 hover:bg-gray-50 transition";
             div.innerHTML = `
@@ -666,38 +944,32 @@
         select.disabled = false;
         // O listener onSnapshot ou reload manual cuidaria da UI, mas aqui damos feedback visual
         select.classList.add("ring-2", "ring-green-500");
-        setTimeout(() => select.classList.remove("ring-2", "ring-green-500"), 1000);
+        setTimeout(
+          () => select.classList.remove("ring-2", "ring-green-500"),
+          1000,
+        );
       };
 
       window.markNotificationRead = async (id) => {
         await updateDoc(doc(db, "notifications", id), { read: true });
       };
 
-      document.getElementById("btn-clear-notifications").addEventListener("click", async () => {
-        const q = query(collection(db, "notifications"), where("read", "==", false));
-        const snapshot = await getDocs(q);
-        const batch = writeBatch(db);
-        snapshot.forEach(doc => {
-          batch.update(doc.ref, { read: true });
+      document
+        .getElementById("btn-clear-notifications")
+        .addEventListener("click", async () => {
+          const q = query(
+            collection(db, "notifications"),
+            where("read", "==", false),
+          );
+          const snapshot = await getDocs(q);
+          const batch = writeBatch(db);
+          snapshot.forEach((doc) => {
+            batch.update(doc.ref, { read: true });
+          });
+          await batch.commit();
         });
-        await batch.commit();
-      });
 
-      document.getElementById("btn-notifications").addEventListener("click", (e) => {
-        e.stopPropagation();
-        document.getElementById("dropdown-notifications").classList.toggle("hidden");
-      });
-
-      // Fecha dropdown ao clicar fora
-      document.addEventListener("click", (e) => {
-        const dropdown = document.getElementById("dropdown-notifications");
-        const btn = document.getElementById("btn-notifications");
-        if (!dropdown.classList.contains("hidden") && !dropdown.contains(e.target) && !btn.contains(e.target)) {
-          dropdown.classList.add("hidden");
-        }
-      });
-
-      // Enviar Resposta
+      // --- SISTEMA DE TICKETS ---
       document
         .getElementById("reply-form")
         .addEventListener("submit", async (e) => {
@@ -717,12 +989,40 @@
             messages: arrayUnion(message),
             status: "answered",
             updatedAt: serverTimestamp(),
-            // Não fechar automaticamente, deixar o admin decidir
           });
 
           document.getElementById("reply-input").value = "";
           closeReplyModal();
         });
+
+      window.markTicketAsClosed = async (event, ticketId) => {
+        event.stopPropagation();
+        if (
+          confirm("Tem certeza que deseja marcar este ticket como RESOLVIDO?")
+        ) {
+          await updateDoc(doc(db, "tickets", ticketId), {
+            status: "closed",
+            updatedAt: serverTimestamp(),
+          });
+        }
+      };
+
+      window.deleteTicket = async (event, ticketId) => {
+        event.stopPropagation();
+        if (
+          confirm(
+            "Tem certeza que deseja EXCLUIR este ticket permanentemente? Esta ação não pode ser desfeita.",
+          )
+        ) {
+          try {
+            await deleteDoc(doc(db, "tickets", ticketId));
+            alert("Ticket excluído com sucesso.");
+          } catch (error) {
+            console.error("Erro ao excluir ticket:", error);
+            alert("Ocorreu um erro ao excluir o ticket.");
+          }
+        }
+      };
 
       // Carregar e Salvar Preços
       async function loadPricing() {
@@ -738,111 +1038,155 @@
         }
       }
 
-      document.getElementById("pricing-form").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const monthly = parseFloat(document.getElementById("price-monthly").value);
-        const annual = parseFloat(document.getElementById("price-annual").value);
-        
-        await setDoc(doc(db, "config", "pricing"), {
-          monthly, annual
-        });
-        alert("Preços atualizados com sucesso!");
-      });
+      document
+        .getElementById("pricing-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const monthly = parseFloat(
+            document.getElementById("price-monthly").value,
+          );
+          const annual = parseFloat(
+            document.getElementById("price-annual").value,
+          );
 
-       // --- GESTÃO DE LICENÇAS ---
+          await setDoc(doc(db, "config", "pricing"), {
+            monthly,
+            annual,
+          });
+          alert("Preços atualizados com sucesso!");
+        });
+
+      // --- GESTÃO DE LICENÇAS ---
 
       // Gerar Licença de Teste
-      document.getElementById("btn-generate-test").addEventListener("click", async (e) => {
-        const btn = e.currentTarget;
-        btn.disabled = true;
-        await createLicenseFromData({ planType: 'trial' }, btn);
-        btn.disabled = false;
-      });
+      document
+        .getElementById("btn-generate-test")
+        .addEventListener("click", async (e) => {
+          const btn = e.currentTarget;
+          btn.disabled = true;
+          await createLicenseFromData({ planType: "trial" }, btn);
+          btn.disabled = false;
+        });
 
       // Criar Licença Manual
-      document.getElementById("create-form").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const btn = e.target.querySelector('button[type="submit"]');
-        btn.disabled = true;
-        
-        const licenseData = {
+      document
+        .getElementById("create-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const btn = e.target.querySelector('button[type="submit"]');
+          btn.disabled = true;
+
+          const licenseData = {
             storeName: document.getElementById("create-store-name").value,
-            clientContact: document.getElementById("create-client-contact").value,
+            clientContact: document.getElementById("create-client-contact")
+              .value,
             clientPhone: document.getElementById("create-client-phone").value,
             planType: document.getElementById("create-plan-type").value,
-            storeUrl: document.getElementById("create-store-url").value
-        };
+            storeUrl: document.getElementById("create-store-url").value,
+            companyName: document.getElementById("create-company-name").value,
+            cnpj: document.getElementById("create-cnpj").value,
+            address: document.getElementById("create-address").value,
+            internalNotes: document.getElementById("create-internal-notes")
+              .value,
+          };
 
-        await createLicenseFromData(licenseData, btn);
+          await createLicenseFromData(licenseData, btn);
 
-        btn.disabled = false;
-        closeCreateModal();
-      });
+          btn.disabled = false;
+          closeCreateModal();
+        });
 
       async function createLicenseFromData(data, btn) {
         const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i>Gerando...';
+        btn.innerHTML =
+          '<i class="fas fa-circle-notch fa-spin mr-2"></i>Gerando...';
 
         try {
-            const key = `CORA-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
-            
-            const expiresAt = new Date();
-            let isActive = false;
-            let status = 'aguardando_pagamento';
+          const key = `CORA-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}-${Math.random().toString(36).substr(2, 4).toUpperCase()}`;
 
-            if (data.planType === 'trial') {
-                expiresAt.setDate(expiresAt.getDate() + 7);
-                isActive = true;
-                status = 'trial';
-            } else if (data.planType === 'monthly') {
-                expiresAt.setMonth(expiresAt.getMonth() + 1);
-            } else if (data.planType === 'annual') {
-                expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+          const expiresAt = new Date();
+          let status = "paid";
+          let isActive = false;
+
+          if (data.planType === "trial") {
+            expiresAt.setDate(expiresAt.getDate() + 7);
+            status = "trial";
+            isActive = true;
+          } else if (data.planType === "monthly") {
+            expiresAt.setMonth(expiresAt.getMonth() + 1);
+          } else if (data.planType === "annual") {
+            expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+          }
+
+          const finalData = {
+            storeName:
+              data.storeName || `Loja ${Math.floor(Math.random() * 10000)}`,
+            clientContact: data.clientContact || "email@pendente.com",
+            clientPhone: data.clientPhone || "",
+            planType: data.planType,
+            storeUrl: data.storeUrl || "",
+            companyName: data.companyName || "",
+            cnpj: data.cnpj || "",
+            address: data.address || "",
+            internalNotes:
+              data.internalNotes ||
+              `Licença criada manualmente em ${new Date().toLocaleDateString()}`,
+            expiresAt: expiresAt,
+            createdAt: serverTimestamp(),
+            key: key,
+            paymentId: "MANUAL_GENERATED",
+            paymentLink: "#",
+            active: isActive,
+            status: status,
+            setupStatus: "pending",
+            contractAccepted: false,
+          };
+
+          const docRef = await addDoc(collection(db, "licenses"), finalData);
+
+          let alertMessage = `Licença para ${finalData.storeName} criada com sucesso! Chave: ${key}`;
+
+          if (data.planType !== "trial") {
+            try {
+              const res = await fetch("/api/send-welcome", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ licenseId: docRef.id }),
+              });
+              if (res.ok) {
+                alertMessage +=
+                  " E-mail de boas-vindas enviado para o cliente.";
+              } else {
+                const errorData = await res.json();
+                throw new Error(
+                  errorData.error || "Falha ao enviar e-mail de boas-vindas.",
+                );
+              }
+            } catch (e) {
+              alertMessage += ` ATENÇÃO: Falha ao enviar o e-mail de boas-vindas: ${e.message}`;
             }
+          }
 
-            const finalData = {
-                storeName: data.storeName || `Loja ${Math.floor(Math.random() * 10000)}`,
-                companyName: data.companyName || "",
-                cnpj: data.cnpj || "",
-                address: data.address || "",
-                storeUrl: data.storeUrl || "",
-                clientContact: data.clientContact || "email@pendente.com",
-                clientPhone: data.clientPhone || "",
-                planType: data.planType,
-                expiresAt: expiresAt,
-                createdAt: serverTimestamp(),
-                key: key,
-                paymentId: "MANUAL_GENERATED",
-                paymentLink: "#",
-                active: isActive, 
-                status: status,
-                setupStatus: "pending",
-                contractAccepted: false,
-                internalNotes: `Licença criada manualmente em ${new Date().toLocaleDateString()}`
-            };
-
-            await addDoc(collection(db, "licenses"), finalData);
-
-            alert(`Licença para ${finalData.storeName} criada com sucesso! Chave: ${key}`);
-            loadLicenses();
-
+          alert(alertMessage);
+          loadLicenses();
         } catch (error) {
-            console.error("Erro ao criar licença:", error);
-            alert("Erro ao criar licença: " + error.message);
+          console.error("Erro ao criar licença:", error);
+          alert("Erro ao criar licença: " + error.message);
         } finally {
-            btn.innerHTML = originalText;
+          btn.innerHTML = originalText;
         }
       }
 
-
       // Listener de Busca
-      document.getElementById("search-license").addEventListener("input", (e) => {
+      document
+        .getElementById("search-license")
+        .addEventListener("input", (e) => {
           const term = e.target.value.toLowerCase();
           const filtered = allLicensesData.filter(
             (l) =>
               l.storeName.toLowerCase().includes(term) ||
               l.clientContact.toLowerCase().includes(term) ||
-              l.storeUrl.toLowerCase().includes(term)
+              l.storeUrl.toLowerCase().includes(term),
           );
           renderLicensesTable(filtered);
         });
@@ -851,35 +1195,42 @@
       function loadLicenses() {
         // Listener em tempo real para a coleção de licenças (Limitado às últimas 100 para performance)
         // Idealmente, usar paginação real no futuro.
-        const q = query(collection(db, "licenses"), orderBy("createdAt", "desc"), limit(100));
+        const q = query(
+          collection(db, "licenses"),
+          orderBy("createdAt", "desc"),
+          limit(100),
+        );
         onSnapshot(q, (querySnapshot) => {
-            allLicensesData = [];
-            const stats = {}; 
+          allLicensesData = [];
+          const stats = {};
 
-            querySnapshot.forEach((doc) => {
-              const data = doc.data();
-              allLicensesData.push({ id: doc.id, ...data });
+          querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            allLicensesData.push({ id: doc.id, ...data });
 
-              // Processar Estatísticas
-              if (data.createdAt && data.createdAt.toDate) {
-                const date = data.createdAt.toDate();
-                const key = `${date.getFullYear()}-${String(
-                  date.getMonth() + 1
-                ).padStart(2, "0")}`;
+            // Processar Estatísticas
+            if (data.createdAt && data.createdAt.toDate) {
+              const date = data.createdAt.toDate();
+              const key = `${date.getFullYear()}-${String(
+                date.getMonth() + 1,
+              ).padStart(2, "0")}`;
 
-                if (!stats[key]) stats[key] = { clientes: 0, faturamento: 0 };
+              if (!stats[key]) stats[key] = { clientes: 0, faturamento: 0 };
 
-                stats[key].clientes++;
-                
-                if(data.status !== 'trial' && data.status !== 'aguardando_pagamento') {
-                    const valor = data.planType === "annual" ? 990 : 99;
-                    stats[key].faturamento += valor;
-                }
+              stats[key].clientes++;
+
+              if (
+                data.status !== "trial" &&
+                data.status !== "aguardando_pagamento"
+              ) {
+                const valor = data.planType === "annual" ? 990 : 99;
+                stats[key].faturamento += valor;
               }
-            });
-            
-            renderLicensesTable(allLicensesData);
-            renderCharts(stats);
+            }
+          });
+
+          renderLicensesTable(allLicensesData);
+          renderCharts(stats);
         });
       }
 
@@ -887,64 +1238,72 @@
         const tableBody = document.getElementById("licenses-table");
         tableBody.innerHTML = "";
 
-        // Base URL para o contrato
-        const baseUrl =
-          window.location.origin +
-          window.location.pathname.substring(
-            0,
-            window.location.pathname.lastIndexOf("/")
-          ) +
-          "/contrato.html";
-
         licenses.forEach((data) => {
           const expiresDateObj = data.expiresAt.toDate();
-          const expiresDate = expiresDateObj.toLocaleDateString("pt-BR");
           const isExpired = expiresDateObj < new Date();
-          const contractUrl = `${baseUrl}?key=${data.key}`;
-          const statusUrl = `${baseUrl.replace("contrato.html", "status.html")}?key=${data.key}`;
 
-          let paymentStatus = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
-          
+          let paymentStatus =
+            '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pendente</span>';
           if (data.active) {
-            paymentStatus = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Ativa</span>';
-          } else if (data.status === 'paid') {
-            paymentStatus = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Pago / Assinar</span>';
-          } else if (data.status === 'trial') {
-            paymentStatus = '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Teste</span>';
+            paymentStatus =
+              '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Ativa</span>';
+          } else if (data.status === "paid") {
+            paymentStatus =
+              '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Pago / Assinar</span>';
+          } else if (data.status === "trial") {
+            paymentStatus =
+              '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-teal-100 text-teal-800">Teste</span>';
+          } else if (data.status === "aguardando_pagamento") {
+            paymentStatus =
+              '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
           }
 
+          let actionButtonsHTML = "";
+          const licenseId = data.id;
 
-          const whatsappMessage = `Olá! Segue os links para o seu sistema CoraEats:\n\n📄 *Contrato/Ativação:* ${contractUrl}\n📊 *Acompanhar Instalação:* ${statusUrl}`;
-
-          const whatsappLink = data.clientPhone 
-            ? `https://wa.me/${data.clientPhone.replace(/\D/g, '')}?text=${encodeURIComponent(whatsappMessage)}`
-            : '#';
-
-          // Lógica do Botão de Ação (Ativar vs Perfil)
-          let actionButton = `
-            <button onclick="window.editLicense('${data.id}')" class="text-gray-500 hover:text-blue-600 mr-3" title="Editar">
-                <i class="fas fa-edit"></i>
-            </button>
-            <button onclick="window.openLicenseDetails('${data.id}')" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition">
-              <i class="fas fa-id-card mr-1"></i> Ver Perfil
-            </button>`;
-
-          // Se estiver aguardando pagamento, mostra botão de Aprovar
-          if (!data.active && data.status !== 'paid' && data.status !== 'trial') {
-             actionButton = `
-            <button onclick="window.approvePayment('${data.id}')" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition shadow-md flex items-center gap-1" title="Confirmar Pagamento e Enviar Email">
-              <i class="fas fa-dollar-sign"></i> APROVAR
-            </button>
-            <button onclick="window.editLicense('${data.id}')" class="text-gray-400 hover:text-blue-600 ml-2">
-                <i class="fas fa-edit"></i>
-            </button>`;
-          } else if (!data.storeUrl || data.storeUrl === "") {
-             // Se já pagou mas não tem URL (Setup pendente)
-             actionButton = `
-            <button onclick="window.editLicense('${data.id}')" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition shadow-md">
-              <i class="fas fa-tools mr-1"></i> SETUP
-            </button>`;
+          // Botões de Ação Primária (visíveis fora do dropdown)
+          if (!data.active && data.status === "aguardando_pagamento") {
+            actionButtonsHTML += `
+                  <button onclick="window.approvePayment('${licenseId}')" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition shadow-md flex items-center gap-1" title="Confirmar Pagamento e Enviar Email">
+                      <i class="fas fa-dollar-sign"></i> APROVAR
+                  </button>`;
+          } else if (
+            data.status === "paid" &&
+            (!data.storeUrl || data.storeUrl === "")
+          ) {
+            actionButtonsHTML += `
+                  <button onclick="window.editLicense('${licenseId}')" class="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 transition shadow-md">
+                      <i class="fas fa-tools mr-1"></i> SETUP
+                  </button>`;
           }
+
+          // Menu Dropdown "Três Pontos"
+          actionButtonsHTML += `
+          <div class="relative inline-block text-left">
+            <div>
+              <button type="button" onclick="window.toggleDropdown('dropdown-license-${licenseId}')" class="inline-flex items-center justify-center p-2 rounded-full text-gray-500 hover:bg-gray-200 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  <i class="fas fa-ellipsis-v"></i>
+              </button>
+            </div>
+
+            <div id="dropdown-license-${licenseId}" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden z-50">
+              <div class="py-1" role="none">
+                <a href="#" onclick="event.preventDefault(); window.openLicenseDetails('${licenseId}')" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                  <i class="fas fa-id-card w-5 mr-2"></i>Ver Perfil
+                </a>
+                <a href="#" onclick="event.preventDefault(); window.editLicense('${licenseId}')" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                  <i class="fas fa-edit w-5 mr-2"></i>Editar
+                </a>
+                <a href="#" onclick="event.preventDefault(); window.renewLicense('${licenseId}')" class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                  <i class="fas fa-calendar-plus w-5 mr-2"></i>Renovar (+30d)
+                </a>
+                <div class="border-t my-1"></div>
+                <a href="#" onclick="event.preventDefault(); window.deleteLicense('${licenseId}')" class="text-red-600 block px-4 py-2 text-sm hover:bg-gray-100" role="menuitem" tabindex="-1">
+                  <i class="fas fa-trash w-5 mr-2"></i>Excluir
+                </a>
+              </div>
+            </div>
+          </div>`;
 
           const row = `
                     <tr class="${isExpired ? "bg-red-50" : ""}">
@@ -957,7 +1316,9 @@
                             ${paymentStatus}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            ${actionButton}
+                            <div class="flex items-center gap-2 justify-end">
+                                ${actionButtonsHTML}
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -967,67 +1328,96 @@
 
       // --- FUNÇÕES DE DETALHES DA LICENÇA (PERFIL) ---
       window.openLicenseDetails = (id) => {
-        const data = allLicensesData.find(l => l.id === id);
+        const data = allLicensesData.find((l) => l.id === id);
         if (!data) return;
 
         // Preencher dados
         document.getElementById("detail-store-name").innerText = data.storeName;
         const urlEl = document.getElementById("detail-store-url");
         urlEl.innerText = data.storeUrl;
-        urlEl.href = data.storeUrl.startsWith("http") ? data.storeUrl : `https://${data.storeUrl}`;
-        
-        document.getElementById("detail-company").innerText = data.companyName || "-";
+        urlEl.href = data.storeUrl.startsWith("http")
+          ? data.storeUrl
+          : `https://${data.storeUrl}`;
+
+        document.getElementById("detail-company").innerText =
+          data.companyName || "-";
         document.getElementById("detail-cnpj").innerText = data.cnpj || "-";
-        document.getElementById("detail-address").innerText = data.address || "-";
-        document.getElementById("detail-contact").innerText = data.clientContact;
-        document.getElementById("detail-phone").innerText = data.clientPhone || "-";
+        document.getElementById("detail-address").innerText =
+          data.address || "-";
+        document.getElementById("detail-contact").innerText =
+          data.clientContact;
+        document.getElementById("detail-phone").innerText =
+          data.clientPhone || "-";
         document.getElementById("detail-key").innerText = data.key;
         document.getElementById("detail-plan").innerText = data.planType;
-        document.getElementById("detail-notes").innerText = data.internalNotes || "Nenhuma observação.";
+        document.getElementById("detail-notes").innerText =
+          data.internalNotes || "Nenhuma observação.";
 
         const expiresDateObj = data.expiresAt.toDate();
-        document.getElementById("detail-expires").innerText = expiresDateObj.toLocaleDateString("pt-BR");
+        document.getElementById("detail-expires").innerText =
+          expiresDateObj.toLocaleDateString("pt-BR");
 
         // Badges
         const badgesContainer = document.getElementById("detail-badges");
         const contractStatus = data.contractAccepted
-            ? '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Contrato Assinado</span>'
-            : '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Contrato Pendente</span>';
-        
-        let paymentStatus = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
+          ? '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Contrato Assinado</span>'
+          : '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Contrato Pendente</span>';
+
+        let paymentStatus =
+          '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Aguardando Pagto</span>';
         if (data.active) {
-            paymentStatus = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Licença Ativa</span>';
-        } else if (data.status === 'paid') {
-            paymentStatus = '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Pago (Falta Contrato)</span>';
+          paymentStatus =
+            '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Licença Ativa</span>';
+        } else if (data.status === "paid") {
+          paymentStatus =
+            '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Pago (Falta Contrato)</span>';
         }
         badgesContainer.innerHTML = contractStatus + paymentStatus;
 
         // Setup Status Select
         const setupOptions = {
-            pending: "Aguardando Início",
-            waiting_materials: "Aguardando Materiais",
-            configuring: "Configurando",
-            ready: "Pronto para Uso"
+          pending: "Aguardando Início",
+          waiting_materials: "Aguardando Materiais",
+          configuring: "Configurando",
+          ready: "Pronto para Uso",
         };
-        const setupContainer = document.getElementById("detail-setup-container");
+        const setupContainer = document.getElementById(
+          "detail-setup-container",
+        );
         setupContainer.innerHTML = `
             <select id="status-select-${data.id}" onchange="window.changeSetupStatus('${data.id}', this.value)" class="w-full md:w-1/2 border-gray-300 rounded shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                ${Object.entries(setupOptions).map(([key, label]) => `<option value="${key}" ${data.setupStatus === key ? 'selected' : ''}>${label}</option>`).join('')}
+                ${Object.entries(setupOptions)
+                  .map(
+                    ([key, label]) =>
+                      `<option value="${key}" ${data.setupStatus === key ? "selected" : ""}>${label}</option>`,
+                  )
+                  .join("")}
             </select>
         `;
 
         // Actions Buttons
-        const baseUrl = window.location.origin + window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/")) + "/contrato.html";
+        const baseUrl =
+          window.location.origin +
+          window.location.pathname.substring(
+            0,
+            window.location.pathname.lastIndexOf("/"),
+          ) +
+          "/contrato.html";
         const contractUrl = `${baseUrl}?key=${data.key}`;
         const statusUrl = `${baseUrl.replace("contrato.html", "status.html")}?key=${data.key}`;
-        const whatsappMessage = `Olá! Segue os links para o seu sistema CoraEats:\n\n📄 *Contrato/Ativação:* ${contractUrl}\n📊 *Acompanhar Instalação:* ${statusUrl}`;
-        const whatsappLink = data.clientPhone ? `https://wa.me/${data.clientPhone.replace(/\D/g, '')}?text=${encodeURIComponent(whatsappMessage)}` : '#';
+        const whatsappMessage = `Olá! Segue os links para o seu sistema CoraEats:
+
+📄 *Contrato/Ativação:* ${contractUrl}
+📊 *Acompanhar Instalação:* ${statusUrl}`;
+        const whatsappLink = data.clientPhone
+          ? `https://wa.me/${data.clientPhone.replace(/\D/g, "")}?text=${encodeURIComponent(whatsappMessage)}`
+          : "#";
 
         const actionsContainer = document.getElementById("detail-actions");
         actionsContainer.innerHTML = `
             <button onclick="window.copiarChave('${contractUrl}')" class="bg-purple-100 text-purple-700 px-4 py-2 rounded hover:bg-purple-200"><i class="fas fa-file-contract mr-2"></i>Copiar Contrato</button>
             <button onclick="window.copiarChave('${statusUrl}')" class="bg-orange-100 text-orange-700 px-4 py-2 rounded hover:bg-orange-200"><i class="fas fa-tasks mr-2"></i>Copiar Status</button>
-            ${data.clientPhone ? `<a href="${whatsappLink}" target="_blank" class="bg-green-100 text-green-700 px-4 py-2 rounded hover:bg-green-200 flex items-center"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>` : ''}
+            ${data.clientPhone ? `<a href="${whatsappLink}" target="_blank" class="bg-green-100 text-green-700 px-4 py-2 rounded hover:bg-green-200 flex items-center"><i class="fab fa-whatsapp mr-2"></i>WhatsApp</a>` : ""}
             <button onclick="window.resendWelcomeEmail('${data.id}')" class="bg-blue-100 text-blue-700 px-4 py-2 rounded hover:bg-blue-200"><i class="fas fa-key mr-2"></i>Reenviar Acesso</button>
             <button onclick="window.sendSetupComplete('${data.id}')" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 shadow-md"><i class="fas fa-rocket mr-2"></i>Enviar Boas-Vindas (Loja Pronta)</button>
             <button onclick="window.renewLicense('${data.id}')" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"><i class="fas fa-calendar-plus mr-2"></i>Renovar</button>
@@ -1035,15 +1425,23 @@
             <button onclick="window.deleteLicense('${data.id}')" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"><i class="fas fa-trash mr-2"></i>Excluir</button>
         `;
 
-        document.getElementById("license-details-modal").classList.remove("hidden");
+        document
+          .getElementById("license-details-modal")
+          .classList.remove("hidden");
       };
 
       window.closeLicenseDetails = () => {
-        document.getElementById("license-details-modal").classList.add("hidden");
+        document
+          .getElementById("license-details-modal")
+          .classList.add("hidden");
       };
 
       window.deleteLicense = async (id) => {
-        if (confirm("Tem certeza que deseja excluir esta licença permanentemente?")) {
+        if (
+          confirm(
+            "Tem certeza que deseja excluir esta licença permanentemente?",
+          )
+        ) {
           await deleteDoc(doc(db, "licenses", id));
           closeLicenseDetails();
         }
@@ -1051,34 +1449,41 @@
 
       // Aprovação Manual de Pagamento
       window.approvePayment = async (id) => {
-        if (!confirm("Confirmar pagamento manualmente? Isso liberará o contrato e enviará o e-mail de boas-vindas.")) return;
-        
-        const btn = document.querySelector(`button[onclick="window.approvePayment('${id}')"]`);
+        if (
+          !confirm(
+            "Confirmar pagamento manualmente? Isso liberará o contrato e enviará o e-mail de boas-vindas.",
+          )
+        )
+          return;
+
+        const btn = document.querySelector(
+          `button[onclick="window.approvePayment('${id}')"]`,
+        );
         const originalText = btn.innerHTML;
         btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>';
         btn.disabled = true;
 
         try {
-            const res = await fetch("/api/approve-payment", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ licenseId: id })
-            });
-            const data = await res.json();
-            
-            if (res.ok) {
-                alert("Sucesso! Status atualizado e e-mail enviado.");
-                // O listener onSnapshot vai atualizar a tabela automaticamente
-            } else {
-                alert("Erro: " + (data.error || "Falha ao aprovar"));
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
-        } catch (e) {
-            console.error(e);
-            alert("Erro de conexão.");
+          const res = await fetch("/api/approve-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ licenseId: id }),
+          });
+          const data = await res.json();
+
+          if (res.ok) {
+            alert("Sucesso! Status atualizado e e-mail enviado.");
+            // O listener onSnapshot vai atualizar a tabela automaticamente
+          } else {
+            alert("Erro: " + (data.error || "Falha ao aprovar"));
             btn.innerHTML = originalText;
             btn.disabled = false;
+          }
+        } catch (e) {
+          console.error(e);
+          alert("Erro de conexão.");
+          btn.innerHTML = originalText;
+          btn.disabled = false;
         }
       };
 
@@ -1095,19 +1500,22 @@
         document.getElementById("edit-store-url").value = license.storeUrl;
         document.getElementById("edit-client-contact").value =
           license.clientContact;
-        document.getElementById("edit-client-phone").value = license.clientPhone || "";
+        document.getElementById("edit-client-phone").value =
+          license.clientPhone || "";
         document.getElementById("edit-address").value = license.address || "";
-        document.getElementById("edit-payment-status").value = license.status || "aguardando_pagamento";
-        document.getElementById("edit-setup-status").value = license.setupStatus || "pending";
-        document.getElementById("edit-internal-notes").value = license.internalNotes || "";
+        document.getElementById("edit-payment-status").value =
+          license.status || "aguardando_pagamento";
+        document.getElementById("edit-setup-status").value =
+          license.setupStatus || "pending";
+        document.getElementById("edit-internal-notes").value =
+          license.internalNotes || "";
         // Formata data para input date (YYYY-MM-DD)
         const date = license.expiresAt.toDate();
         const yyyy = date.getFullYear();
         const mm = String(date.getMonth() + 1).padStart(2, "0");
         const dd = String(date.getDate()).padStart(2, "0");
-        document.getElementById(
-          "edit-expires-at"
-        ).value = `${yyyy}-${mm}-${dd}`;
+        document.getElementById("edit-expires-at").value =
+          `${yyyy}-${mm}-${dd}`;
 
         const modal = document.getElementById("edit-modal");
         modal.classList.remove("hidden");
@@ -1131,7 +1539,7 @@
             setupStatus: document.getElementById("edit-setup-status").value,
             internalNotes: document.getElementById("edit-internal-notes").value,
             expiresAt: new Date(
-              document.getElementById("edit-expires-at").value + "T23:59:59"
+              document.getElementById("edit-expires-at").value + "T23:59:59",
             ),
           };
           await updateDoc(doc(db, "licenses", id), updates);
@@ -1165,7 +1573,7 @@
 
         if (
           confirm(
-            `Tem certeza que deseja REVOGAR o acesso de ${license.storeName}? O cliente perderá o acesso imediatamente.`
+            `Tem certeza que deseja REVOGAR o acesso de ${license.storeName}? O cliente perderá o acesso imediatamente.`,
           )
         ) {
           await updateDoc(doc(db, "licenses", id), {
@@ -1175,44 +1583,54 @@
       };
 
       window.resendWelcomeEmail = async (id) => {
-        if (!confirm("Tem certeza que deseja reenviar o e-mail de boas-vindas para o cliente?")) return;
-        
+        if (
+          !confirm(
+            "Tem certeza que deseja reenviar o e-mail de boas-vindas para o cliente?",
+          )
+        )
+          return;
+
         try {
-            const res = await fetch("/api/send-welcome", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ licenseId: id })
-            });
-            const data = await res.json();
-            if (res.ok) {
-                alert("E-mail enviado com sucesso!");
-            } else {
-                alert("Erro: " + (data.error || "Falha ao enviar"));
-            }
+          const res = await fetch("/api/send-welcome", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ licenseId: id }),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            alert("E-mail enviado com sucesso!");
+          } else {
+            alert("Erro: " + (data.error || "Falha ao enviar"));
+          }
         } catch (e) {
-            console.error(e);
-            alert("Erro de conexão ao enviar e-mail.");
+          console.error(e);
+          alert("Erro de conexão ao enviar e-mail.");
         }
       };
 
       window.sendSetupComplete = async (id) => {
-        if (!confirm("Confirmar que a loja está pronta e enviar o e-mail de boas-vindas finais para o cliente?")) return;
-        
+        if (
+          !confirm(
+            "Confirmar que a loja está pronta e enviar o e-mail de boas-vindas finais para o cliente?",
+          )
+        )
+          return;
+
         try {
-            const res = await fetch("/api/send-setup-complete", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ licenseId: id })
-            });
-            const data = await res.json();
-            if (res.ok) {
-                alert("E-mail de 'Loja Pronta' enviado com sucesso!");
-            } else {
-                alert("Erro: " + (data.error || "Falha ao enviar"));
-            }
+          const res = await fetch("/api/send-setup-complete", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ licenseId: id }),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            alert("E-mail de 'Loja Pronta' enviado com sucesso!");
+          } else {
+            alert("Erro: " + (data.error || "Falha ao enviar"));
+          }
         } catch (e) {
-            console.error(e);
-            alert("Erro de conexão ao enviar e-mail.");
+          console.error(e);
+          alert("Erro de conexão ao enviar e-mail.");
         }
       };
 
@@ -1279,7 +1697,7 @@
                 },
               },
             },
-          }
+          },
         );
 
         // Gráfico Faturamento
@@ -1328,7 +1746,7 @@
                 },
               },
             },
-          }
+          },
         );
       }
 
@@ -1336,7 +1754,7 @@
       function loadTickets() {
         const q = query(
           collection(db, "tickets"),
-          orderBy("updatedAt", "desc")
+          orderBy("updatedAt", "desc"),
         );
         onSnapshot(q, (snapshot) => {
           const container = document.getElementById("tickets-container");
@@ -1398,8 +1816,8 @@
                   <button onclick="window.openReplyModal(event, '${
                     doc.id
                   }', '${encodeURIComponent(JSON.stringify(t.messages))}', '${
-              t.subject
-            }')" class="text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded">
+                    t.subject
+                  }')" class="text-sm bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded">
                       <i class="fas fa-reply"></i> Responder
                   </button>
                   <button onclick="window.markTicketAsClosed(event, '${
@@ -1418,33 +1836,6 @@
           });
         });
       }
-
-      window.deleteTicket = async (event, ticketId) => {
-        event.stopPropagation();
-        if (confirm("Tem certeza que deseja EXCLUIR este ticket permanentemente? Esta ação não pode ser desfeita.")) {
-            try {
-                await deleteDoc(doc(db, "tickets", ticketId));
-                alert("Ticket excluído com sucesso.");
-            } catch (error) {
-                console.error("Erro ao excluir ticket:", error);
-                alert("Ocorreu um erro ao excluir o ticket.");
-            }
-        }
-      };
-
-      // Marcar Ticket como Resolvido
-      window.markTicketAsClosed = async (ticketId) => {
-        if (
-          confirm("Tem certeza que deseja marcar este ticket como RESOLVIDO?")
-        ) {
-          await updateDoc(doc(db, "tickets", ticketId), {
-            status: "closed",
-            updatedAt: serverTimestamp(),
-          });
-        }
-      }
     </script>
   </body>
 </html>
-</html>
-
