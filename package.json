@@ -2,6 +2,9 @@
   "name": "coraeats",
   "version": "1.0.0",
   "description": "Sistema de Delivery e Cardápio Digital",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "build": "tailwindcss -i ./input.css -o ./styles.css --minify"
   },
