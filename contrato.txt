@@ -11,23 +11,26 @@ As partes acima identificadas têm, entre si, justo e acertado o presente Contra
 
 CLÁUSULA 1ª - DO OBJETO DO CONTRATO
 
-1.1. O presente contrato tem como objeto a licença de uso
+1.1. O presente contrato tem como objeto a concessão de licença de uso do software web CoraEats (SaaS) e a prestação de serviços de gestão técnica de infraestrutura.
 
 
 CLÁUSULA 2ª - DAS OBRIGAÇÕES DA CONTRATADA
 
-2.1. Manter o sistema online e funcional, utilizando infraestrutura de hospedagem profissional.
-2.2. Realizar backups periódicos e atualizações de segurança.
-2.3. Prestar suporte técnico para uso do sistema e eventuais falhas.
+2.1. Realizar a configuração, integração e gestão técnica do sistema delivery e cardápio digital.
+2.2. No PLANO ANUAL: Fornecer como bonificação inclusa a infraestrutura de hospedagem e o primeiro ano de registro do domínio próprio (.com.br).
+2.3. No PLANO MENSAL ou outros planos: Realizar a gestão técnica do ambiente, sendo os custos diretos de contratação de hospedagem e domínio de responsabilidade da CONTRATANTE.
+2.4. Manter o sistema online e funcional, realizando backups periódicos e atualizações de segurança.
+2.5. Prestar suporte técnico para uso do sistema e correção de eventuais falhas.
 
 
 CLÁUSULA 3ª - DAS OBRIGAÇÕES DA CONTRATANTE
 
-3.1. Efetuar o pagamento da mensalidade na data de vencimento acordada.
-3.2. Utilizar o sistema de acordo com as leis vigentes e não realizar engenharia reversa.
-3.3. Arcar com os custos de renovação de domínio anual, caso aplicável.
-3.4. A CONTRATANTE é a controladora dos dados de seus clientes finais (LGPD), cabendo à CONTRATADA o papel de operadora da infraestrutura.
-3.5. Fornecer os materiais necessários para configuração inicial (Logo, Capa, Cardápio) para viabilizar a entrega no prazo.
+3.1. Efetuar o pagamento do plano acordado (mensal ou anual) na data de vencimento.
+3.2. No caso de Plano Mensal, arcar com os custos de provedor de hospedagem e aquisição/renovação de domínio próprio.
+3.3. No caso de Plano Anual, arcar com os custos de renovação anual do domínio e hospedagem após o término do período de 12 (doze) meses inicialmente bonificado.
+3.4. Utilizar o sistema de acordo com as leis vigentes e não realizar engenharia reversa.
+3.5. A CONTRATANTE é a controladora dos dados de seus clientes finais (LGPD), cabendo à CONTRATADA o papel de operadora da infraestrutura.
+3.6. Fornecer os materiais necessários para configuração inicial (Logo, Capa, Cardápio) para viabilizar a entrega no prazo.
 
 
 CLÁUSULA 4ª - DA ENTREGA E PRAZOS
