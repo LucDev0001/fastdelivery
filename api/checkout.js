@@ -135,41 +135,53 @@ module.exports = async function handler(req, res) {
     const returnUrl = `${baseUrl}/cancelado.html`; // Se cancelar, vai para a página personalizada
 
     /* ===========================
-     * Payload Abacate Pay
+     * PRODUTO E CLIENTE (ABACATE PAY V2)
+     * =========================== */
+    const productId = await getOrCreateProduct(
+      process.env.ABACATE_PAY_TOKEN,
+      plan,
+      title,
+      amount,
+    );
+
+    const customerId = await getOrCreateCustomer(
+      process.env.ABACATE_PAY_TOKEN,
+      name,
+      email,
+      cleanPhone,
+      cleanCpf,
+    );
+
+    /* ===========================
+     * Payload Abacate Pay (API v2)
      * =========================== */
     const payload = {
-      frequency: "ONE_TIME",
-      methods: ["PIX"],
-      products: [
+      items: [
         {
-          externalId: plan || "default",
-          name: title,
-          description: title,
+          id: productId,
           quantity: 1,
-          price: amount,
         },
       ],
-      metadata: {
-        licenseKey: licenseKey, // SEGURANÇA: Envia a chave para recuperar no webhook
-      },
+      methods: ["PIX"],
+      externalId: licenseKey,
       returnUrl: returnUrl,
       completionUrl: completionUrl,
-      webhookUrl: `${baseUrl}/api/webhook`,
-      customer: {
-        name: name || "Cliente",
-        email: email,
-        taxId: cleanCpf,
-        cellphone: cleanPhone,
+      metadata: {
+        licenseKey: licenseKey,
       },
     };
 
-    console.log("Payload enviado ao Abacate Pay:", payload);
+    if (customerId) {
+      payload.customerId = customerId;
+    }
+
+    console.log("Payload enviado ao Abacate Pay v2:", JSON.stringify(payload, null, 2));
 
     /* ===========================
-     * Chamada API
+     * Chamada API v2
      * =========================== */
     const response = await axios.post(
-      "https://api.abacatepay.com/v1/billing/create",
+      "https://api.abacatepay.com/v2/checkouts/create",
       payload,
       {
         headers: {
@@ -180,22 +192,22 @@ module.exports = async function handler(req, res) {
     );
 
     console.log(
-      "Resposta Abacate Pay:",
+      "Resposta Abacate Pay v2:",
       JSON.stringify(response.data, null, 2),
     );
 
     if (!response.data || response.data.success === false) {
-      throw new Error(response.data?.error || "Erro ao criar cobrança.");
+      throw new Error(response.data?.error || "Erro ao criar cobrança no Abacate Pay.");
     }
 
     const responseData = response.data.data;
 
     if (!responseData?.url) {
-      throw new Error("URL de pagamento não retornada.");
+      throw new Error("URL de pagamento não retornada pela Abacate Pay.");
     }
 
     console.log(
-      `✅ Checkout criado. Salvando licença com paymentId: "${responseData.id}"`,
+      `✅ Checkout v2 criado. Salvando licença com paymentId: "${responseData.id}"`,
     );
 
     /* ===========================
@@ -244,3 +256,114 @@ module.exports = async function handler(req, res) {
     });
   }
 };
+
+/**
+ * Busca ou cria produto no catálogo v2 da Abacate Pay
+ */
+async function getOrCreateProduct(token, plan, title, amount) {
+  const externalId =
+    plan === "anual" ? "coraeats-plano-anual" : "coraeats-plano-mensal";
+
+  // 1. Tentar listar produtos já cadastrados
+  try {
+    const listRes = await axios.get(
+      "https://api.abacatepay.com/v2/products/list",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    const products = listRes.data?.data || [];
+    const found = products.find(
+      (p) => p.externalId === externalId || p.id === externalId,
+    );
+    if (found) {
+      return found.id;
+    }
+  } catch (err) {
+    console.warn("Aviso ao buscar produtos na v2:", err.response?.data || err.message);
+  }
+
+  // 2. Se não encontrou, cria o produto
+  try {
+    const createRes = await axios.post(
+      "https://api.abacatepay.com/v2/products/create",
+      {
+        externalId: externalId,
+        name: title,
+        price: amount,
+        currency: "BRL",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (createRes.data?.data?.id) {
+      return createRes.data.data.id;
+    }
+  } catch (err) {
+    console.warn("Aviso ao criar produto na v2:", err.response?.data || err.message);
+    // Se o produto já existia, busca na lista novamente
+    try {
+      const listRes = await axios.get(
+        "https://api.abacatepay.com/v2/products/list",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+      const products = listRes.data?.data || [];
+      const found = products.find((p) => p.externalId === externalId);
+      if (found) return found.id;
+    } catch (e) {}
+
+    throw new Error(
+      err.response?.data?.error ||
+        err.message ||
+        "Não foi possível obter ou criar o produto na Abacate Pay.",
+    );
+  }
+}
+
+/**
+ * Cadastra cliente na v2 da Abacate Pay (opcional para preenchimento de checkout)
+ */
+async function getOrCreateCustomer(token, name, email, cleanPhone, cleanCpf) {
+  try {
+    const res = await axios.post(
+      "https://api.abacatepay.com/v2/customers/create",
+      {
+        data: {
+          name: name || "Cliente",
+          email: email,
+          cellphone: cleanPhone,
+          taxId: cleanCpf,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    if (res.data?.data?.id) {
+      return res.data.data.id;
+    }
+  } catch (err) {
+    console.warn(
+      "Aviso ao cadastrar cliente na v2 (opcional):",
+      err.response?.data || err.message,
+    );
+    if (err.response?.data?.data?.id) {
+      return err.response.data.data.id;
+    }
+  }
+  return null;
+}

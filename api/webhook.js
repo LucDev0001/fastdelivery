@@ -53,7 +53,8 @@ export default async function handler(req, res) {
     const isPaid =
       status === "PAID" ||
       status === "COMPLETED" ||
-      eventType === "billing.paid"; // Evento explícito de pagamento
+      eventType === "billing.paid" ||
+      eventType === "checkout.completed"; // Evento v2
 
     if (!isPaid) {
       console.log(`Evento ignorado. Status: ${status}, Tipo: ${eventType}`);
@@ -85,9 +86,9 @@ export default async function handler(req, res) {
      * ===================================================== */
     const licensesRef = db.collection("licenses");
 
-    // Extração robusta de metadados (pode vir em data.metadata ou data.bill.metadata)
+    // Extração robusta de metadados (pode vir em data.metadata ou data.bill.metadata ou data.externalId na v2)
     const metadata = data.metadata || (data.bill && data.bill.metadata) || {};
-    const licenseKeyFromMeta = metadata.licenseKey;
+    const licenseKeyFromMeta = metadata.licenseKey || data.externalId;
 
     let snapshot;
 
