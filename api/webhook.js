@@ -54,7 +54,8 @@ export default async function handler(req, res) {
       status === "PAID" ||
       status === "COMPLETED" ||
       eventType === "billing.paid" ||
-      eventType === "checkout.completed"; // Evento v2
+      eventType === "checkout.completed" ||
+      eventType === "transparent.completed"; // Evento v2 checkout transparente
 
     if (!isPaid) {
       console.log(`Evento ignorado. Status: ${status}, Tipo: ${eventType}`);

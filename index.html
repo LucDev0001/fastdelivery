@@ -1647,7 +1647,95 @@
               );
             }
 
-            if (response.ok && data.url) {
+            if (response.ok && (data.pixQrCode || data.pixCopiaECola)) {
+              const qrImg = data.pixQrCode
+                ? data.pixQrCode.startsWith("data:")
+                  ? data.pixQrCode
+                  : `data:image/png;base64,${data.pixQrCode}`
+                : "";
+              const copiaECola = data.pixCopiaECola || "";
+
+              Swal.fire({
+                title: `Pague com Pix (${valor})`,
+                html: `
+                  <div class="text-center">
+                    <p class="text-sm text-gray-600 mb-2 font-medium">
+                      Escaneie o QR Code abaixo no app do seu banco ou use o Pix Copia e Cola:
+                    </p>
+                    ${
+                      qrImg
+                        ? `
+                    <div class="flex justify-center my-3">
+                      <img src="${qrImg}" alt="QR Code Pix" class="w-52 h-52 rounded-xl shadow border-2 border-emerald-500 p-2 bg-white" />
+                    </div>`
+                        : ""
+                    }
+                    <div class="mt-4 text-left">
+                      <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Código Pix Copia e Cola:</label>
+                      <div class="flex items-center gap-2">
+                        <input id="swal-pix-code" type="text" readonly value="${copiaECola}" class="w-full text-xs p-3 font-mono bg-gray-100 border border-gray-300 rounded-lg select-all" />
+                        <button id="swal-copy-pix-btn" type="button" class="bg-[#10B981] hover:bg-emerald-600 text-white font-bold px-4 py-3 rounded-lg text-xs transition flex items-center gap-1 shadow whitespace-nowrap">
+                          <i class="fas fa-copy"></i> Copiar Pix
+                        </button>
+                      </div>
+                    </div>
+                    <div class="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg flex items-center justify-center gap-2 text-emerald-800 text-xs">
+                      <i class="fas fa-circle-notch fa-spin text-emerald-600"></i>
+                      <span>Aguardando confirmação do pagamento em tempo real...</span>
+                    </div>
+                  </div>
+                `,
+                showCancelButton: true,
+                cancelButtonText: "Fechar",
+                showConfirmButton: true,
+                confirmButtonText:
+                  '<i class="fas fa-check"></i> Já fiz o pagamento',
+                confirmButtonColor: "#10B981",
+                cancelButtonColor: "#6b7280",
+                allowOutsideClick: false,
+                didOpen: () => {
+                  const copyBtn = document.getElementById("swal-copy-pix-btn");
+                  const copyInput = document.getElementById("swal-pix-code");
+                  if (copyBtn && copyInput) {
+                    copyBtn.addEventListener("click", () => {
+                      copyInput.select();
+                      navigator.clipboard.writeText(copiaECola);
+                      copyBtn.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+                      copyBtn.classList.replace("bg-[#10B981]", "bg-gray-800");
+                      setTimeout(() => {
+                        copyBtn.innerHTML =
+                          '<i class="fas fa-copy"></i> Copiar Pix';
+                        copyBtn.classList.replace("bg-gray-800", "bg-[#10B981]");
+                      }, 2500);
+                    });
+                  }
+
+                  if (window.monitorarPagamentoPix) {
+                    window.monitorarPagamentoPix(data.key, formValues.email);
+                  }
+                },
+              }).then((res) => {
+                if (res.isConfirmed) {
+                  Swal.fire({
+                    title: "Verificando...",
+                    text: "Aguarde enquanto verificamos com o banco...",
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                      Swal.showLoading();
+                      setTimeout(() => {
+                        window.location.href = `sucesso.html?email=${encodeURIComponent(
+                          formValues.email,
+                        )}&key=${data.key}`;
+                      }, 2000);
+                    },
+                  });
+                } else {
+                  if (window._pixUnsubscribe) {
+                    window._pixUnsubscribe();
+                  }
+                }
+              });
+            } else if (response.ok && data.url) {
               window.location.href = data.url;
             } else {
               throw new Error(data.error || "Erro ao processar pagamento.");
@@ -1681,7 +1769,7 @@
       }
     </script>
 
-    <!-- Firebase Analytics -->
+    <!-- Firebase Analytics & Firestore Listener -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics.js";
@@ -1689,6 +1777,10 @@
         getFirestore,
         doc,
         getDoc,
+        collection,
+        query,
+        where,
+        onSnapshot,
       } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -1698,12 +1790,40 @@
         storageBucket: "fastdelivery-46457.appspot.com",
         messagingSenderId: "889884008498",
         appId: "1:889884008498:web:418e00c16326df6d4e1c2b",
-        // measurementId: "G-XXXXXXXXXX" // Adicione seu ID de medição do GA4 aqui se disponível no console
       };
 
       const app = initializeApp(firebaseConfig);
       const analytics = getAnalytics(app);
       const db = getFirestore(app);
+
+      // Monitoramento em tempo real do Pix
+      window.monitorarPagamentoPix = function (licenseKey, email) {
+        if (!licenseKey) return;
+        const q = query(
+          collection(db, "licenses"),
+          where("key", "==", licenseKey),
+        );
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+          if (!snapshot.empty) {
+            const licenseDocData = snapshot.docs[0].data();
+            if (licenseDocData.status === "paid" || licenseDocData.active) {
+              unsubscribe();
+              Swal.fire({
+                icon: "success",
+                title: "Pagamento Confirmado!",
+                text: "Seu pagamento foi aprovado com sucesso! Redirecionando para o contrato...",
+                timer: 2000,
+                showConfirmButton: false,
+              }).then(() => {
+                window.location.href = `sucesso.html?email=${encodeURIComponent(
+                  email,
+                )}&key=${licenseKey}`;
+              });
+            }
+          }
+        });
+        window._pixUnsubscribe = unsubscribe;
+      };
 
       // Carregar Preços Dinâmicos
       async function loadPrices() {
